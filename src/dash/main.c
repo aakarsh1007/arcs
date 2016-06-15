@@ -15,7 +15,7 @@ int main() {
 	p[0]=&p1;
 	p[1]=&p2;
 	p[0]->name="Name 1";
-	p[0]->value="Value 1";
+	p[0]->value="";
 	p[1]->name="Name 2";
 	p[1]->value="Value 2";
 	screen_render(p,2);

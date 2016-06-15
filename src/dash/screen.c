@@ -33,6 +33,7 @@ void screen_init() {
 	}
 	start_color();
 	init_pair(1, COLOR_BLUE, COLOR_BLACK);
+	init_pair(2, COLOR_RED, COLOR_BLACK);
 #ifdef DEBUG
 	fprintf(stdout, "Screen created\n");
 #endif
@@ -68,6 +69,8 @@ void draw_props(struct dash_property** props, int32_t len) {
 		exit(EXIT_FAILURE);
 	}
 	for(int32_t i = 0; i < len; i++) {
+		if(strlen(props[i]->name) == 0) continue; //Spacer
+
 		if(strlen(props[i]->name) > PROPS_NAME_MAX_LEN) {
 			fprintf(stderr, "Name %s larger than limit. Exiting\n", props[i]->name);
 			screen_close();
@@ -78,10 +81,17 @@ void draw_props(struct dash_property** props, int32_t len) {
 			screen_close();
 			exit(EXIT_FAILURE);
 		}
-		char tmp[PROPS_NAME_MAX_LEN+PROPS_VAL_MAX_LEN+4];
-		sprintf((char*)tmp, "[%-12s %-12s]", props[i]->name, props[i]->value);
-		mvprintw(i+PROPS_Y, PROPS_X, (char*)tmp);
-//		mvprintw(i+PROPS_Y, PROPS_X, props[i]->name);
-//		mvprintw(i+PROPS_Y, PROPS_X+PROPS_NAME_MAX_LEN, props[i]->value);
+
+		if(strlen(props[i]->value) == 0) {
+			//Title, not property
+			attron(A_BOLD|COLOR_PAIR(2));
+			mvprintw(i+PROPS_Y, PROPS_X, props[i]->name);
+			attroff(A_BOLD|COLOR_PAIR(2));
+		}
+		else {
+			char tmp[PROPS_NAME_MAX_LEN+PROPS_VAL_MAX_LEN+4];
+			sprintf((char*)tmp, "[%-12s %-12s]", props[i]->name, props[i]->value);
+			mvprintw(i+PROPS_Y, PROPS_X, (char*)tmp);
+		}
 	}
 }
