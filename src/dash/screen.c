@@ -7,7 +7,7 @@
 #define LOGO_Y 1
 #define PROPS_X 1
 #define PROPS_Y 8
-#define PROPS_NAME_MAX_LEN 12
+#define PROPS_NAME_MAX_LEN 18
 #define PROPS_VAL_MAX_LEN 18
 
 void draw_logo();
@@ -93,7 +93,7 @@ void draw_props(struct dash_property** props, int32_t len) {
 			attroff(A_BOLD|COLOR_PAIR(2));
 		} else {
 			char tmp[PROPS_NAME_MAX_LEN + PROPS_VAL_MAX_LEN + 4];
-			sprintf((char*) tmp, "[%-12s %-12s]", props[i]->name,
+			sprintf((char*) tmp, "[%-18s %18s]", props[i]->name,
 					props[i]->value);
 			mvprintw(i + PROPS_Y, PROPS_X, (char*) tmp);
 		}

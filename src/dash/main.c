@@ -23,6 +23,7 @@ int main() {
 
 
 	while(1) {
+		usleep(10000);
 		props.jsstat=get_js_status();
 		redraw(props);
 	}
