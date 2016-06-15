@@ -1,0 +1,12 @@
+# Eclipse
+.cproject
+.project
+.settings
+
+# Build
+*.o
+arcs-dash
+
+# Swap
+*~
+*.swp
