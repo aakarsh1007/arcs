@@ -78,7 +78,10 @@ void draw_props(struct dash_property** props, int32_t len) {
 			screen_close();
 			exit(EXIT_FAILURE);
 		}
-		mvprintw(i+PROPS_Y, PROPS_X, props[i]->name);
-		mvprintw(i+PROPS_Y, PROPS_X+PROPS_NAME_MAX_LEN, props[i]->value);
+		char tmp[PROPS_NAME_MAX_LEN+PROPS_VAL_MAX_LEN+4];
+		sprintf((char*)tmp, "[%-12s %-12s]", props[i]->name, props[i]->value);
+		mvprintw(i+PROPS_Y, PROPS_X, (char*)tmp);
+//		mvprintw(i+PROPS_Y, PROPS_X, props[i]->name);
+//		mvprintw(i+PROPS_Y, PROPS_X+PROPS_NAME_MAX_LEN, props[i]->value);
 	}
 }
