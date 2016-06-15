@@ -1,7 +1,10 @@
-OBJS = main.o
+OBJS = main.o screen.o
 
-all: $(OBJS)
-	gcc $(CFLAGS) $(OBJS) -o ../../$(OUT)
+all: common.h $(OBJS)
+	gcc $(CFLAGS) $(OBJS) -lncurses -o ../../$(OUT)
+
+main.o: main.c screen.h
+screen.o: screen.c screen.h
 
 .PHONY: clean
 clean:

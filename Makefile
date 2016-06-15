@@ -1,6 +1,6 @@
 SRCDIR = src
 DASHDIR = dash
-CFLAGS = -O2 -lncurses -Wall
+CFLAGS = -O2 -Wall --std=c11
 RM = rm -f
 OUT = arcs-dash
 CC = gcc
