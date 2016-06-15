@@ -5,7 +5,7 @@
 
 char * found_js() {
 	FILE * f;
-	if((f = fopen(JS_NAME, "r"))) {
+	if ((f = fopen(JS_NAME, "r"))) {
 		fclose(f);
 		return JS_NAME;
 	}

@@ -22,11 +22,12 @@ void screen_init() {
 	noecho();
 	int stat = curs_set(0);
 #ifdef DEBUG
-	if(stat == ERR) {
-		fprintf(stderr, "This terminal does not support setting cursor visibility\n");
+	if (stat == ERR) {
+		fprintf(stderr,
+				"This terminal does not support setting cursor visibility\n");
 	}
 #endif
-	if(has_colors() == FALSE) {
+	if (has_colors() == FALSE) {
 		fprintf(stderr, "Color not supported, exiting.\n");
 		screen_close();
 		exit(EXIT_FAILURE);
@@ -54,44 +55,47 @@ void screen_render(struct dash_property** props, int32_t len) {
 
 void draw_logo() {
 	attron(COLOR_PAIR(1));
-	mvprintw(0+LOGO_Y, 0+LOGO_X, "    /\\                 ");
-	mvprintw(1+LOGO_Y, 0+LOGO_X, "   /  \\   _ __ ___ ___ ");
-	mvprintw(2+LOGO_Y, 0+LOGO_X, "  / /\\ \\ | '__/ __/ __|");
-	mvprintw(3+LOGO_Y, 0+LOGO_X, " / ____ \\| | | (__\\__ \\");
-	mvprintw(4+LOGO_Y, 0+LOGO_X, "/_/    \\_\\_|  \\___|___/");
+	mvprintw(0 + LOGO_Y, 0 + LOGO_X, "    /\\                 ");
+	mvprintw(1 + LOGO_Y, 0 + LOGO_X, "   /  \\   _ __ ___ ___ ");
+	mvprintw(2 + LOGO_Y, 0 + LOGO_X, "  / /\\ \\ | '__/ __/ __|");
+	mvprintw(3 + LOGO_Y, 0 + LOGO_X, " / ____ \\| | | (__\\__ \\");
+	mvprintw(4 + LOGO_Y, 0 + LOGO_X, "/_/    \\_\\_|  \\___|___/");
 	attroff(COLOR_PAIR(1));
 }
 
 void draw_props(struct dash_property** props, int32_t len) {
-	if(props == NULL) {
+	if (props == NULL) {
 		fprintf(stderr, "NULL props value");
 		screen_close();
 		exit(EXIT_FAILURE);
 	}
-	for(int32_t i = 0; i < len; i++) {
-		if(strlen(props[i]->name) == 0) continue; //Spacer
+	for (int32_t i = 0; i < len; i++) {
+		if (strlen(props[i]->name) == 0)
+			continue; //Spacer
 
-		if(strlen(props[i]->name) > PROPS_NAME_MAX_LEN) {
-			fprintf(stderr, "Name %s larger than limit. Exiting\n", props[i]->name);
+		if (strlen(props[i]->name) > PROPS_NAME_MAX_LEN) {
+			fprintf(stderr, "Name %s larger than limit. Exiting\n",
+					props[i]->name);
 			screen_close();
 			exit(EXIT_FAILURE);
 		}
-		if(strlen(props[i]->value) > PROPS_VAL_MAX_LEN) {
-			fprintf(stderr, "Value %s larger than limit. Exiting\n", props[i]->value);
+		if (strlen(props[i]->value) > PROPS_VAL_MAX_LEN) {
+			fprintf(stderr, "Value %s larger than limit. Exiting\n",
+					props[i]->value);
 			screen_close();
 			exit(EXIT_FAILURE);
 		}
 
-		if(strlen(props[i]->value) == 0) {
+		if (strlen(props[i]->value) == 0) {
 			//Title, not property
 			attron(A_BOLD|COLOR_PAIR(2));
-			mvprintw(i+PROPS_Y, PROPS_X, props[i]->name);
+			mvprintw(i + PROPS_Y, PROPS_X, props[i]->name);
 			attroff(A_BOLD|COLOR_PAIR(2));
-		}
-		else {
-			char tmp[PROPS_NAME_MAX_LEN+PROPS_VAL_MAX_LEN+4];
-			sprintf((char*)tmp, "[%-12s %-12s]", props[i]->name, props[i]->value);
-			mvprintw(i+PROPS_Y, PROPS_X, (char*)tmp);
+		} else {
+			char tmp[PROPS_NAME_MAX_LEN + PROPS_VAL_MAX_LEN + 4];
+			sprintf((char*) tmp, "[%-12s %-12s]", props[i]->name,
+					props[i]->value);
+			mvprintw(i + PROPS_Y, PROPS_X, (char*) tmp);
 		}
 	}
 }

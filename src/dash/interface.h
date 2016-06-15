@@ -1,5 +1,6 @@
 struct properties {
 	char *js;
+	struct js_status jsstat;
 };
 
 /**
