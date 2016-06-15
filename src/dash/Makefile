@@ -1,4 +1,4 @@
-OBJS = main.o screen.o
+OBJS = main.o screen.o io.o
 
 all: common.h $(OBJS)
 	gcc $(CFLAGS) $(OBJS) -lncurses -o ../../$(OUT)

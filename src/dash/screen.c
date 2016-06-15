@@ -8,7 +8,7 @@
 #define PROPS_X 1
 #define PROPS_Y 8
 #define PROPS_NAME_MAX_LEN 12
-#define PROPS_VAL_MAX_LEN 12
+#define PROPS_VAL_MAX_LEN 18
 
 void draw_logo();
 void draw_props(struct dash_property** props, int32_t len);
