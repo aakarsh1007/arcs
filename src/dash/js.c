@@ -10,7 +10,7 @@
 
 pthread_t jsthread;
 
-volatile struct js_status status; // = {0,0,0,0,0,0,0,0,0,0,0 ,0,0,0,0,0,0,0,0};
+volatile struct js_status status = {0,0,0,0,0,0,0,0,0,0,0 ,0,0,0,0,0,0,0,0};
 
 struct thread_data {
 	char *path;
@@ -70,19 +70,19 @@ void js_update(int16_t value, uint8_t type, uint8_t number) {
 	} else if (type == 2) {
 		//Axis
 		if (number == 0)
-			status.axis_left_x = ((float) value) / ((float) SHRT_MIN);
+			status.axis_left_x = -((float) value) / ((float) SHRT_MIN);
 		else if (number == 1)
 			status.axis_left_y = ((float) value) / ((float) SHRT_MIN);
 		else if (number == 2)
 			status.axis_left_trigger = ((float) value) / ((float) SHRT_MIN);
 		else if (number == 3)
-			status.axis_right_x = ((float) value) / ((float) SHRT_MIN);
+			status.axis_right_x = -((float) value) / ((float) SHRT_MIN);
 		else if (number == 4)
 			status.axis_right_y = ((float) value) / ((float) SHRT_MIN);
 		else if (number == 5)
 			status.axis_right_trigger = ((float) value) / ((float) SHRT_MIN);
 		else if (number == 6)
-			status.axis_dpad_x = ((float) value) / ((float) SHRT_MIN);
+			status.axis_dpad_x = -((float) value) / ((float) SHRT_MIN);
 		else if (number == 7)
 			status.axis_dpad_y = ((float) value) / ((float) SHRT_MIN);
 		else {

@@ -3,16 +3,23 @@
 #include "js.h"
 #include "interface.h"
 
-#define PROP_NUM 15
+#define PROP_NUM 23
 
 typedef struct dash_property dp;
 
 struct dash_property ** create_interface(struct properties props, dp* array[]);
 
+char* fstring(float);
+
 void redraw(struct properties props) {
 	dp* array[PROP_NUM];
 	struct dash_property ** tmp = create_interface(props, array);
 	screen_render(tmp, PROP_NUM);
+
+	for (int32_t i = 15; i < 23; i++) {
+			free(array[i]->value);
+	}
+
 	for (int32_t i = 0; i < PROP_NUM; i++) {
 		free(array[i]);
 	}
@@ -37,6 +44,26 @@ struct dash_property ** create_interface(struct properties props, dp* array[]) {
 	*array[12] = (dp ) { "Guide Button", props.jsstat.btn_guide ? "true" : "false" };
 	*array[13] = (dp ) { "Left Stick Button", props.jsstat.btn_left_stick ? "true" : "false" };
 	*array[14] = (dp ) { "Right Stick Button", props.jsstat.btn_right_stick ? "true" : "false" };
+
+	for(uint32_t i = 15; i < 23; i++) {
+		array[i]->value = malloc(20);
+	}
+	array[15]->name="Axis Left X";
+	sprintf(array[15]->value, "%.3f", props.jsstat.axis_left_x);
+	array[16]->name="Axis Left Y";
+	sprintf(array[16]->value, "%.3f", props.jsstat.axis_left_y);
+	array[17]->name="Axis Left Trigger";
+	sprintf(array[17]->value, "%.3f", props.jsstat.axis_left_trigger);
+	array[18]->name="Axis Right X";
+	sprintf(array[18]->value, "%.3f", props.jsstat.axis_right_x);
+	array[19]->name="Axis Right Y";
+	sprintf(array[19]->value, "%.3f", props.jsstat.axis_right_y);
+	array[20]->name="Axis Right Trigger";
+	sprintf(array[20]->value, "%.3f", props.jsstat.axis_right_trigger);
+	array[21]->name="Axis D-Pad X";
+	sprintf(array[21]->value, "%.3f", props.jsstat.axis_dpad_x);
+	array[22]->name="Axis D-Pad Y";
+	sprintf(array[22]->value, "%.3f", props.jsstat.axis_dpad_y);
 
 	return array;
 }
