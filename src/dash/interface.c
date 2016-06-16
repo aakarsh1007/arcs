@@ -6,6 +6,9 @@
 #define PROP_NUM 23
 
 lnk_list * create_interface(struct properties props);
+void add_prop(lnk_list*, char *, char *);
+
+char * boolstr( bool);
 
 char* fstring(float);
 
@@ -13,69 +16,78 @@ void redraw(struct properties props) {
 	lnk_list * list = create_interface(props);
 	screen_render(list);
 	list_itterate(list, free);
+	list_free(list);
 }
 
 lnk_list * create_interface(struct properties props) {
 
 	struct dash_property *tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property) { "Local", "" };
+	*tmp = (struct dash_property ) { "Local", "" };
 	lnk_list *out = list_create(tmp);
 
 	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property) { "Gamepad", props.js };
+	*tmp = (struct dash_property ) { "Gamepad", props.js };
 	list_append(out, tmp);
 
 	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property) { "", "" };
+	*tmp = (struct dash_property ) { "", "" };
 	list_append(out, tmp);
 
 	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property) { "Input", "" };
+	*tmp = (struct dash_property ) { "Input", "" };
 	list_append(out, tmp);
 
 	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property) { "A Button", props.jsstat.btn_a ? "true" : "false" };
+	*tmp = (struct dash_property ) { "A Button", boolstr(props.jsstat.btn_a) };
 	list_append(out, tmp);
 
 	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property) { "B Button", props.jsstat.btn_b ? "true" : "false" };
+	*tmp = (struct dash_property ) { "B Button", boolstr(props.jsstat.btn_b) };
 	list_append(out, tmp);
 
 	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property) { "X Button", props.jsstat.btn_x ?
-			"true" : "false" };
+	*tmp = (struct dash_property ) { "X Button",
+					props.jsstat.btn_x ? "true" : "false" };
 	list_append(out, tmp);
 
 	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property) { "Y Button", props.jsstat.btn_y ? "true" : "false" };
+	*tmp = (struct dash_property ) { "Y Button",
+					props.jsstat.btn_y ? "true" : "false" };
 	list_append(out, tmp);
 
 	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property) { "Left Shoulder", props.jsstat.btn_left_shoulder ? "true" : "false" };
+	*tmp = (struct dash_property ) { "Left Shoulder",
+					props.jsstat.btn_left_shoulder ? "true" : "false" };
 	list_append(out, tmp);
 
 	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property) { "Right Shoulder", props.jsstat.btn_right_shoulder ? "true" : "false" };
+	*tmp = (struct dash_property ) { "Right Shoulder",
+					props.jsstat.btn_right_shoulder ? "true" : "false" };
 	list_append(out, tmp);
 
 	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property) { "Back Button", props.jsstat.btn_back ? "true" : "false" };
+	*tmp = (struct dash_property ) { "Back Button",
+					props.jsstat.btn_back ? "true" : "false" };
 	list_append(out, tmp);
 
 	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property) { "Start Button", props.jsstat.btn_start ? "true" : "false" };
+	*tmp = (struct dash_property ) { "Start Button",
+					props.jsstat.btn_start ? "true" : "false" };
 	list_append(out, tmp);
 
 	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property) { "Guide Button", props.jsstat.btn_guide ? "true" : "false" };
+	*tmp = (struct dash_property ) { "Guide Button",
+					props.jsstat.btn_guide ? "true" : "false" };
 	list_append(out, tmp);
 
 	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property) { "Left Stick Button", props.jsstat.btn_left_stick ? "true" : "false" };
+	*tmp = (struct dash_property ) { "Left Stick Button",
+					props.jsstat.btn_left_stick ? "true" : "false" };
 	list_append(out, tmp);
 
 	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property) { "Right Stick Button", props.jsstat.btn_right_stick ? "true" : "false" };
+	*tmp = (struct dash_property ) { "Right Stick Button",
+					props.jsstat.btn_right_stick ? "true" : "false" };
 	list_append(out, tmp);
 
 //
@@ -102,4 +114,18 @@ lnk_list * create_interface(struct properties props) {
 //	return array;
 
 	return out;
+}
+
+inline char * boolstr(bool b) {
+	return b ? "true" : "false";
+}
+
+void add_prop(lnk_list *list, char *name, char *value) {
+	struct dash_property *tmp
+	tmp = malloc(sizeof(struct dash_property));
+		*tmp = (struct dash_property ) { name, value };
+	if(list == NULL)
+		list = list_create(tmp);
+	else
+		list_append(list, tmp);
 }
