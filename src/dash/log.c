@@ -4,7 +4,6 @@
 
 #define LOGFILE "out.log"
 
-
 void logm(char *messg, ...) {
 	FILE *file = fopen(LOGFILE, "at");
 	if (!file)

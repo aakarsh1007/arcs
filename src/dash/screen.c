@@ -70,14 +70,12 @@ void draw_props(lnk_list *list) {
 			continue; //Spacer
 
 		if (strlen(dp->name) > PROPS_NAME_MAX_LEN) {
-			logm("Name %s larger than limit. Exiting\n",
-					dp->name);
+			logm("Name %s larger than limit. Exiting\n", dp->name);
 			screen_close();
 			exit(EXIT_FAILURE);
 		}
 		if (strlen(dp->value) > PROPS_VAL_MAX_LEN) {
-			logm("Value %s larger than limit. Exiting\n",
-					dp->value);
+			logm("Value %s larger than limit. Exiting\n", dp->value);
 			screen_close();
 			exit(EXIT_FAILURE);
 		}
@@ -89,8 +87,7 @@ void draw_props(lnk_list *list) {
 			attroff(A_BOLD|COLOR_PAIR(2));
 		} else {
 			char tmp[PROPS_NAME_MAX_LEN + PROPS_VAL_MAX_LEN + 4];
-			sprintf((char*) tmp, "[%-18s %18s]", dp->name,
-					dp->value);
+			sprintf((char*) tmp, "[%-18s %18s]", dp->name, dp->value);
 			mvprintw(i + PROPS_Y, PROPS_X, (char*) tmp);
 		}
 	}

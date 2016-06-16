@@ -10,7 +10,8 @@
 
 pthread_t jsthread;
 
-volatile struct js_status status = {0,0,0,0,0,0,0,0,0,0,0 ,0,0,0,0,0,0,0,0};
+volatile struct js_status status = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0 };
 
 struct thread_data {
 	char *path;
@@ -62,8 +63,8 @@ void js_update(int16_t value, uint8_t type, uint8_t number) {
 		else if (number == 10)
 			status.btn_right_stick = value;
 		else {
-			logm("Unknown js value type %d number %d\n",
-					(int32_t) type, (int32_t) number);
+			logm("Unknown js value type %d number %d\n", (int32_t) type,
+					(int32_t) number);
 //			screen_close();
 //			exit(EXIT_FAILURE);
 		}
@@ -86,8 +87,8 @@ void js_update(int16_t value, uint8_t type, uint8_t number) {
 		else if (number == 7)
 			status.axis_dpad_y = ((float) value) / ((float) SHRT_MIN);
 		else {
-			logm("Unknown js value type %d number %d\n",
-					(int32_t) type, (int32_t) number);
+			logm("Unknown js value type %d number %d\n", (int32_t) type,
+					(int32_t) number);
 			screen_close();
 			exit(EXIT_FAILURE);
 		}

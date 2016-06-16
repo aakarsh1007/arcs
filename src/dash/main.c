@@ -21,10 +21,9 @@ int main() {
 	props.js = (js == NULL) ? "Not found" : js;
 	redraw(props);
 
-
-	while(1) {
+	while (1) {
 		usleep(10000);
-		props.jsstat=get_js_status();
+		props.jsstat = get_js_status();
 		redraw(props);
 	}
 

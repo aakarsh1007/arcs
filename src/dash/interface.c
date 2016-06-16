@@ -12,7 +12,6 @@ char * boolstr( bool);
 char* fstring(float);
 void freevalstr(void *);
 
-
 void redraw(struct properties props) {
 	lnk_list * list = create_interface(props);
 	screen_render(list);
@@ -26,15 +25,15 @@ lnk_list * create_interface(struct properties props) {
 	lnk_list *out = NULL;
 
 	char *js = calloc(1, VALUE_MEM_SIZE);
-	strcpy(js,props.js);
+	strcpy(js, props.js);
 	out = add_prop(out, "Gamepad", js);
 
 	char *blk = calloc(1, VALUE_MEM_SIZE);
-	strcpy(blk,"");
+	strcpy(blk, "");
 	add_prop(out, "", blk);
 
 	blk = calloc(1, VALUE_MEM_SIZE);
-	strcpy(blk,"");
+	strcpy(blk, "");
 	add_prop(out, "Input", blk);
 
 	add_prop(out, "A Button", boolstr(props.jsstat.btn_a));
@@ -61,50 +60,48 @@ lnk_list * create_interface(struct properties props) {
 
 	char *tmp = calloc(1, VALUE_MEM_SIZE);
 	sprintf(tmp, "%.3f", props.jsstat.axis_left_x);
-	add_prop(out,"Axis Left X",tmp);
+	add_prop(out, "Axis Left X", tmp);
 
 	tmp = calloc(1, VALUE_MEM_SIZE);
 	sprintf(tmp, "%.3f", props.jsstat.axis_left_y);
-	add_prop(out,"Axis Left Y",tmp);
+	add_prop(out, "Axis Left Y", tmp);
 
 	tmp = calloc(1, VALUE_MEM_SIZE);
 	sprintf(tmp, "%.3f", props.jsstat.axis_left_trigger);
-	add_prop(out,"Axis Left Trigger",tmp);
+	add_prop(out, "Axis Left Trigger", tmp);
 
 	tmp = calloc(1, VALUE_MEM_SIZE);
 	sprintf(tmp, "%.3f", props.jsstat.axis_right_x);
-	add_prop(out,"Axis Right X",tmp);
-
+	add_prop(out, "Axis Right X", tmp);
 
 	tmp = calloc(1, VALUE_MEM_SIZE);
 	sprintf(tmp, "%.3f", props.jsstat.axis_right_y);
-	add_prop(out,"Axis Right Y",tmp);
+	add_prop(out, "Axis Right Y", tmp);
 
 	tmp = calloc(1, VALUE_MEM_SIZE);
 	sprintf(tmp, "%.3f", props.jsstat.axis_right_trigger);
-	add_prop(out,"Axis Right Trigger",tmp);
-
+	add_prop(out, "Axis Right Trigger", tmp);
 
 	tmp = calloc(1, VALUE_MEM_SIZE);
 	sprintf(tmp, "%.3f", props.jsstat.axis_dpad_x);
-	add_prop(out,"Axis D-Pad X",tmp);
+	add_prop(out, "Axis D-Pad X", tmp);
 
 	//There is a bug somewhere, this stops it
 	tmp = calloc(1, VALUE_MEM_SIZE);
 	float f = props.jsstat.axis_dpad_y;
-	if(f < -1.5 || f > 1.5) {
-		logm("Invalid f %f",f);
+	if (f < -1.5 || f > 1.5) {
+		logm("Invalid f %f", f);
 		f = 0.0;
 	}
 	sprintf(tmp, "%.3f", f);
-	add_prop(out,"Axis D-Pad Y",tmp);
+	add_prop(out, "Axis D-Pad Y", tmp);
 
 	return out;
 }
 
 inline char * boolstr(bool b) {
 	char *tmp = calloc(1, VALUE_MEM_SIZE);
-	strcpy(tmp,b ? "true" : "false");
+	strcpy(tmp, b ? "true" : "false");
 	return tmp;
 }
 
@@ -120,6 +117,6 @@ lnk_list * add_prop(lnk_list *list, char *name, char *value) {
 }
 
 void freevalstr(void *val) {
-	struct dash_property* ptr = (struct dash_property *)val;
+	struct dash_property* ptr = (struct dash_property *) val;
 	free(ptr->value);
 }

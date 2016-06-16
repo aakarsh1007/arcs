@@ -1,6 +1,6 @@
 struct list_node {
-    void *data;
-    struct list_node *next;
+	void *data;
+	struct list_node *next;
 };
 
 typedef struct list_node lnk_list;
