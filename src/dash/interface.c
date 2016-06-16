@@ -2,130 +2,124 @@
 #include "screen.h"
 #include "js.h"
 #include "interface.h"
+#include <string.h>
 
-#define PROP_NUM 23
+#define VALUE_MEM_SIZE 24
 
 lnk_list * create_interface(struct properties props);
-void add_prop(lnk_list*, char *, char *);
-
+lnk_list * add_prop(lnk_list*, char *, char *);
 char * boolstr( bool);
-
 char* fstring(float);
+void freevalstr(void *);
+
 
 void redraw(struct properties props) {
 	lnk_list * list = create_interface(props);
 	screen_render(list);
+	list_itterate(list, freevalstr);
 	list_itterate(list, free);
 	list_free(list);
 }
 
 lnk_list * create_interface(struct properties props) {
 
-	struct dash_property *tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property ) { "Local", "" };
-	lnk_list *out = list_create(tmp);
+	lnk_list *out = NULL;
 
-	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property ) { "Gamepad", props.js };
-	list_append(out, tmp);
+	char *js = calloc(1, VALUE_MEM_SIZE);
+	strcpy(js,props.js);
+	out = add_prop(out, "Gamepad", js);
 
-	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property ) { "", "" };
-	list_append(out, tmp);
+	char *blk = calloc(1, VALUE_MEM_SIZE);
+	strcpy(blk,"");
+	add_prop(out, "", blk);
 
-	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property ) { "Input", "" };
-	list_append(out, tmp);
+	blk = calloc(1, VALUE_MEM_SIZE);
+	strcpy(blk,"");
+	add_prop(out, "Input", blk);
 
-	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property ) { "A Button", boolstr(props.jsstat.btn_a) };
-	list_append(out, tmp);
+	add_prop(out, "A Button", boolstr(props.jsstat.btn_a));
 
-	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property ) { "B Button", boolstr(props.jsstat.btn_b) };
-	list_append(out, tmp);
+	add_prop(out, "B Button", boolstr(props.jsstat.btn_b));
 
-	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property ) { "X Button",
-					props.jsstat.btn_x ? "true" : "false" };
-	list_append(out, tmp);
+	add_prop(out, "X Button", boolstr(props.jsstat.btn_x));
 
-	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property ) { "Y Button",
-					props.jsstat.btn_y ? "true" : "false" };
-	list_append(out, tmp);
+	add_prop(out, "Y Button", boolstr(props.jsstat.btn_y));
 
-	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property ) { "Left Shoulder",
-					props.jsstat.btn_left_shoulder ? "true" : "false" };
-	list_append(out, tmp);
+	add_prop(out, "Left Shoulder", boolstr(props.jsstat.btn_left_shoulder));
 
-	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property ) { "Right Shoulder",
-					props.jsstat.btn_right_shoulder ? "true" : "false" };
-	list_append(out, tmp);
+	add_prop(out, "Right Shoulder", boolstr(props.jsstat.btn_right_shoulder));
 
-	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property ) { "Back Button",
-					props.jsstat.btn_back ? "true" : "false" };
-	list_append(out, tmp);
+	add_prop(out, "Back Button", boolstr(props.jsstat.btn_back));
 
-	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property ) { "Start Button",
-					props.jsstat.btn_start ? "true" : "false" };
-	list_append(out, tmp);
+	add_prop(out, "Start Button", boolstr(props.jsstat.btn_start));
 
-	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property ) { "Guide Button",
-					props.jsstat.btn_guide ? "true" : "false" };
-	list_append(out, tmp);
+	add_prop(out, "Guide Button", boolstr(props.jsstat.btn_guide));
 
-	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property ) { "Left Stick Button",
-					props.jsstat.btn_left_stick ? "true" : "false" };
-	list_append(out, tmp);
+	add_prop(out, "Left Stick Button", boolstr(props.jsstat.btn_left_stick));
 
-	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property ) { "Right Stick Button",
-					props.jsstat.btn_right_stick ? "true" : "false" };
-	list_append(out, tmp);
+	add_prop(out, "Right Stick Button", boolstr(props.jsstat.btn_right_stick));
 
-//
-////	for(uint32_t i = 15; i < 23; i++) {
-////		array[i]->value = malloc(20);
-////	}
-////	array[15]->name="Axis Left X";
-////	sprintf(array[15]->value, "%.3f", props.jsstat.axis_left_x);
-////	array[16]->name="Axis Left Y";
-////	sprintf(array[16]->value, "%.3f", props.jsstat.axis_left_y);
-////	array[17]->name="Axis Left Trigger";
-////	sprintf(array[17]->value, "%.3f", props.jsstat.axis_left_trigger);
-////	array[18]->name="Axis Right X";
-////	sprintf(array[18]->value, "%.3f", props.jsstat.axis_right_x);
-////	array[19]->name="Axis Right Y";
-////	sprintf(array[19]->value, "%.3f", props.jsstat.axis_right_y);
-////	array[20]->name="Axis Right Trigger";
-////	sprintf(array[20]->value, "%.3f", props.jsstat.axis_right_trigger);
-////	array[21]->name="Axis D-Pad X";
-////	sprintf(array[21]->value, "%.3f", props.jsstat.axis_dpad_x);
-////	array[22]->name="Axis D-Pad Y";
-////	sprintf(array[22]->value, "%.3f", props.jsstat.axis_dpad_y);
-//
-//	return array;
+	char *tmp = calloc(1, VALUE_MEM_SIZE);
+	sprintf(tmp, "%.3f", props.jsstat.axis_left_x);
+	add_prop(out,"Axis Left X",tmp);
+
+	tmp = calloc(1, VALUE_MEM_SIZE);
+	sprintf(tmp, "%.3f", props.jsstat.axis_left_y);
+	add_prop(out,"Axis Left Y",tmp);
+
+	tmp = calloc(1, VALUE_MEM_SIZE);
+	sprintf(tmp, "%.3f", props.jsstat.axis_left_trigger);
+	add_prop(out,"Axis Left Trigger",tmp);
+
+	tmp = calloc(1, VALUE_MEM_SIZE);
+	sprintf(tmp, "%.3f", props.jsstat.axis_right_x);
+	add_prop(out,"Axis Right X",tmp);
+
+
+	tmp = calloc(1, VALUE_MEM_SIZE);
+	sprintf(tmp, "%.3f", props.jsstat.axis_right_y);
+	add_prop(out,"Axis Right Y",tmp);
+
+	tmp = calloc(1, VALUE_MEM_SIZE);
+	sprintf(tmp, "%.3f", props.jsstat.axis_right_trigger);
+	add_prop(out,"Axis Right Trigger",tmp);
+
+
+	tmp = calloc(1, VALUE_MEM_SIZE);
+	sprintf(tmp, "%.3f", props.jsstat.axis_dpad_x);
+	add_prop(out,"Axis D-Pad X",tmp);
+
+	//There is a bug somewhere, this stops it
+	tmp = calloc(1, VALUE_MEM_SIZE);
+	float f = props.jsstat.axis_dpad_y;
+	if(f < -1.5 || f > 1.5) {
+		logm("Invalid f %f",f);
+		f = 0.0;
+	}
+	sprintf(tmp, "%.3f", f);
+	add_prop(out,"Axis D-Pad Y",tmp);
 
 	return out;
 }
 
 inline char * boolstr(bool b) {
-	return b ? "true" : "false";
+	char *tmp = calloc(1, VALUE_MEM_SIZE);
+	strcpy(tmp,b ? "true" : "false");
+	return tmp;
 }
 
-void add_prop(lnk_list *list, char *name, char *value) {
-	struct dash_property *tmp
+lnk_list * add_prop(lnk_list *list, char *name, char *value) {
+	struct dash_property *tmp;
 	tmp = malloc(sizeof(struct dash_property));
-		*tmp = (struct dash_property ) { name, value };
-	if(list == NULL)
+	*tmp = (struct dash_property ) { name, value };
+	if (list == NULL)
 		list = list_create(tmp);
 	else
 		list_append(list, tmp);
+	return list;
+}
+
+void freevalstr(void *val) {
+	struct dash_property* ptr = (struct dash_property *)val;
+	free(ptr->value);
 }
