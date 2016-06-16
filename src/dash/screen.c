@@ -11,7 +11,7 @@
 #define PROPS_VAL_MAX_LEN 18
 
 void draw_logo();
-void draw_props(struct dash_property** props, int32_t len);
+void draw_props(lnk_list*);
 
 void screen_init() {
 #ifdef DEBUG
@@ -45,10 +45,10 @@ void screen_close() {
 	endwin();
 }
 
-void screen_render(struct dash_property** props, int32_t len) {
+void screen_render(lnk_list *list) {
 	clear();
 	draw_logo();
-	draw_props(props, len);
+	draw_props(list);
 	refresh();
 }
 
@@ -62,38 +62,35 @@ void draw_logo() {
 	attroff(COLOR_PAIR(1));
 }
 
-void draw_props(struct dash_property** props, int32_t len) {
-	if (props == NULL) {
-		logm("NULL props value");
-		screen_close();
-		exit(EXIT_FAILURE);
-	}
+void draw_props(lnk_list *list) {
+	int32_t len = list_len(list);
 	for (int32_t i = 0; i < len; i++) {
-		if (strlen(props[i]->name) == 0)
+		struct dash_property *dp = list_get(list, i);
+		if (strlen(dp->name) == 0)
 			continue; //Spacer
 
-		if (strlen(props[i]->name) > PROPS_NAME_MAX_LEN) {
+		if (strlen(dp->name) > PROPS_NAME_MAX_LEN) {
 			logm("Name %s larger than limit. Exiting\n",
-					props[i]->name);
+					dp->name);
 			screen_close();
 			exit(EXIT_FAILURE);
 		}
-		if (strlen(props[i]->value) > PROPS_VAL_MAX_LEN) {
+		if (strlen(dp->value) > PROPS_VAL_MAX_LEN) {
 			logm("Value %s larger than limit. Exiting\n",
-					props[i]->value);
+					dp->value);
 			screen_close();
 			exit(EXIT_FAILURE);
 		}
 
-		if (strlen(props[i]->value) == 0) {
+		if (strlen(dp->value) == 0) {
 			//Title, not property
 			attron(A_BOLD|COLOR_PAIR(2));
-			mvprintw(i + PROPS_Y, PROPS_X, props[i]->name);
+			mvprintw(i + PROPS_Y, PROPS_X, dp->name);
 			attroff(A_BOLD|COLOR_PAIR(2));
 		} else {
 			char tmp[PROPS_NAME_MAX_LEN + PROPS_VAL_MAX_LEN + 4];
-			sprintf((char*) tmp, "[%-18s %18s]", props[i]->name,
-					props[i]->value);
+			sprintf((char*) tmp, "[%-18s %18s]", dp->name,
+					dp->value);
 			mvprintw(i + PROPS_Y, PROPS_X, (char*) tmp);
 		}
 	}
