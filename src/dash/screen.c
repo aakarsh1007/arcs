@@ -15,7 +15,7 @@ void draw_props(struct dash_property** props, int32_t len);
 
 void screen_init() {
 #ifdef DEBUG
-	fprintf(stdout, "Initializting screen\n");
+	logm("Initializting screen\n");
 #endif
 	initscr();
 	cbreak();
@@ -23,12 +23,11 @@ void screen_init() {
 	int stat = curs_set(0);
 #ifdef DEBUG
 	if (stat == ERR) {
-		fprintf(stderr,
-				"This terminal does not support setting cursor visibility\n");
+		logm("This terminal does not support setting cursor visibility\n");
 	}
 #endif
 	if (has_colors() == FALSE) {
-		fprintf(stderr, "Color not supported, exiting.\n");
+		logm("Color not supported, exiting.\n");
 		screen_close();
 		exit(EXIT_FAILURE);
 	}
@@ -36,7 +35,7 @@ void screen_init() {
 	init_pair(1, COLOR_BLUE, COLOR_BLACK);
 	init_pair(2, COLOR_RED, COLOR_BLACK);
 #ifdef DEBUG
-	fprintf(stdout, "Screen created\n");
+	logm("Screen created\n");
 #endif
 }
 
@@ -65,7 +64,7 @@ void draw_logo() {
 
 void draw_props(struct dash_property** props, int32_t len) {
 	if (props == NULL) {
-		fprintf(stderr, "NULL props value");
+		logm("NULL props value");
 		screen_close();
 		exit(EXIT_FAILURE);
 	}
@@ -74,13 +73,13 @@ void draw_props(struct dash_property** props, int32_t len) {
 			continue; //Spacer
 
 		if (strlen(props[i]->name) > PROPS_NAME_MAX_LEN) {
-			fprintf(stderr, "Name %s larger than limit. Exiting\n",
+			logm("Name %s larger than limit. Exiting\n",
 					props[i]->name);
 			screen_close();
 			exit(EXIT_FAILURE);
 		}
 		if (strlen(props[i]->value) > PROPS_VAL_MAX_LEN) {
-			fprintf(stderr, "Value %s larger than limit. Exiting\n",
+			logm("Value %s larger than limit. Exiting\n",
 					props[i]->value);
 			screen_close();
 			exit(EXIT_FAILURE);

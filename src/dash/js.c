@@ -62,7 +62,7 @@ void js_update(int16_t value, uint8_t type, uint8_t number) {
 		else if (number == 10)
 			status.btn_right_stick = value;
 		else {
-			fprintf(stderr, "Unknown js value type %d number %d\n",
+			logm("Unknown js value type %d number %d\n",
 					(int32_t) type, (int32_t) number);
 //			screen_close();
 //			exit(EXIT_FAILURE);
@@ -86,15 +86,15 @@ void js_update(int16_t value, uint8_t type, uint8_t number) {
 		else if (number == 7)
 			status.axis_dpad_y = ((float) value) / ((float) SHRT_MIN);
 		else {
-			fprintf(stderr, "Unknown js value type %d number %d\n",
+			logm("Unknown js value type %d number %d\n",
 					(int32_t) type, (int32_t) number);
-//			screen_close();
-//			exit(EXIT_FAILURE);
+			screen_close();
+			exit(EXIT_FAILURE);
 		}
 	} else {
-		fprintf(stderr, "Unknown js input type %d\n", type);
-//		screen_close();
-//		exit(EXIT_FAILURE);
+		logm("Unknown js input type %d\n", type);
+		screen_close();
+		exit(EXIT_FAILURE);
 	}
 
 }
@@ -122,7 +122,7 @@ bool js_connect(char *path, void (*update)(int16_t, uint8_t, uint8_t)) {
 	td->update = update;
 	int status = pthread_create(&jsthread, NULL, loop, (void*) td);
 	if (status) {
-		fprintf(stderr, "Error creating js thread\n");
+		logm("Error creating js thread\n");
 		exit(EXIT_FAILURE);
 	}
 	return true;

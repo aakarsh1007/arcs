@@ -1,0 +1,2 @@
+
+void logm(char *messg, ...);

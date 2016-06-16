@@ -10,3 +10,4 @@ arcs-dash
 # Swap
 *~
 *.swp
+*.log

@@ -8,7 +8,7 @@
 
 int main() {
 #ifdef DEBUG
-	fprintf(stdout, "Started dashboard\n");
+	logm("Started dashboard\n");
 #endif
 	screen_init();
 
@@ -29,7 +29,7 @@ int main() {
 	}
 
 #ifdef DEBUG
-	fprintf(stdout, "Exiting\n");
+	logm("Exiting\n");
 #endif
 	screen_close();
 	return 0;
