@@ -1,2 +1,1 @@
-
 void logm(char *messg, ...);
