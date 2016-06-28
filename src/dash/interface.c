@@ -4,119 +4,72 @@
 #include "interface.h"
 #include <string.h>
 
-#define VALUE_MEM_SIZE 24
+#define STR_BUF_SIZE 32
 
-lnk_list * create_interface(struct properties props);
-lnk_list * add_prop(lnk_list*, char *, char *);
-char * boolstr( bool);
-char* fstring(float);
-void freevalstr(void *);
+void write_interface(struct properties *);
+void add_prop(int, int, char*, char*);
+char * bstr(char *, bool);
+char * fstr(char *, float);
 
-void redraw(struct properties props) {
-	lnk_list * list = create_interface(props);
-	screen_render(list);
-	list_itterate(list, freevalstr);
-	list_itterate(list, free);
-	list_free(list);
+void redraw(struct properties *props) {
+	screen_start_render();
+	write_interface(props);
+	screen_end_render();
 }
 
-lnk_list * create_interface(struct properties props) {
+void write_js(struct properties *props) {
+	char val[STR_BUF_SIZE];
 
-	lnk_list *out = NULL;
+	screen_print_header(0, 0, "Gamepad");
+	add_prop(0, 1, "Gamepad", props->js);
 
-	char *js = calloc(1, VALUE_MEM_SIZE);
-	strcpy(js, props.js);
-	out = add_prop(out, "Gamepad", js);
+	add_prop(0, 3, "A Button", bstr(val, props->jsstat.btn_a));
+	add_prop(0, 4, "B Button", bstr(val, props->jsstat.btn_b));
+	add_prop(0, 5, "X Button", bstr(val, props->jsstat.btn_x));
+	add_prop(0, 6, "Y Button", bstr(val, props->jsstat.btn_y));
+	add_prop(0, 7, "Left Shoulder", bstr(val, props->jsstat.btn_left_shoulder));
+	add_prop(0, 8, "Right Shoulder", bstr(val, props->jsstat.btn_right_shoulder));
+	add_prop(0, 9, "Back Button", bstr(val, props->jsstat.btn_back));
+	add_prop(0, 10, "Start Button", bstr(val, props->jsstat.btn_start));
+	add_prop(0, 11, "Guide Button", bstr(val, props->jsstat.btn_guide));
+	add_prop(0, 12, "Left Stick", bstr(val, props->jsstat.btn_left_stick));
+	add_prop(0, 13, "Right Stick", bstr(val, props->jsstat.btn_right_stick));
 
-	char *blk = calloc(1, VALUE_MEM_SIZE);
-	strcpy(blk, "");
-	add_prop(out, "", blk);
+	add_prop(0, 14, "Left X Axis", fstr(val, props->jsstat.axis_left_x));
+	add_prop(0, 15, "Left Y Axis", fstr(val, props->jsstat.axis_left_y));
+	add_prop(0, 16, "Left Trigger", fstr(val, props->jsstat.axis_left_trigger));
+	add_prop(0, 17, "Right X Axis", fstr(val, props->jsstat.axis_right_x));
+	add_prop(0, 18, "Right Y Axis", fstr(val, props->jsstat.axis_right_y));
+	add_prop(0, 19, "Right Trigger", fstr(val, props->jsstat.axis_right_trigger));
+	add_prop(0, 20, "D-Pad X Axis", fstr(val, props->jsstat.axis_dpad_x));
+	add_prop(0, 21, "D-Pad Y Axis", fstr(val, props->jsstat.axis_dpad_y));
+}
 
-	blk = calloc(1, VALUE_MEM_SIZE);
-	strcpy(blk, "");
-	add_prop(out, "Input", blk);
+void write_interface(struct properties *props) {
+	write_js(props);
+}
 
-	add_prop(out, "A Button", boolstr(props.jsstat.btn_a));
+void add_prop(int x, int y, char *name, char *value) {
+	char total[STR_BUF_SIZE];
 
-	add_prop(out, "B Button", boolstr(props.jsstat.btn_b));
-
-	add_prop(out, "X Button", boolstr(props.jsstat.btn_x));
-
-	add_prop(out, "Y Button", boolstr(props.jsstat.btn_y));
-
-	add_prop(out, "Left Shoulder", boolstr(props.jsstat.btn_left_shoulder));
-
-	add_prop(out, "Right Shoulder", boolstr(props.jsstat.btn_right_shoulder));
-
-	add_prop(out, "Back Button", boolstr(props.jsstat.btn_back));
-
-	add_prop(out, "Start Button", boolstr(props.jsstat.btn_start));
-
-	add_prop(out, "Guide Button", boolstr(props.jsstat.btn_guide));
-
-	add_prop(out, "Left Stick Button", boolstr(props.jsstat.btn_left_stick));
-
-	add_prop(out, "Right Stick Button", boolstr(props.jsstat.btn_right_stick));
-
-	char *tmp = calloc(1, VALUE_MEM_SIZE);
-	sprintf(tmp, "%.3f", props.jsstat.axis_left_x);
-	add_prop(out, "Axis Left X", tmp);
-
-	tmp = calloc(1, VALUE_MEM_SIZE);
-	sprintf(tmp, "%.3f", props.jsstat.axis_left_y);
-	add_prop(out, "Axis Left Y", tmp);
-
-	tmp = calloc(1, VALUE_MEM_SIZE);
-	sprintf(tmp, "%.3f", props.jsstat.axis_left_trigger);
-	add_prop(out, "Axis Left Trigger", tmp);
-
-	tmp = calloc(1, VALUE_MEM_SIZE);
-	sprintf(tmp, "%.3f", props.jsstat.axis_right_x);
-	add_prop(out, "Axis Right X", tmp);
-
-	tmp = calloc(1, VALUE_MEM_SIZE);
-	sprintf(tmp, "%.3f", props.jsstat.axis_right_y);
-	add_prop(out, "Axis Right Y", tmp);
-
-	tmp = calloc(1, VALUE_MEM_SIZE);
-	sprintf(tmp, "%.3f", props.jsstat.axis_right_trigger);
-	add_prop(out, "Axis Right Trigger", tmp);
-
-	tmp = calloc(1, VALUE_MEM_SIZE);
-	sprintf(tmp, "%.3f", props.jsstat.axis_dpad_x);
-	add_prop(out, "Axis D-Pad X", tmp);
-
-	//There is a bug somewhere, this stops it
-	tmp = calloc(1, VALUE_MEM_SIZE);
-	float f = props.jsstat.axis_dpad_y;
-	if (f < -1.5 || f > 1.5) {
-		logm("Invalid f %f", f);
-		f = 0.0;
+#ifdef DEBUG
+	if(strlen(name) > 15) {
+		logm("Name %s is too long!", name);
 	}
-	sprintf(tmp, "%.3f", f);
-	add_prop(out, "Axis D-Pad Y", tmp);
-
-	return out;
+	if(strlen(value) > 10) {
+		logm("Value %s is too long!", value);
+	}
+#endif
+	snprintf(total, STR_BUF_SIZE, "[%-15s %10s]", name, value);
+	screen_print(x, y, total);
 }
 
-inline char * boolstr(bool b) {
-	char *tmp = calloc(1, VALUE_MEM_SIZE);
-	strcpy(tmp, b ? "true" : "false");
-	return tmp;
+char * bstr(char *str, bool val) {
+	strcpy(str, val ? "true" : "false");
+	return str;
 }
 
-lnk_list * add_prop(lnk_list *list, char *name, char *value) {
-	struct dash_property *tmp;
-	tmp = malloc(sizeof(struct dash_property));
-	*tmp = (struct dash_property ) { name, value };
-	if (list == NULL)
-		list = list_create(tmp);
-	else
-		list_append(list, tmp);
-	return list;
-}
-
-void freevalstr(void *val) {
-	struct dash_property* ptr = (struct dash_property *) val;
-	free(ptr->value);
+char * fstr(char *str, float val) {
+	snprintf(str, STR_BUF_SIZE, "%.3f", val);
+	return str;
 }

@@ -1,8 +1,3 @@
-struct dash_property {
-	char* name;
-	char* value;
-};
-
 /**
  * Captures the screen and setup ncurses settings
  */
@@ -13,8 +8,10 @@ void screen_init();
  */
 void screen_close();
 
-/**
- * Renders the screen with the properties.
- * Takes an array of properties and an int32 for length.
- */
-void screen_render(lnk_list*);
+void screen_start_render();
+
+void screen_end_render();
+
+void screen_print(int, int, char*);
+
+void screen_print_header(int, int, char*);

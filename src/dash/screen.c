@@ -10,13 +10,15 @@
 #define PROPS_NAME_MAX_LEN 24
 #define PROPS_VAL_MAX_LEN 24
 
+bool render_mode;
+
 void draw_logo();
-void draw_props(lnk_list*);
 
 void screen_init() {
 #ifdef DEBUG
 	logm("Initializting screen\n");
 #endif
+	render_mode = false;
 	initscr();
 	cbreak();
 	noecho();
@@ -45,10 +47,18 @@ void screen_close() {
 	endwin();
 }
 
-void screen_render(lnk_list *list) {
+void screen_start_render() {
+	if(render_mode)
+		logm("Called screen_start_render during render mode");
+	render_mode = true;
 	clear();
 	draw_logo();
-	draw_props(list);
+}
+
+void screen_end_render() {
+	if(!render_mode)
+		logm("Called screen_end_render when not in render mode");
+	render_mode = false;
 	refresh();
 }
 
@@ -62,33 +72,12 @@ void draw_logo() {
 	attroff(COLOR_PAIR(1));
 }
 
-void draw_props(lnk_list *list) {
-	int32_t len = list_len(list);
-	for (int32_t i = 0; i < len; i++) {
-		struct dash_property *dp = list_get(list, i);
-		if (strlen(dp->name) == 0)
-			continue; //Spacer
+void screen_print(int x, int y, char *str) {
+	mvprintw(y + PROPS_Y, x + PROPS_X, str);
+}
 
-		if (strlen(dp->name) > PROPS_NAME_MAX_LEN) {
-			logm("Name %s larger than limit. Exiting\n", dp->name);
-			screen_close();
-			exit(EXIT_FAILURE);
-		}
-		if (strlen(dp->value) > PROPS_VAL_MAX_LEN) {
-			logm("Value %s larger than limit. Exiting\n", dp->value);
-			screen_close();
-			exit(EXIT_FAILURE);
-		}
-
-		if (strlen(dp->value) == 0) {
-			//Title, not property
-			attron(A_BOLD|COLOR_PAIR(2));
-			mvprintw(i + PROPS_Y, PROPS_X, dp->name);
-			attroff(A_BOLD|COLOR_PAIR(2));
-		} else {
-			char tmp[PROPS_NAME_MAX_LEN + PROPS_VAL_MAX_LEN + 4];
-			sprintf((char*) tmp, "[%-18s %18s]", dp->name, dp->value);
-			mvprintw(i + PROPS_Y, PROPS_X, (char*) tmp);
-		}
-	}
+void screen_print_header(int x, int y, char *str) {
+	attron(COLOR_PAIR(2) | A_BOLD);
+	mvprintw(y + PROPS_Y, x + PROPS_X, str);
+	attroff(COLOR_PAIR(2) | A_BOLD);
 }

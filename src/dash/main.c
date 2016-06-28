@@ -17,19 +17,19 @@ int main() {
 		js_connect(js, js_update);
 	}
 
-	struct properties props;
-	props.js = (js == NULL) ? "Not found" : js;
-	redraw(props);
+	struct properties *props = malloc(sizeof(struct properties));
+	props->js = (js == NULL) ? "Not found" : js;
 
 	while (1) {
 		usleep(10000);
-		props.jsstat = get_js_status();
+		props->jsstat = get_js_status();
 		redraw(props);
 	}
 
 #ifdef DEBUG
 	logm("Exiting\n");
 #endif
+	free(props);
 	screen_close();
 	return 0;
 }

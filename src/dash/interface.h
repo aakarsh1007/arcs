@@ -6,4 +6,4 @@ struct properties {
 /**
  * Redraw interface.
  */
-void redraw(struct properties props);
+void redraw(struct properties *props);
