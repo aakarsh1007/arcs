@@ -1,11 +1,11 @@
-/**
- * Connect to the input file.
- */
-bool js_connect(char *path, void (*update)(int16_t, uint8_t, uint8_t));
-
-void js_update(int16_t value, uint8_t type, uint8_t number);
-
 struct js_status get_js_status();
+
+struct js_event {
+	uint32_t time;
+	int16_t value;
+	uint8_t type;
+	uint8_t number;
+};
 
 struct js_status {
 	bool btn_a;
@@ -29,3 +29,8 @@ struct js_status {
 	float axis_dpad_x;
 	float axis_dpad_y;
 };
+
+void js_update(struct js_event);
+
+
+bool js_connect(char *path, void (*update)(struct js_event));
