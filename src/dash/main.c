@@ -5,6 +5,7 @@
 #include "js.h"
 #include "interface.h"
 #include "keyboard.h"
+#include "remote.h"
 
 struct runtime_args *r_args;
 
@@ -12,8 +13,12 @@ int main(int argc, char **argv) {
 #ifdef DEBUG
 	logm("\nStarted dashboard\n");
 #endif
+
 	r_args = calloc(1, sizeof(struct runtime_args));
 	parse_args(r_args, argc, argv);
+
+	printf("Connection: %d\n", (int) try_connect());
+	start_remote();
 
 	screen_init();
 
@@ -52,6 +57,7 @@ int main(int argc, char **argv) {
 #ifdef DEBUG
 	logm("Exiting\n");
 #endif
+	kill_remote();
 	free(props);
 	free(r_args);
 	screen_close();

@@ -1,2 +1,2 @@
 all:
-	$(CC) $(CFLAGS) main.c -o arcs-remote
+	$(CC) $(CFLAGS) main.c -o arcs
