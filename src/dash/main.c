@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
 
 	char *js = found_js();
 	if (js != NULL) {
-		js_connect(js, js_update);
+		js_connect(js);
 	}
 
 	struct iface_args *props = calloc(1, sizeof(struct iface_args));

@@ -32,7 +32,7 @@ struct js_status {
  * Starts a thread to get joystick input.
  * All data is put into js_status.
  */
-bool js_connect(char *path, void (*update)(struct js_event));
+bool js_connect(char *path);
 
 extern pthread_mutex_t js_lock;
 

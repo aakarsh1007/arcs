@@ -103,12 +103,12 @@ void * loop(void *p) {
 	pthread_exit(NULL);
 }
 
-bool js_connect(char *path, void (*update)(struct js_event)) {
+bool js_connect(char *path) {
 	pthread_mutex_lock(&js_lock);
 
 	struct thread_data* td = malloc(sizeof(struct thread_data));
 	td->path = path;
-	td->update = update;
+	td->update = js_update;
 	int stat = pthread_create(&jsthread, NULL, loop, (void*) td);
 	if (stat) {
 		logm("Error creating js thread\n");
