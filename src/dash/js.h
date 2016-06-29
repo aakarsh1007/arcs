@@ -1,5 +1,3 @@
-struct js_status get_js_status();
-
 struct js_event {
 	uint32_t time;
 	int16_t value;
@@ -30,8 +28,15 @@ struct js_status {
 	float axis_dpad_y;
 };
 
-void js_update(struct js_event);
-
+/*
+ * Starts a thread to get joystick input.
+ * All data is put into js_status.
+ */
 bool js_connect(char *path, void (*update)(struct js_event));
 
 extern pthread_mutex_t js_lock;
+
+/*
+ * Returns a pointer to the js_status struct with all input data.
+ */
+struct js_status get_js_status();

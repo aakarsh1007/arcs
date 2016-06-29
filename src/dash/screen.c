@@ -7,10 +7,10 @@
 #define LOGO_Y 1
 #define PROPS_X 1
 #define PROPS_Y 8
-#define PROPS_NAME_MAX_LEN 24
-#define PROPS_VAL_MAX_LEN 24
 
+#ifdef DEBUG
 bool render_mode;
+#endif
 
 void draw_logo();
 
@@ -49,16 +49,20 @@ void screen_close() {
 }
 
 void screen_start_render() {
+#ifdef DEBUG
 	if(render_mode)
-		logm("Called screen_start_render during render mode");
+		logm("Called screen_start_render during render mode\n");
+#endif
 	render_mode = true;
 	clear();
 	draw_logo();
 }
 
 void screen_end_render() {
+#ifdef DEBUG
 	if(!render_mode)
-		logm("Called screen_end_render when not in render mode");
+		logm("Called screen_end_render when not in render mode\n");
+#endif
 	render_mode = false;
 	refresh();
 }
@@ -74,10 +78,18 @@ void draw_logo() {
 }
 
 void screen_print(int x, int y, char *str) {
+#ifdef DEBUG
+	if(x < 0 || y < 0)
+		logm("Negative location passed to screen_print\n");
+#endif
 	mvprintw(y + PROPS_Y, x + PROPS_X, str);
 }
 
 void screen_print_header(int x, int y, char *str) {
+#ifdef DEBUG
+	if(x < 0 || y < 0)
+		logm("Negative location passed to screen_print_header\n");
+#endif
 	attron(COLOR_PAIR(2) | A_BOLD);
 	mvprintw(y + PROPS_Y, x + PROPS_X, str);
 	attroff(COLOR_PAIR(2) | A_BOLD);

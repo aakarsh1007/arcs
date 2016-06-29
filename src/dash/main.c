@@ -1,5 +1,4 @@
 #include "common.h"
-#include <stdio.h>
 #include <ncurses.h>
 #include "screen.h"
 #include "io.h"
@@ -29,11 +28,19 @@ int main(int argc, char **argv) {
 	props->js = (js == NULL) ? "Not found" : js;
 
 	while (1) {
-		if(props->jsstat.btn_a && props->jsstat.btn_y)
+		if(props->jsstat.btn_guide) {
+#ifdef DEBUG
+			logm("End due to guide button press\n");
+#endif
 			break;
+		}
 		pthread_mutex_lock(&kb_lock);
-		if(get_kb_status().close_request)
+		if(get_kb_status().close_request) {
+#ifdef DEBUG
+			logm("End due to keyboard press\n");
+#endif
 			break;
+		}
 		pthread_mutex_unlock(&kb_lock);
 		usleep(10000);
 		pthread_mutex_lock(&js_lock);

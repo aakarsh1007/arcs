@@ -24,7 +24,7 @@ void parse_args(struct runtime_args *args, int argc, char **argv) {
 			break;
 		case '?':
 		default:
-			fprintf(stderr, "Invalid arguments!");
+			fprintf(stderr, "Invalid arguments!\n");
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -32,11 +32,12 @@ void parse_args(struct runtime_args *args, int argc, char **argv) {
 	args->js_path = jsopt;
 
 	if(optind < argc) {
-		fprintf(stderr, "Invalid arguments!");
+		fprintf(stderr, "Invalid arguments!\n");
 		exit(EXIT_FAILURE);
 	}
-
+#ifdef DEBUG
 	log_args(args);
+#endif
 }
 
 void log_args(struct runtime_args *args) {

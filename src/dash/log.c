@@ -10,7 +10,7 @@ void logm(char *messg) {
 	if (!file)
 		file = fopen(LOGFILE, "wt");
 	if (!file) {
-		printf("Can't open log!");
+		printf("Can't open log!\n");
 		return;
 	}
 

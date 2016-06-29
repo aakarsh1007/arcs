@@ -11,8 +11,6 @@ pthread_t kbthread;
 volatile struct kb_status kb_stat = {false};
 
 void * kb_loop(void *td) {
-	//Note: See header for all keys (line 1413 latest version)
-
 	int c;
 	while(1) {
 		c = getch();
@@ -37,15 +35,14 @@ struct kb_status get_kb_status() {
 	return kb_stat;
 }	
 
-bool kb_connect() {
+void kb_connect() {
 	pthread_mutex_lock(&kb_lock);
 
 	int stat = pthread_create(&kbthread, NULL, kb_loop, NULL);
 	if(stat) {
-		logm("Error creating kb thread");
+		logm("Error creating kb thread\n");
 		exit(EXIT_FAILURE);
 	}
 
 	pthread_mutex_unlock(&kb_lock);
-	return true;
 }
