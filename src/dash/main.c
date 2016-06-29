@@ -17,13 +17,17 @@ int main() {
 		js_connect(js, js_update);
 	}
 
-	struct properties *props = malloc(sizeof(struct properties));
+	struct properties *props = calloc(1, sizeof(struct properties));
 	props->js = (js == NULL) ? "Not found" : js;
 
 	while (1) {
+		if(props->jsstat.btn_a && props->jsstat.btn_y)
+			break;
 		usleep(10000);
+		pthread_mutex_lock(&js_lock);
 		props->jsstat = get_js_status();
 		redraw(props);
+		pthread_mutex_unlock(&js_lock);
 	}
 
 #ifdef DEBUG

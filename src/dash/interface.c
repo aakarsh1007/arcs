@@ -4,7 +4,7 @@
 #include "interface.h"
 #include <string.h>
 
-#define STR_BUF_SIZE 32
+#define STR_BUF_SIZE 48 //Needs to be enough for js path
 
 void write_interface(struct properties *);
 void add_prop(int, int, char*, char*);
@@ -53,14 +53,14 @@ void add_prop(int x, int y, char *name, char *value) {
 	char total[STR_BUF_SIZE];
 
 #ifdef DEBUG
-	if(strlen(name) > 15) {
-		logm("Name %s is too long!", name);
+	if(strlen(name) > 16) {
+		logm("Name is too long!");
 	}
-	if(strlen(value) > 10) {
-		logm("Value %s is too long!", value);
+	if(strlen(value) > 16) {
+		logm("Value is too long!");
 	}
 #endif
-	snprintf(total, STR_BUF_SIZE, "[%-15s %10s]", name, value);
+	snprintf(total, STR_BUF_SIZE, "[%-16s %16s]", name, value);
 	screen_print(x, y, total);
 }
 

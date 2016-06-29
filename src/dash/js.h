@@ -34,3 +34,5 @@ void js_update(struct js_event);
 
 
 bool js_connect(char *path, void (*update)(struct js_event));
+
+extern pthread_mutex_t js_lock;

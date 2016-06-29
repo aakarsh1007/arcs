@@ -1,6 +1,5 @@
 #include "common.h"
 #include "js.h"
-#include <pthread.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -9,6 +8,7 @@
 #include "screen.h"
 
 pthread_t jsthread;
+pthread_mutex_t js_lock = PTHREAD_MUTEX_INITIALIZER;
 
 volatile struct js_status status = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
@@ -108,14 +108,18 @@ void * loop(void *p) {
 }
 
 bool js_connect(char *path, void (*update)(struct js_event)) {
+	pthread_mutex_lock(&js_lock);
+
 	struct thread_data* td = malloc(sizeof(struct thread_data));
 	td->path = path;
 	td->update = update;
-	int status = pthread_create(&jsthread, NULL, loop, (void*) td);
-	if (status) {
+	int stat = pthread_create(&jsthread, NULL, loop, (void*) td);
+	if (stat) {
 		logm("Error creating js thread\n");
 		exit(EXIT_FAILURE);
 	}
+
+	pthread_mutex_unlock(&js_lock);
 	return true;
 }
 
