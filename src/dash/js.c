@@ -25,6 +25,7 @@ void js_update(struct js_event event) {
 
 	//NOTE: https://www.kernel.org/doc/Documentation/input/joystick-api.txt
 
+	pthread_mutex_lock(&js_lock);
 	if (event.type > 2) { //Initial sequence, ignore for now
 		event.type -= 0x80;
 	}
@@ -82,6 +83,7 @@ void js_update(struct js_event event) {
 		screen_close();
 		exit(EXIT_FAILURE);
 	}
+	pthread_mutex_unlock(&js_lock);
 }
 
 void * loop(void *p) {
