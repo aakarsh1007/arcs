@@ -54,10 +54,7 @@ void js_update(struct js_event event) {
 		else if (event.number == 10)
 			status.btn_right_stick = event.value;
 		else {
-			logm("Unknown js event.value type %d event.number %d\n",
-					(int32_t) event.type, (int32_t) event.number);
-//			screen_close();
-//			exit(EXIT_FAILURE);
+			logm("Unknown event\n");
 		}
 	} else if (event.type == 2) {
 		//Axis
@@ -78,13 +75,10 @@ void js_update(struct js_event event) {
 		else if (event.number == 7)
 			status.axis_dpad_y = ((float) event.value) / ((float) SHRT_MIN);
 		else {
-			logm("Unknown js event.value type %d event.number %d\n",
-					(int32_t) event.type, (int32_t) event.number);
-			screen_close();
-			exit(EXIT_FAILURE);
+			logm("Unknown event\n");
 		}
 	} else {
-		logm("Unknown js input type %d\n", event.type);
+		logm("Unknown js input type\n");
 		screen_close();
 		exit(EXIT_FAILURE);
 	}

@@ -1,1 +1,1 @@
-void logm(char *messg, ...);
+void logm(char *messg);
