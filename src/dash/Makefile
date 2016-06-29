@@ -1,4 +1,4 @@
-OBJS = main.o screen.o io.o interface.o js.o log.o linklist.o args.o
+OBJS = main.o screen.o io.o interface.o js.o log.o linklist.o args.o keyboard.o
 
 all: common.h $(OBJS)
 	gcc $(CFLAGS) $(OBJS) -lncurses -lpthread -o ../../$(OUT)

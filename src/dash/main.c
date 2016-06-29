@@ -5,6 +5,7 @@
 #include "io.h"
 #include "js.h"
 #include "interface.h"
+#include "keyboard.h"
 
 struct runtime_args *r_args;
 
@@ -17,6 +18,8 @@ int main(int argc, char **argv) {
 
 	screen_init();
 
+	kb_connect();
+
 	char *js = found_js();
 	if (js != NULL) {
 		js_connect(js, js_update);
@@ -28,6 +31,10 @@ int main(int argc, char **argv) {
 	while (1) {
 		if(props->jsstat.btn_a && props->jsstat.btn_y)
 			break;
+		pthread_mutex_lock(&kb_lock);
+		if(get_kb_status().close_request)
+			break;
+		pthread_mutex_unlock(&kb_lock);
 		usleep(10000);
 		pthread_mutex_lock(&js_lock);
 		props->jsstat = get_js_status();

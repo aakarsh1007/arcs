@@ -20,7 +20,8 @@ void screen_init() {
 #endif
 	render_mode = false;
 	initscr();
-	cbreak();
+	raw();
+	keypad(stdscr, TRUE);
 	noecho();
 	int stat = curs_set(0);
 #ifdef DEBUG
