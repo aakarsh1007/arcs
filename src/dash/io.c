@@ -1,13 +1,15 @@
 #include "common.h"
 #include "io.h"
 
-#define JS_NAME "/dev/input/js0"
+#define JS_DEFAULT "/dev/input/js0"
 
 char * found_js() {
+	char *fpath = r_args->js_path == NULL ? JS_DEFAULT : r_args->js_path;
+
 	FILE * f;
-	if ((f = fopen(JS_NAME, "r"))) {
+	if ((f = fopen(fpath, "r"))) {
 		fclose(f);
-		return JS_NAME;
+		return fpath;
 	}
 	return NULL;
 }

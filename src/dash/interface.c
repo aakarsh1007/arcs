@@ -6,18 +6,18 @@
 
 #define STR_BUF_SIZE 48 //Needs to be enough for js path
 
-void write_interface(struct properties *);
+void write_interface(struct iface_args *);
 void add_prop(int, int, char*, char*);
 char * bstr(char *, bool);
 char * fstr(char *, float);
 
-void redraw(struct properties *props) {
+void redraw(struct iface_args *props) {
 	screen_start_render();
 	write_interface(props);
 	screen_end_render();
 }
 
-void write_js(struct properties *props) {
+void write_js(struct iface_args *props) {
 	char val[STR_BUF_SIZE];
 
 	screen_print_header(0, 0, "Gamepad");
@@ -45,7 +45,7 @@ void write_js(struct properties *props) {
 	add_prop(0, 21, "D-Pad Y Axis", fstr(val, props->jsstat.axis_dpad_y));
 }
 
-void write_interface(struct properties *props) {
+void write_interface(struct iface_args *props) {
 	write_js(props);
 }
 

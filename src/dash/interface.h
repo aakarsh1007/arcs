@@ -1,4 +1,4 @@
-struct properties {
+struct iface_args {
 	char *js;
 	struct js_status jsstat;
 };
@@ -6,4 +6,4 @@ struct properties {
 /**
  * Redraw interface.
  */
-void redraw(struct properties *props);
+void redraw(struct iface_args *props);

@@ -6,10 +6,15 @@
 #include "js.h"
 #include "interface.h"
 
-int main() {
+struct runtime_args *r_args;
+
+int main(int argc, char **argv) {
 #ifdef DEBUG
-	logm("Started dashboard\n");
+	logm("\nStarted dashboard\n");
 #endif
+	r_args = calloc(1, sizeof(struct runtime_args));
+	parse_args(r_args, argc, argv);
+
 	screen_init();
 
 	char *js = found_js();
@@ -17,7 +22,7 @@ int main() {
 		js_connect(js, js_update);
 	}
 
-	struct properties *props = calloc(1, sizeof(struct properties));
+	struct iface_args *props = calloc(1, sizeof(struct iface_args));
 	props->js = (js == NULL) ? "Not found" : js;
 
 	while (1) {
@@ -34,6 +39,7 @@ int main() {
 	logm("Exiting\n");
 #endif
 	free(props);
+	free(r_args);
 	screen_close();
 	return 0;
 }
