@@ -27,7 +27,12 @@ struct __attribute__((__packed__)) lidar_packet {
 };
 
 void each(struct lidar_packet p) {
-	printf("Start: %d, Index: %d\n", (int32_t) p.start, ((int32_t) p.index) - 0xa0);
+	uint16_t rpm = 0;
+	rpm += p.speed_h;
+	rpm = rpm << 8;
+	rpm += p.speed_l;
+	rpm /= 64;
+	printf("Start: %d, Index: %d, RPM/64: %d\n", (int32_t) p.start, ((int32_t) p.index) - 0xa0, (int32_t) rpm);
 }
 
 int main(int argc, char **argv) {
