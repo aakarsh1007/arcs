@@ -1,4 +1,4 @@
-all: joystick.out
+all: joystick.out lidar.out
 
 .PHONY: clean
 clean:
