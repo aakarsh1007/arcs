@@ -1,3 +1,5 @@
+#ifndef REMOTE_H
+#define REMOTE_H
 /*
  * Tries to ssh into the remote.
  * Returns true if successful, false if not.
@@ -13,3 +15,4 @@ void start_remote();
  * Kills the ssh session, therefore killing the remote process.
  */
 void kill_remote();
+#endif
