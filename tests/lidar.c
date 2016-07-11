@@ -35,6 +35,7 @@ void each(struct lidar_packet p) {
 	printf("Start: %d, Index: %d, RPM/64: %d\n", (int32_t) p.start, ((int32_t) p.index) - 0xa0, (int32_t) rpm);
 }
 
+//Either compile on system with lidar or use saved file
 int main(int argc, char **argv) {
 
 	if(sizeof(struct lidar_packet) != 22)
