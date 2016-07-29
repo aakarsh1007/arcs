@@ -10,9 +10,9 @@
 struct runtime_args *r_args;
 
 int main(int argc, char **argv) {
-#ifdef DEBUG
-	logm("\nStarted dashboard\n");
-#endif
+	slog_init("dash", "slog.cfg", 400, 500, 1);
+	slog(400, SLOG_INFO, "Test");
+
 
 	r_args = calloc(1, sizeof(struct runtime_args));
 	parse_args(r_args, argc, argv);
@@ -20,12 +20,11 @@ int main(int argc, char **argv) {
 	bool valid_remote = false;
 
 	valid_remote = try_connect();
-#ifdef DEBUG
+
 	if(valid_remote)
-		logm("Connected");
+		slog(400, SLOG_INFO, "Connected to remote");
 	else
-		logm("Not connected");
-#endif
+		slog(300, SLOG_WARN, "Failed to connect to remote");
 
 	screen_init();
 
@@ -41,16 +40,12 @@ int main(int argc, char **argv) {
 
 	while (1) {
 		if(props->jsstat.btn_guide) {
-#ifdef DEBUG
-			logm("End due to guide button press\n");
-#endif
+			slog(400, SLOG_INFO, "Quit due to guide button press");
 			break;
 		}
 		pthread_mutex_lock(&kb_lock);
 		if(get_kb_status()->close_request) {
-#ifdef DEBUG
-			logm("End due to keyboard press\n");
-#endif
+			slog(400, SLOG_INFO, "Quit due to keyboard press");
 			break;
 		}
 		if(get_kb_status()->refresh_net) {
@@ -68,10 +63,8 @@ int main(int argc, char **argv) {
 		redraw(props);
 		pthread_mutex_unlock(&js_lock);
 	}
+	slog(400, SLOG_INFO, "Exiting");
 
-#ifdef DEBUG
-	logm("Exiting\n");
-#endif
 	kill_remote();
 	free(props);
 	free(r_args);

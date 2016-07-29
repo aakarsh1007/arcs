@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <pthread.h>
-#include "log.h"
+#include <slog.h>
 #include "args.h"
 
 #endif

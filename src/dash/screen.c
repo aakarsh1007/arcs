@@ -15,9 +15,7 @@ bool render_mode;
 void draw_logo();
 
 void screen_init() {
-#ifdef DEBUG
-	logm("Initializting screen\n");
-#endif
+	slog(400, SLOG_INFO, "Initializing screen");
 	render_mode = false;
 	initscr();
 	raw();
@@ -26,20 +24,18 @@ void screen_init() {
 	int stat = curs_set(0);
 #ifdef DEBUG
 	if (stat == ERR) {
-		logm("This terminal does not support setting cursor visibility\n");
+		slog(200, SLOG_ERROR, "This terminal does not appear to support ncurses control");
 	}
 #endif
 	if (has_colors() == FALSE) {
-		logm("Color not supported, exiting.\n");
+		slog(100, SLOG_FATAL, "Terminal does not support color");
 		screen_close();
 		exit(EXIT_FAILURE);
 	}
 	start_color();
 	init_pair(1, COLOR_BLUE, COLOR_BLACK);
 	init_pair(2, COLOR_RED, COLOR_BLACK);
-#ifdef DEBUG
-	logm("Screen created\n");
-#endif
+	slog(400, SLOG_INFO, "Screen created");
 }
 
 void screen_close() {
@@ -51,7 +47,7 @@ void screen_close() {
 void screen_start_render() {
 #ifdef DEBUG
 	if(render_mode)
-		logm("Called screen_start_render during render mode\n");
+		slog(300, SLOG_WARN, "Called %s dring render mode", __FUNCTION__);
 #endif
 	render_mode = true;
 	clear();
@@ -61,7 +57,7 @@ void screen_start_render() {
 void screen_end_render() {
 #ifdef DEBUG
 	if(!render_mode)
-		logm("Called screen_end_render when not in render mode\n");
+		slog(300, SLOG_WARN, "Call %s outside of render mode", __FUNCTION__);
 #endif
 	render_mode = false;
 	refresh();
@@ -80,7 +76,7 @@ void draw_logo() {
 void screen_print(int x, int y, char *str) {
 #ifdef DEBUG
 	if(x < 0 || y < 0)
-		logm("Negative location passed to screen_print\n");
+		slog(300, SLOG_WARN, "Negative location passed to %s", __FUNCTION__);
 #endif
 	mvprintw(y + PROPS_Y, x + PROPS_X, str);
 }
@@ -88,7 +84,7 @@ void screen_print(int x, int y, char *str) {
 void screen_print_header(int x, int y, char *str) {
 #ifdef DEBUG
 	if(x < 0 || y < 0)
-		logm("Negative location passed to screen_print_header\n");
+		slog(300, SLOG_WARN, "Negative location passed to %s", __FUNCTION__);
 #endif
 	attron(COLOR_PAIR(2) | A_BOLD);
 	mvprintw(y + PROPS_Y, x + PROPS_X, str);

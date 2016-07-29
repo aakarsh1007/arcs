@@ -36,7 +36,7 @@ bool try_connect() {
 		char arg[ADDR_BUFSIZE];
 #ifdef DEBUG
 		if(strlen(addr) + strlen(user) + 2 > ADDR_BUFSIZE) {
-			logm("Too large ssh address\n");
+			slog(100, SLOG_FATAL, "Strings too large in %s", __FUNCTION__);
 			exit(EXIT_FAILURE);
 		}
 #endif
@@ -72,7 +72,7 @@ void start_remote() {
 		char arg[ADDR_BUFSIZE];
 #ifdef DEBUG
 		if(strlen(addr) + strlen(user) + 2 > ADDR_BUFSIZE) {
-			logm("Too large ssh address\n");
+			slog(100, SLOG_FATAL, "Strings too large in %s", __FUNCTION__);
 			exit(EXIT_FAILURE);
 		}
 #endif

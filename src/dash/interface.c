@@ -57,10 +57,10 @@ void add_prop(int x, int y, char *name, char *value) {
 
 #ifdef DEBUG
 	if(strlen(name) > 16) {
-		logm("Name is too long!\n");
+		slog(300, SLOG_WARN, "Name larger than buffer");
 	}
 	if(strlen(value) > 16) {
-		logm("Value is too long!\n");
+		slog(300, SLOG_WARN, "Value larger than buffer");
 	}
 #endif
 	snprintf(total, STR_BUF_SIZE, "[%-16s %16s]", name, value);

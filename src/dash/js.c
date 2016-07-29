@@ -55,7 +55,7 @@ void js_update(struct js_event event) {
 		else if (event.number == 10)
 			js_status.btn_right_stick = event.value;
 		else {
-			logm("Unknown event\n");
+			slog(200, SLOG_ERROR, "Unknown js type 1 event %d", event.number);
 		}
 	} else if (event.type == 2) {
 		//Axis
@@ -76,10 +76,10 @@ void js_update(struct js_event event) {
 		else if (event.number == 7)
 			js_status.axis_dpad_y = ((float) event.value) / ((float) SHRT_MIN);
 		else {
-			logm("Unknown event\n");
+			slog(200, SLOG_ERROR, "Unknown js type 2 event %d", event.number);
 		}
 	} else {
-		logm("Unknown js input type\n");
+		slog(100, SLOG_FATAL, "Unknown event type %d", event.type);
 		screen_close();
 		exit(EXIT_FAILURE);
 	}
@@ -111,7 +111,7 @@ bool js_connect(char *path) {
 	td->update = js_update;
 	int stat = pthread_create(&jsthread, NULL, loop, (void*) td);
 	if (stat) {
-		logm("Error creating js thread\n");
+		slog(100, SLOG_FATAL, "Can't create js thread");
 		exit(EXIT_FAILURE);
 	}
 

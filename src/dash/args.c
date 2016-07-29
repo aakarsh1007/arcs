@@ -72,27 +72,22 @@ void free_args(struct runtime_args *args) {
 		free(args->r_exec);
 }
 
+void logarg(char *key, char *val) {
+	slog(400, SLOG_INFO, "[%s = %s]", key, val);
+}
+
 void log_args(struct runtime_args *args) {
-	logm("Runtime args: ");
+	slog(400, SLOG_INFO, "Runtime args printing");
 	if(args->js_path != NULL) {
-		logm("[js-path=");
-		logm(args->js_path);
-		logm("]");
+		logarg("js_path", args->js_path);
 	}
 	if(args->r_addr != NULL) {
-		logm("[r_addr=");
-		logm(args->r_addr);
-		logm("]");
+		logarg("r_addr", args->r_addr);
 	}
 	if(args->r_user != NULL) {
-		logm("[r_user=");
-		logm(args->r_user);
-		logm("]");
+		logarg("r_user", args->r_user);
 	}
 	if(args->r_exec != NULL) {
-		logm("[r_exec=");
-		logm(args->r_exec);
-		logm("]");
+		logarg("r_exec", args->r_exec);
 	}
-	logm("\n");
 }

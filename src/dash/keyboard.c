@@ -23,7 +23,7 @@ void * kb_loop(void *td) {
 				pthread_mutex_unlock(&kb_lock);
 				break;
 			case 'r':
-				logm("Refreshing networking\n");
+				slog(400, SLOG_INFO, "Restarting networking");
 				pthread_mutex_lock(&kb_lock);
 				kb_stat.refresh_net = true;
 				pthread_mutex_unlock(&kb_lock);
@@ -45,7 +45,7 @@ void kb_connect() {
 
 	int stat = pthread_create(&kbthread, NULL, kb_loop, NULL);
 	if(stat) {
-		logm("Error creating kb thread\n");
+		slog(100, SLOG_FATAL, "Can't create kb thread");
 		exit(EXIT_FAILURE);
 	}
 
