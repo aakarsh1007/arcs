@@ -11,7 +11,7 @@ struct runtime_args *r_args;
 
 int main(int argc, char **argv) {
 	slog_init("dash", "slog.cfg", 400, 500, 1);
-	slog(400, SLOG_INFO, "Test");
+	slog(400, SLOG_INFO, "Starting arcs-dash");
 
 
 	r_args = calloc(1, sizeof(struct runtime_args));
