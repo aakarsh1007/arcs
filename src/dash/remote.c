@@ -4,6 +4,7 @@
 #include <string.h>
 #define _POSIX_SOURCE
 #include <signal.h>
+#include "remote.h"
 
 #define DEFAULT_ADDR "192.168.1.44"
 #define DEFAULT_USER "pi"
@@ -11,6 +12,15 @@
 #define DEFAULT_EXE "/var/arcs/arcs"
 
 pid_t pid = 0;
+
+volatile struct rm_status rm_status = {false};
+pthread_t rmthread;
+pthread_mutex_t rm_lock = PTHREAD_MUTEX_INITIALIZER;
+
+void *rm_loop(void *p) {
+	slog(400, SLOG_INFO, "Remote thread");
+	pthread_exit(NULL);
+}
 
 char *addrstr() {
 	return r_args->r_addr == NULL ? DEFAULT_ADDR : r_args->r_addr;
@@ -87,4 +97,16 @@ void kill_remote() {
 	if(pid != 0)
 		kill(pid, SIGKILL);
 	pid = 0;
+}
+
+void rm_connect() {
+	pthread_mutex_lock(&rm_lock);
+
+	int stat = pthread_create(&rmthread, NULL, rm_loop, NULL);
+	if(stat) {
+		slog(100, SLOG_FATAL, "Can't create rm thread");
+		exit(EXIT_FAILURE);
+	}
+
+	pthread_mutex_unlock(&rm_lock);
 }

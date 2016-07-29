@@ -18,4 +18,12 @@ void kill_remote();
 
 char *addrstr();
 char *userstr();
+
+struct rm_status {
+	bool connected;
+};
+
+extern pthread_mutex_t rm_lock;
+
+void rm_connect();
 #endif
