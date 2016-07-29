@@ -19,13 +19,7 @@ int main(int argc, char **argv) {
 	
 	bool valid_remote = false;
 
-	valid_remote = try_connect();
 	rm_connect();
-
-	if(valid_remote)
-		slog(400, SLOG_INFO, "Connected to remote");
-	else
-		slog(300, SLOG_WARN, "Failed to connect to remote");
 
 	screen_init();
 

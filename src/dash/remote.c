@@ -18,7 +18,20 @@ pthread_t rmthread;
 pthread_mutex_t rm_lock = PTHREAD_MUTEX_INITIALIZER;
 
 void *rm_loop(void *p) {
-	slog(400, SLOG_INFO, "Remote thread");
+	slog(400, SLOG_INFO, "Attempting to connect to remote");
+	bool con = try_connect();
+
+	if(!con)
+		slog(300, SLOG_WARN, "Failed to connect to remote");
+	else
+		slog(400, SLOG_INFO, "Connected to remote");
+
+	rm_status.connected = con;
+
+	if(con) {
+		start_remote();
+	}
+
 	pthread_exit(NULL);
 }
 
