@@ -2,6 +2,8 @@
  * This header is included by every source file.
  */
 
+#ifndef COMMON_H
+#define COMMON_H
 /*
  * This sets how many messages should be logged and how many tests should be included.
  */
@@ -14,3 +16,5 @@
 #include <pthread.h>
 #include "log.h"
 #include "args.h"
+
+#endif

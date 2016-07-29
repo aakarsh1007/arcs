@@ -1,3 +1,5 @@
+#ifndef REMOTE_H
+#define REMOTE_H
 /*
  * Tries to ssh into the remote.
  * Returns true if successful, false if not.
@@ -16,3 +18,4 @@ void kill_remote();
 
 char *addrstr();
 char *userstr();
+#endif

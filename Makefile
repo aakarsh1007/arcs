@@ -5,6 +5,7 @@ CFLAGS =  -Wall --std=c11 -O3 -ftrapv
 RM = rm -f
 OUT = arcs-dash
 CC = gcc
+TESTDIR = tests
 
 REMOTE_USER = pi
 REMOTE_IP = 192.168.1.44
@@ -12,12 +13,15 @@ REMOTE_DIR = /var/arcs
 REMOTE_CFLAGS = -Wall -std=c11 -O3 -ftrapv
 REMOTE_CC = gcc
 
+.PHONY: all
 all: local-all remote-all
 	@echo "Done all"
 
+.PHONY: clean
 clean: local-clean remote-clean
 	@echo "Done clean"
 
+.PHONY: local-all
 local-all:
 	$(MAKE) -C $(SRCDIR)/$(DASHDIR) "CFLAGS=$(CFLAGS)" "RM=$(RM)" "OUT=$(OUT)" "CC=$(CC)" 
 	@echo "Done local-all"
@@ -39,3 +43,12 @@ remote-all:
 remote-clean:
 	ssh $(REMOTE_USER)@$(REMOTE_IP) "rm -rf $(REMOTE_DIR)/*; exit"
 	@echo "Done remote-clean"
+
+
+.PHONY: tests
+tests:
+	$(MAKE) -C $(TESTDIR)
+
+.PHONY: tests-clean
+tests-clean:
+	$(MAKE) -C $(TESTDIR) clean
