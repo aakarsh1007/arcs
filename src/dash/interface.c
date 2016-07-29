@@ -43,6 +43,9 @@ void write_js(struct iface_args *props) {
 	add_prop(0, 19, "Right Trigger", fstr(val, props->jsstat.axis_right_trigger));
 	add_prop(0, 20, "D-Pad X Axis", fstr(val, props->jsstat.axis_dpad_x));
 	add_prop(0, 21, "D-Pad Y Axis", fstr(val, props->jsstat.axis_dpad_y));
+
+	screen_print_header(0, 23, "Network");
+	add_prop(0, 24, "Remote", props->remote);
 }
 
 void write_interface(struct iface_args *props) {

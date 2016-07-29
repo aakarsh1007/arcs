@@ -1,5 +1,6 @@
 struct kb_status {
 	bool close_request;
+	bool refresh_net;
 };
 
 /*
@@ -11,6 +12,6 @@ void kb_connect();
 /*
  * Returns the kb_status.
  */
-struct kb_status get_kb_status();
+struct kb_status * get_kb_status();
 
 extern pthread_mutex_t kb_lock;

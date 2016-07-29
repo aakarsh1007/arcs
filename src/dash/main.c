@@ -16,9 +16,16 @@ int main(int argc, char **argv) {
 
 	r_args = calloc(1, sizeof(struct runtime_args));
 	parse_args(r_args, argc, argv);
+	
+	bool valid_remote = false;
 
-	printf("Connection: %d\n", (int) try_connect());
-	start_remote();
+	valid_remote = try_connect();
+#ifdef DEBUG
+	if(valid_remote)
+		logm("Connected");
+	else
+		logm("Not connected");
+#endif
 
 	screen_init();
 
@@ -40,16 +47,24 @@ int main(int argc, char **argv) {
 			break;
 		}
 		pthread_mutex_lock(&kb_lock);
-		if(get_kb_status().close_request) {
+		if(get_kb_status()->close_request) {
 #ifdef DEBUG
 			logm("End due to keyboard press\n");
 #endif
 			break;
 		}
+		if(get_kb_status()->refresh_net) {
+			kill_remote();
+			valid_remote = try_connect();
+			if(valid_remote)
+				start_remote();
+			get_kb_status()->refresh_net = false;
+		}
 		pthread_mutex_unlock(&kb_lock);
 		usleep(10000);
 		pthread_mutex_lock(&js_lock);
 		props->jsstat = get_js_status();
+		props->remote = valid_remote ? addrstr() : "Invalid Addr";
 		redraw(props);
 		pthread_mutex_unlock(&js_lock);
 	}

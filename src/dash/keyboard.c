@@ -8,19 +8,24 @@
 pthread_mutex_t kb_lock = PTHREAD_MUTEX_INITIALIZER;
 pthread_t kbthread;
 
-volatile struct kb_status kb_stat = {false};
+struct kb_status kb_stat = {false, false};
 
 void * kb_loop(void *td) {
 	int c;
 	while(1) {
 		c = getch();
-
 		switch(c) {
 			case CLOSE_CODE:
 			case DONE_CODE:
 			case 'q':
 				pthread_mutex_lock(&kb_lock);
 				kb_stat.close_request = true;
+				pthread_mutex_unlock(&kb_lock);
+				break;
+			case 'r':
+				logm("Refreshing networking\n");
+				pthread_mutex_lock(&kb_lock);
+				kb_stat.refresh_net = true;
 				pthread_mutex_unlock(&kb_lock);
 				break;
 			default:
@@ -31,8 +36,8 @@ void * kb_loop(void *td) {
 	pthread_exit(NULL);
 }
 
-struct kb_status get_kb_status() {
-	return kb_stat;
+struct kb_status * get_kb_status() {
+	return &kb_stat;
 }	
 
 void kb_connect() {

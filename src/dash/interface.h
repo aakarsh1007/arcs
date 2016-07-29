@@ -1,6 +1,7 @@
 struct iface_args {
 	char *js;
 	struct js_status jsstat;
+	char *remote;
 };
 
 /*

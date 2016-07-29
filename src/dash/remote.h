@@ -13,3 +13,6 @@ void start_remote();
  * Kills the ssh session, therefore killing the remote process.
  */
 void kill_remote();
+
+char *addrstr();
+char *userstr();
