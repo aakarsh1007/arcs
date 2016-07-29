@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
 		usleep(10000);
 		pthread_mutex_lock(&js_lock);
 		props->jsstat = get_js_status();
-		props->remote = valid_remote ? addrstr() : "Invalid Addr";
+		props->remote = valid_remote ? addrstr() : "No Connection";
 		redraw(props);
 		pthread_mutex_unlock(&js_lock);
 	}
