@@ -53,7 +53,7 @@ int main(int argc, char **argv) {
 		pthread_mutex_unlock(&kb_lock);
 		usleep(10000);
 		pthread_mutex_lock(&js_lock);
-		props->jsstat = get_js_status();
+		props->jsstat = get_js_state();
 		props->remote = valid_remote ? addrstr() : "No Connection";
 		redraw(props);
 		pthread_mutex_unlock(&js_lock);

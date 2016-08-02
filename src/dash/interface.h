@@ -2,7 +2,7 @@
 #define INTERFACE_H
 struct iface_args {
 	char *js;
-	struct js_status jsstat;
+	struct js_state jsstat;
 	char *remote;
 };
 

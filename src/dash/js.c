@@ -10,15 +10,15 @@
 pthread_t jsthread;
 pthread_mutex_t js_lock = PTHREAD_MUTEX_INITIALIZER;
 
-volatile struct js_status js_status = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+volatile struct js_state js_state = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 struct thread_data {
 	char *path;
 	void (*update)(struct js_event);
 };
 
-struct js_status get_js_status() {
-	return js_status;
+struct js_state get_js_state() {
+	return js_state;
 }
 
 void js_update(struct js_event event) {
@@ -33,48 +33,48 @@ void js_update(struct js_event event) {
 	if (event.type == 1) {
 		//Button
 		if (event.number == 0)
-			js_status.btn_a = event.value;
+			js_state.btn_a = event.value;
 		else if (event.number == 1)
-			js_status.btn_b = event.value;
+			js_state.btn_b = event.value;
 		else if (event.number == 2)
-			js_status.btn_x = event.value;
+			js_state.btn_x = event.value;
 		else if (event.number == 3)
-			js_status.btn_y = event.value;
+			js_state.btn_y = event.value;
 		else if (event.number == 4)
-			js_status.btn_left_shoulder = event.value;
+			js_state.btn_left_shoulder = event.value;
 		else if (event.number == 5)
-			js_status.btn_right_shoulder = event.value;
+			js_state.btn_right_shoulder = event.value;
 		else if (event.number == 6)
-			js_status.btn_back = event.value;
+			js_state.btn_back = event.value;
 		else if (event.number == 7)
-			js_status.btn_start = event.value;
+			js_state.btn_start = event.value;
 		else if (event.number == 8)
-			js_status.btn_guide = event.value;
+			js_state.btn_guide = event.value;
 		else if (event.number == 9)
-			js_status.btn_left_stick = event.value;
+			js_state.btn_left_stick = event.value;
 		else if (event.number == 10)
-			js_status.btn_right_stick = event.value;
+			js_state.btn_right_stick = event.value;
 		else {
 			slog(200, SLOG_ERROR, "Unknown js type 1 event %d", event.number);
 		}
 	} else if (event.type == 2) {
 		//Axis
 		if (event.number == 0)
-			js_status.axis_left_x = -((float) event.value) / ((float) SHRT_MIN);
+			js_state.axis_left_x = -((float) event.value) / ((float) SHRT_MIN);
 		else if (event.number == 1)
-			js_status.axis_left_y = ((float) event.value) / ((float) SHRT_MIN);
+			js_state.axis_left_y = ((float) event.value) / ((float) SHRT_MIN);
 		else if (event.number == 2)
-			js_status.axis_left_trigger = ((float) event.value) / ((float) SHRT_MIN);
+			js_state.axis_left_trigger = ((float) event.value) / ((float) SHRT_MIN);
 		else if (event.number == 3)
-			js_status.axis_right_x = -((float) event.value) / ((float) SHRT_MIN);
+			js_state.axis_right_x = -((float) event.value) / ((float) SHRT_MIN);
 		else if (event.number == 4)
-			js_status.axis_right_y = ((float) event.value) / ((float) SHRT_MIN);
+			js_state.axis_right_y = ((float) event.value) / ((float) SHRT_MIN);
 		else if (event.number == 5)
-			js_status.axis_right_trigger = ((float) event.value) / ((float) SHRT_MIN);
+			js_state.axis_right_trigger = ((float) event.value) / ((float) SHRT_MIN);
 		else if (event.number == 6)
-			js_status.axis_dpad_x = -((float) event.value) / ((float) SHRT_MIN);
+			js_state.axis_dpad_x = -((float) event.value) / ((float) SHRT_MIN);
 		else if (event.number == 7)
-			js_status.axis_dpad_y = ((float) event.value) / ((float) SHRT_MIN);
+			js_state.axis_dpad_y = ((float) event.value) / ((float) SHRT_MIN);
 		else {
 			slog(200, SLOG_ERROR, "Unknown js type 2 event %d", event.number);
 		}
