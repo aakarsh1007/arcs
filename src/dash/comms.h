@@ -1,10 +1,10 @@
 #ifndef COMMS_H
 #define COMMS_H
 
-void connect();
+void connect_comms();
 
-void disconnect();
+void disconnect_comms();
 
-void update(struct js_state);
+void update_comms(struct js_state);
 
 #endif
