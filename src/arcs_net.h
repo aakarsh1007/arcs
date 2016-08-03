@@ -6,7 +6,8 @@
 #ifndef ARCS_NET_H
 #define ARCS_NET_H
 
- #define PORT 30000
+// DTR is dash to remote
+#define DTR_PORT 30000
 
 struct js_state {
 	bool btn_a;
