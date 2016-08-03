@@ -14,23 +14,23 @@ REMOTE_CFLAGS = -Wall -std=c11 -O3 -ftrapv
 REMOTE_CC = gcc
 
 .PHONY: all
-all: local-all remote-all
+all: dash-all remote-all
 	@echo "Done all"
 
 .PHONY: clean
-clean: local-clean remote-clean
+clean: dash-clean remote-clean
 	@echo "Done clean"
 
-.PHONY: local-all
-local-all:
+.PHONY: dash-all
+dash-all:
 	$(MAKE) -C $(SRCDIR)/$(DASHDIR) "CFLAGS=$(CFLAGS)" "RM=$(RM)" "OUT=$(OUT)" "CC=$(CC)" 
-	@echo "Done local-all"
+	@echo "Done dash-all"
 
 .PHONY: clean
-local-clean:
+dash-clean:
 	$(MAKE) -C $(SRCDIR)/$(DASHDIR) clean
 	$(RM) $(OUT)
-	@echo "Done local-clean"
+	@echo "Done dash-clean"
 
 .PHONY: remote-all
 remote-all:
