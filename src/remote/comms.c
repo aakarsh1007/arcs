@@ -7,10 +7,13 @@
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
+#include <pthread.h>
 
 int sockfd;
 struct sockaddr_in serv_sock;
 struct pack last_pack;
+pthread_mutex_t comm_lock = PTHREAD_MUTEX_INITIALIZER;
+pthread_t commthread;
 
 void init_comms() {
 	if ((sockfd=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1) {
@@ -39,5 +42,26 @@ void update_comms() {
 	if(recvfrom(sockfd, &p, sizeof(struct pack), 0, &client, sizeof(struct sockaddr_in)) == -1) {
 		//slog(300, SLOG_WARN, "recvfrom fail: %s", strerror(errno));
 	}
+
+	if(p.pack_num <= last_pack.pack_num) {
+		return;
+	}
+
 	last_pack = p;
+}
+
+void *comm_loop(void *td) {
+	while(1)
+		update_comms();
+}
+
+void start_comms() {
+	pthread_mutex_lock(&comm_lock);
+
+	int stat = pthread_create(&commthread, NULL, comm_loop, NULL);
+	if(stat) {
+		slog(100, SLOG_FATAL, "Can't create comm thread");
+	}
+
+	pthread_mutex_unlock(&comm_lock);
 }
