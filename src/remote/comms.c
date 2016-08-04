@@ -10,6 +10,7 @@
 
 int sockfd;
 struct sockaddr_in serv_sock;
+struct pack last_pack;
 
 void init_comms() {
 	if ((sockfd=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1) {
@@ -38,6 +39,5 @@ void update_comms() {
 	if(recvfrom(sockfd, &p, sizeof(struct pack), 0, &client, sizeof(struct sockaddr_in)) == -1) {
 		//slog(300, SLOG_WARN, "recvfrom fail: %s", strerror(errno));
 	}
-	slog(400, SLOG_INFO, "Recived %d", p.js_state.btn_a);
-
+	last_pack = p;
 }

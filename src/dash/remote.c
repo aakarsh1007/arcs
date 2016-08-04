@@ -7,7 +7,7 @@
 #include "remote.h"
 
 #define DEFAULT_ADDR "192.168.1.44"
-#define DEFAULT_USER "pi"
+#define DEFAULT_USER "root"
 #define ADDR_BUFSIZE 32
 #define DEFAULT_EXE "cd /var/arcs; /var/arcs/arcs > tmp.log"
 

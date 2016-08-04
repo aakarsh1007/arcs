@@ -9,4 +9,6 @@ void close_comms();
 
 void update_comms();
 
+extern struct pack last_pack;
+
 #endif

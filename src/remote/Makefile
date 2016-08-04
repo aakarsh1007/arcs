@@ -1,7 +1,7 @@
-OBJS=main.o comms.o
+OBJS=main.o comms.o drivetrain.o
 
 all: $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -lslog -lpthread -o arcs
+	$(CC) $(CFLAGS) $(OBJS) -lslog -lpthread -lwiringPi -o arcs
 
 .PHONY: clean
 clean:
