@@ -2,6 +2,7 @@
 #include "comms.h"
 #include <wiringPi.h>
 #include "drivetrain.h"
+#include <math.h>
 
 int main() {
 	slog_init("arcs", "slog.cfg", 400, 500, 1);
@@ -15,10 +16,14 @@ int main() {
 	start_comms();
 
 	while(1) {
-		float rt = (-last_pack.js_state.axis_right_trigger + 1.0) /2.0;
-		float lt = (-last_pack.js_state.axis_left_trigger + 1.0) /2.0;
-		float ljx = -last_pack.js_state.axis_left_x;
-		drive_update(rt-lt-ljx, rt-lt+ljx);
+		float l, r;
+		float fw = last_pack.js_state.axis_right_y;
+		float dir = last_pack.js_state.axis_left_x;
+
+		l = fw + dir;
+		r = fw - dir;
+
+		drive_update(l, r);
 	}
 
 	slog(400, SLOG_INFO, "Exiting");
