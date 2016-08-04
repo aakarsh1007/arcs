@@ -8,6 +8,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include "remote.h"
+#include <errno.h>
 
 struct sockaddr_in remote_sock;
 int sockfd;
@@ -19,14 +20,11 @@ void connect_comms() {
 		exit(EXIT_FAILURE);
 	}
 
-	memset((char *) &remote_sock, 0, sizeof(struct sockaddr_in));
+	memset((char *) &remote_sock, 0, sizeof(remote_sock));
 	remote_sock.sin_family = AF_INET;
 	remote_sock.sin_port = htons(DTR_PORT);
 
-	if(inet_aton(addrstr(), &remote_sock) == 0) {
-		slog(100, SLOG_FATAL, "Error setting remote IP");
-		exit(EXIT_FAILURE);
-	}
+	remote_sock.sin_addr.s_addr = inet_addr(addrstr());
 }
 
 void disconnect_comms() {
@@ -37,7 +35,7 @@ void update_comms(struct js_state js_state) {
 	struct pack p;
 	p.pack_num = pack_num++;
 	p.js_state = js_state;
-	if(sendto(sockfd, &p, sizeof(struct pack), 0, &remote_sock, sizeof(struct sockaddr_in)) == -1) {
-		slog(300, SLOG_ERROR, "Failed to send packet %d", p.pack_num);
+	if(sendto(sockfd, &p, sizeof(struct pack), 0, &remote_sock, sizeof(remote_sock)) == -1) {
+		slog(300, SLOG_ERROR, "Failed to send packet %d to %s: %s", p.pack_num, addrstr(), strerror(errno));
 	}
 }

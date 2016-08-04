@@ -25,5 +25,4 @@ struct rm_status {
 
 extern pthread_mutex_t rm_lock;
 
-void rm_connect();
 #endif

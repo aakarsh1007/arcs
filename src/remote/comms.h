@@ -7,4 +7,6 @@ void init_comms();
 
 void close_comms();
 
+void update_comms();
+
 #endif

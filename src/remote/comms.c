@@ -6,6 +6,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <string.h>
+#include <errno.h>
 
 int sockfd;
 struct sockaddr_in serv_sock;
@@ -25,10 +26,18 @@ void init_comms() {
 		slog(100, SLOG_FATAL, "Failed to bind server socket to port %d", DTR_PORT);
 		exit(EXIT_FAILURE);
 	}
-
-	slog(400, SLOG_INFO, "Created server socket");
 }
 
 void close_comms() {
 	close(sockfd);
+}
+
+void update_comms() {
+	struct pack p;
+	struct sockaddr_in client;
+	if(recvfrom(sockfd, &p, sizeof(struct pack), 0, &client, sizeof(struct sockaddr_in)) == -1) {
+		//slog(300, SLOG_WARN, "recvfrom fail: %s", strerror(errno));
+	}
+	slog(400, SLOG_INFO, "Recived %d", p.js_state.btn_a);
+
 }

@@ -20,8 +20,6 @@ int main(int argc, char **argv) {
 	
 	bool valid_remote = false;
 
-	rm_connect();
-
 	screen_init();
 
 	kb_connect();

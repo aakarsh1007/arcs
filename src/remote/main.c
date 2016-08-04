@@ -7,6 +7,9 @@ int main() {
 
 	init_comms();
 
+	while(1)
+		update_comms();
+
 	slog(400, SLOG_INFO, "Exiting");
 	close_comms();
 }
