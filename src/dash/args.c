@@ -77,7 +77,6 @@ void logarg(char *key, char *val) {
 }
 
 void log_args(struct runtime_args *args) {
-	slog(400, SLOG_INFO, "Runtime args printing");
 	if(args->js_path != NULL) {
 		logarg("js_path", args->js_path);
 	}

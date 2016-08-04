@@ -15,7 +15,6 @@ bool render_mode;
 void draw_logo();
 
 void screen_init() {
-	slog(400, SLOG_INFO, "Initializing screen");
 	render_mode = false;
 	initscr();
 	raw();
@@ -35,7 +34,6 @@ void screen_init() {
 	start_color();
 	init_pair(1, COLOR_BLUE, COLOR_BLACK);
 	init_pair(2, COLOR_RED, COLOR_BLACK);
-	slog(400, SLOG_INFO, "Screen created");
 }
 
 void screen_close() {
