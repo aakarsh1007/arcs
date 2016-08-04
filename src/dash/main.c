@@ -6,6 +6,7 @@
 #include "interface.h"
 #include "keyboard.h"
 #include "remote.h"
+#include "comms.h"
 
 struct runtime_args *r_args;
 
@@ -24,6 +25,8 @@ int main(int argc, char **argv) {
 	screen_init();
 
 	kb_connect();
+
+	connect_comms();
 
 	char *js = found_js();
 	if (js != NULL) {
@@ -56,6 +59,10 @@ int main(int argc, char **argv) {
 		props->jsstat = get_js_state();
 		props->remote = valid_remote ? addrstr() : "No Connection";
 		redraw(props);
+
+		if(valid_remote)
+			update_comms(get_js_state());
+
 		pthread_mutex_unlock(&js_lock);
 	}
 	slog(400, SLOG_INFO, "Exiting");
@@ -64,5 +71,6 @@ int main(int argc, char **argv) {
 	free(props);
 	free(r_args);
 	screen_close();
+	disconnect_comms();
 	return 0;
 }
