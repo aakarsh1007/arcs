@@ -12,7 +12,6 @@ int main() {
 
 	drive_init();
 
-	init_comms();
 	start_comms();
 
 	while(1) {

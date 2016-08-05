@@ -15,6 +15,9 @@ struct pack last_pack;
 pthread_mutex_t comm_lock = PTHREAD_MUTEX_INITIALIZER;
 pthread_t commthread;
 
+void init_comms();
+void *comm_loop(void *);
+
 void init_comms() {
 	if ((sockfd=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1) {
 		slog(100, SLOG_FATAL, "Failed to create server socket");
@@ -56,6 +59,7 @@ void *comm_loop(void *td) {
 }
 
 void start_comms() {
+	init_comms();
 	pthread_mutex_lock(&comm_lock);
 
 	int stat = pthread_create(&commthread, NULL, comm_loop, NULL);
