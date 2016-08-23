@@ -1,6 +1,7 @@
 /*
  * Robot map for input and output devices.
  */
+
 #ifndef MAP_H
 #define MAP_H
 

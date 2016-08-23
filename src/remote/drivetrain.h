@@ -1,3 +1,6 @@
+/*
+ * Drive train subsystem controler.
+ */
 
 #ifndef DRIVETRAIN_H
 #define DRIVETRAIN_H
