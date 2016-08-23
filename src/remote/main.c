@@ -22,7 +22,17 @@ int main() {
 		l = fw + dir;
 		r = fw - dir;
 
+		float max = fabs(l) > fabs(r) ? l : r;
+		max = fabs(max);
+
+		if(max > 1) {
+			float div = 1 / max;
+			l *= div;
+			r *= div;
+		}
+
 		drive_update(l, r);
+//		slog(400, SLOG_INFO, "%f L, %f R", l , r);
 	}
 
 	slog(400, SLOG_INFO, "Exiting");

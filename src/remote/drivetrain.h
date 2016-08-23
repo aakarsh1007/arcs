@@ -1,3 +1,4 @@
+
 #ifndef DRIVETRAIN_H
 #define DRIVETRAIN_H
 
@@ -14,6 +15,7 @@ void drive_update(float left, float right);
 
 /*
  * Sets GPIO outputs to 0 to stop motors.
+ */
 void drive_close();
 
 #endif

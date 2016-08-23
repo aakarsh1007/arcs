@@ -54,8 +54,9 @@ void update_comms() {
 }
 
 void *comm_loop(void *td) {
-	while(1)
+	while(1) {
 		update_comms();
+	}
 }
 
 void start_comms() {
