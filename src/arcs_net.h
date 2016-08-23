@@ -12,6 +12,8 @@
 #define MODE_DISABLED 0
 #define MODE_TELEOP 1
 
+typedef uint8_t comm_mode_t;
+
 struct js_state {
 	bool btn_a;
 	bool btn_b;
@@ -42,7 +44,7 @@ struct pack {
 	 */
 	uint64_t pack_num;
 
-	uint8_t mode;
+	comm_mode_t mode;
 	struct js_state js_state;
 };
 
