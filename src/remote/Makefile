@@ -1,4 +1,4 @@
-OBJS=main.o comms.o drivetrain.o teleop.o
+OBJS=main.o comms.o drivetrain.o teleop.o disabled.o
 
 all: $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -lslog -lpthread -lwiringPi -o arcs
