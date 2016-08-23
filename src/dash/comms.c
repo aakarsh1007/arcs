@@ -31,10 +31,11 @@ void disconnect_comms() {
 	close(sockfd);
 }
 
-void update_comms(struct js_state js_state) {
+void update_comms(struct js_state js_state, comm_mode_t mode) {
 	struct pack p;
 	p.pack_num = pack_num++;
 	p.js_state = js_state;
+	p.mode = mode;
 	if(sendto(sockfd, &p, sizeof(struct pack), 0, &remote_sock, sizeof(remote_sock)) == -1) {
 		slog(300, SLOG_ERROR, "Failed to send packet %d to %s: %s", p.pack_num, addrstr(), strerror(errno));
 	}

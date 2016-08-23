@@ -7,16 +7,20 @@
 #include "keyboard.h"
 #include "remote.h"
 #include "comms.h"
+#include "arcs_net.h"
 
 struct runtime_args *r_args;
+
+comm_mode_t mode;
 
 int main(int argc, char **argv) {
 	slog_init("dash", "slog.cfg", 400, 500, 1);
 	slog(400, SLOG_INFO, "Starting arcs-dash");
 
-
 	r_args = calloc(1, sizeof(struct runtime_args));
 	parse_args(r_args, argc, argv);
+
+	mode = MODE_TELEOP;
 	
 	bool valid_remote = false;
 
@@ -59,7 +63,7 @@ int main(int argc, char **argv) {
 		redraw(props);
 
 		if(valid_remote)
-			update_comms(get_js_state());
+			update_comms(get_js_state(), mode);
 
 		pthread_mutex_unlock(&js_lock);
 	}
