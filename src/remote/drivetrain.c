@@ -3,6 +3,8 @@
 #include <wiringPi.h>
 #include <math.h>
 
+bool closed;
+
 inline float clamp(float f) {
 	if(f > 1.0) return 1.0;
 	if(f < -1.0) return -1.0;
@@ -22,9 +24,14 @@ void drive_init() {
 	digitalWrite(RIGHT_DIR, LOW);
 	pinMode(LEFT_DIR, OUTPUT);
 	digitalWrite(LEFT_DIR, LOW);
+
+	closed = false;
 }
 
 void drive_update(float left, float right) {
+	if(closed)
+		return;
+
 	left = clamp(left);
 	right = clamp(right);
 
@@ -45,4 +52,7 @@ void drive_update(float left, float right) {
 void drive_close() {
 	pwmWrite(RIGHT_MOTOR, 0);
 	pwmWrite(LEFT_MOTOR, 0);
+	digitalWrite(RIGHT_DIR, LOW);
+	digitalWrite(LEFT_DIR, LOW);
+	closed = true;
 }
