@@ -5,11 +5,11 @@
 
 uint32_t started_flags;
 
-bool has_started(comms_mode_t val) {
+bool has_started(comm_mode_t val) {
 	return (started_flags >> val) & 0x1;
 }
 
-void start_mode(comms_mode_t val) {
+void start_mode(comm_mode_t val) {
 	started_flags = started_flags | (0x1 << val);
 }
 
@@ -20,7 +20,7 @@ void command_init() {
 
 
 void command_update() {
-	comms_mode_t mode = last_pack.mode;
+	comm_mode_t mode = last_pack.mode;
 	if(has_started(mode)) {
 		slog(400, SLOG_INFO, "Starting mode %d", (int) mode);
 		if(mode == MODE_DISABLED)
@@ -32,7 +32,7 @@ void command_update() {
 		}
 	}
 
-	if(mode == MODE_DISABLED) {
+	if(mode == MODE_DISABLED)
 		disabled_update();
 	if(mode == MODE_TELEOP)
 		teleop_update();
