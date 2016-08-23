@@ -2,6 +2,7 @@
 #include "comms.h"
 #include <wiringPi.h>
 #include "drivetrain.h"
+#include "command_manager.h"
 
 int main() {
 	slog_init("arcs", "slog.cfg", 400, 500, 1);
@@ -13,10 +14,10 @@ int main() {
 
 	start_comms();
 
-	teleop_init();
+	command_init();
 
 	while(1) {
-		teleop_update();
+		command_update();
 	}
 
 	slog(400, SLOG_INFO, "Exiting");

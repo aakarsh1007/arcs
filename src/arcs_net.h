@@ -9,6 +9,9 @@
 // DTR is dash to remote
 #define DTR_PORT 30000
 
+#define MODE_DISABLED 0
+#define MODE_TELEOP 1
+
 struct js_state {
 	bool btn_a;
 	bool btn_b;
@@ -38,6 +41,8 @@ struct pack {
 	 * If pack_num is not the largest recived packet it is droped.
 	 */
 	uint64_t pack_num;
+
+	uint8_t mode;
 	struct js_state js_state;
 };
 
