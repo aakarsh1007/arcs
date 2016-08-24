@@ -9,21 +9,19 @@ void teleop_init() {
 }
 
 void teleop_update() {
-	float l, r;
-	float fw = last_pack.js_state.axis_right_y;
-	float dir = last_pack.js_state.axis_left_x;
+	// http://home.kendra.com/mauser/Joystick.html
+	
+	float y = last_pack.js_state.axis_right_y * 100;
+	float x = last_pack.js_state.axis_left_x  * 100;
 
-	l = fw + dir;
-	r = fw - dir;
-
-	float max = fabs(l) > fabs(r) ? l : r;
-	max = fabs(max);
-
-	if(max > 1) {
-		float div = 1 / max;
-		l *= div;
-		r *= div;
-	}
+	x = -x;
+	float v = (100-abs(x)) * (y/100) + y;
+	float w = (100-abs(y)) * (x/100) + x;
+	float r = (v + w) /2;
+	float l = (v - w) /2;
+	
+	r /= 100;
+	l /= 100;
 
 	drive_update(l, r);
 }
