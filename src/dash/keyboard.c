@@ -30,8 +30,10 @@ void * kb_loop(void *td) {
 				pthread_mutex_unlock(&kb_lock);
 				break;
 			case 0x20:
-				mode = 0;
+				// Space bar stop
+				mode = MODE_DISABLED;
 			default:
+				// ASCII numbers to mode
 				if(c >= 0x30 && c <= 0x39)
 					mode = c - 0x30;
 				break;

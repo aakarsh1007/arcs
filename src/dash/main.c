@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
 	r_args = calloc(1, sizeof(struct runtime_args));
 	parse_args(r_args, argc, argv);
 
-	mode = MODE_TELEOP;
+	mode = MODE_DISABLED;
 	
 	bool valid_remote = false;
 
