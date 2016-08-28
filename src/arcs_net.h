@@ -12,6 +12,9 @@
 #define MODE_DISABLED 0
 #define MODE_TELEOP 1
 
+#define MODE_DISABLED_STR "DISABLED"
+#define MODE_TELEOP_STR "TELEOP"
+
 typedef uint8_t comm_mode_t;
 
 struct js_state {

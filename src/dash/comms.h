@@ -1,6 +1,8 @@
 #ifndef COMMS_H
 #define COMMS_H
 
+#include "arcs_net.h"
+
 /*
  * Sets up socket to remote.
  */

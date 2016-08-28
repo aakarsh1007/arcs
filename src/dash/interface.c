@@ -1,6 +1,7 @@
 #include "common.h"
 #include "screen.h"
 #include "js.h"
+#include "arcs_net.h"
 #include "interface.h"
 #include <string.h>
 
@@ -10,6 +11,7 @@ void write_interface(struct iface_args *);
 void add_prop(int, int, char*, char*);
 char * bstr(char *, bool);
 char * fstr(char *, float);
+char * modestr(comm_mode_t mode);
 
 void redraw(struct iface_args *props) {
 	screen_start_render();
@@ -46,6 +48,20 @@ void write_js(struct iface_args *props) {
 
 	screen_print_header(0, 23, "Network");
 	add_prop(0, 24, "Remote", props->remote);
+
+	screen_print_header(0, 26, "Mode");
+	add_prop(0, 27, "Run Mode", modestr(props->mode));
+}
+
+char * modestr(comm_mode_t mode) {
+	switch(mode) {
+	case MODE_DISABLED:
+		return MODE_DISABLED_STR;
+	case MODE_TELEOP:
+		return MODE_TELEOP_STR;
+	default:
+		return "UNKNOWN";
+	}
 }
 
 void write_interface(struct iface_args *props) {

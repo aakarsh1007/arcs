@@ -1,6 +1,7 @@
 #include "common.h"
 #include "keyboard.h"
 #include <ncurses.h>
+#include "comms.h"
 
 #define CLOSE_CODE 3
 #define DONE_CODE 4
@@ -28,7 +29,11 @@ void * kb_loop(void *td) {
 				kb_stat.refresh_net = true;
 				pthread_mutex_unlock(&kb_lock);
 				break;
+			case 0x20:
+				mode = 0;
 			default:
+				if(c >= 0x30 && c <= 0x39)
+					mode = c - 0x30;
 				break;
 		}
 	}

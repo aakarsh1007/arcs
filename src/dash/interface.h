@@ -1,10 +1,13 @@
 #ifndef INTERFACE_H
 #define INTERFACE_H
 
+#include "arcs_net.h"
+
 struct iface_args {
 	char *js;
 	struct js_state jsstat;
 	char *remote;
+	comm_mode_t mode;
 };
 
 /*

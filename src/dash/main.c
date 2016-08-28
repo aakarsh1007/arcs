@@ -60,6 +60,7 @@ int main(int argc, char **argv) {
 		pthread_mutex_lock(&js_lock);
 		props->jsstat = get_js_state();
 		props->remote = valid_remote ? addrstr() : "No Connection";
+		props->mode = mode;
 		redraw(props);
 
 		if(valid_remote)
