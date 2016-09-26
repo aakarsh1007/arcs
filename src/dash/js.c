@@ -17,6 +17,12 @@ struct thread_data {
 	void (*update)(struct js_event);
 };
 
+float deadzone(float in) {
+	if(fabs(in) <= .09)
+		return 0;
+	return in;
+}
+
 struct js_state get_js_state() {
 	return js_state;
 }
@@ -60,17 +66,17 @@ void js_update(struct js_event event) {
 	} else if (event.type == 2) {
 		//Axis
 		if (event.number == 0)
-			js_state.axis_left_x = -((float) event.value) / ((float) SHRT_MIN);
+			js_state.axis_left_x = deadzone(-((float) event.value) / ((float) SHRT_MIN));
 		else if (event.number == 1)
-			js_state.axis_left_y = ((float) event.value) / ((float) SHRT_MIN);
+			js_state.axis_left_y = deadzone(((float) event.value) / ((float) SHRT_MIN));
 		else if (event.number == 2)
-			js_state.axis_left_trigger = ((float) event.value) / ((float) SHRT_MIN);
+			js_state.axis_left_trigger = deadzone(((float) event.value) / ((float) SHRT_MIN));
 		else if (event.number == 3)
-			js_state.axis_right_x = -((float) event.value) / ((float) SHRT_MIN);
+			js_state.axis_right_x = deadzone(-((float) event.value) / ((float) SHRT_MIN));
 		else if (event.number == 4)
-			js_state.axis_right_y = ((float) event.value) / ((float) SHRT_MIN);
+			js_state.axis_right_y = deadzone(((float) event.value) / ((float) SHRT_MIN));
 		else if (event.number == 5)
-			js_state.axis_right_trigger = ((float) event.value) / ((float) SHRT_MIN);
+			js_state.axis_right_trigger = deadzone(((float) event.value) / ((float) SHRT_MIN));
 		else if (event.number == 6)
 			js_state.axis_dpad_x = -((float) event.value) / ((float) SHRT_MIN);
 		else if (event.number == 7)
