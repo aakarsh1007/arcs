@@ -2,6 +2,7 @@
 #include "comms.h"
 #include "teleop.h"
 #include "disabled.h"
+#include "tank.h"
 
 uint32_t started_flags;
 
@@ -27,6 +28,8 @@ void command_update() {
 			disabled_init();
 		else if(mode == MODE_TELEOP)
 			teleop_init();
+		else if(mode == MODE_TANK)
+			tank_init();
 		else {
 			slog(300, SLOG_ERROR, "Trying to start non existant mode %d", (int) mode);
 		}
@@ -36,5 +39,7 @@ void command_update() {
 		disabled_update();
 	if(mode == MODE_TELEOP)
 		teleop_update();
+	if(mode == MODE_TANK)
+		tank_update();
 }
 

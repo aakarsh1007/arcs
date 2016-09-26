@@ -59,6 +59,8 @@ char * modestr(comm_mode_t mode) {
 		return MODE_DISABLED_STR;
 	case MODE_TELEOP:
 		return MODE_TELEOP_STR;
+	case MODE_TANK:
+		return MODE_TANK_STR;
 	default:
 		return "UNKNOWN";
 	}

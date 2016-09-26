@@ -11,9 +11,11 @@
 
 #define MODE_DISABLED 0
 #define MODE_TELEOP 1
+#define MODE_TANK 2
 
 #define MODE_DISABLED_STR "DISABLED"
 #define MODE_TELEOP_STR "TELEOP"
+#define MODE_TANK_STR "TANK"
 
 typedef uint8_t comm_mode_t;
 
