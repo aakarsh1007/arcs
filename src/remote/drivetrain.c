@@ -43,7 +43,7 @@ void drive_update(float left, float right) {
 	if(LEFT_INVERT)
 		li = !li;
 
-	slog(400, SLOG_INFO, "%f, %f", left, right);
+//	slog(400, SLOG_INFO, "%f, %f", left, right);
 
 	digitalWrite(RIGHT_DIR, ri ? HIGH : LOW);
 	digitalWrite(LEFT_DIR, li ? HIGH : LOW);
