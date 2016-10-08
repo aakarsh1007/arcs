@@ -11,7 +11,8 @@
 pthread_t jsthread;
 pthread_mutex_t js_lock = PTHREAD_MUTEX_INITIALIZER;
 
-volatile struct js_state js_state = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+volatile struct js_state js_state = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+									 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 struct thread_data {
 	char *path;
@@ -19,7 +20,7 @@ struct thread_data {
 };
 
 float deadzone(float in) {
-	if(fabs(in) <= .09)
+	if (fabs(in) <= .09)
 		return 0;
 	return in;
 }
@@ -30,15 +31,15 @@ struct js_state get_js_state() {
 
 void js_update(struct js_event event) {
 
-	//NOTE: https://www.kernel.org/doc/Documentation/input/joystick-api.txt
+	// NOTE: https://www.kernel.org/doc/Documentation/input/joystick-api.txt
 
 	pthread_mutex_lock(&js_lock);
-	if (event.type > 2) { //Initial sequence, ignore for now
+	if (event.type > 2) { // Initial sequence, ignore for now
 		event.type -= 0x80;
 	}
 
 	if (event.type == 1) {
-		//Button
+		// Button
 		if (event.number == 0)
 			js_state.btn_a = event.value;
 		else if (event.number == 1)
@@ -65,23 +66,29 @@ void js_update(struct js_event event) {
 			slog(200, SLOG_ERROR, "Unknown js type 1 event %d", event.number);
 		}
 	} else if (event.type == 2) {
-		//Axis
+		// Axis
 		if (event.number == 0)
-			js_state.axis_left_x = deadzone(-((float) event.value) / ((float) SHRT_MIN));
+			js_state.axis_left_x =
+				deadzone(-((float)event.value) / ((float)SHRT_MIN));
 		else if (event.number == 1)
-			js_state.axis_left_y = deadzone(((float) event.value) / ((float) SHRT_MIN));
+			js_state.axis_left_y =
+				deadzone(((float)event.value) / ((float)SHRT_MIN));
 		else if (event.number == 2)
-			js_state.axis_left_trigger = deadzone(((float) event.value) / ((float) SHRT_MIN));
+			js_state.axis_left_trigger =
+				deadzone(((float)event.value) / ((float)SHRT_MIN));
 		else if (event.number == 3)
-			js_state.axis_right_x = deadzone(-((float) event.value) / ((float) SHRT_MIN));
+			js_state.axis_right_x =
+				deadzone(-((float)event.value) / ((float)SHRT_MIN));
 		else if (event.number == 4)
-			js_state.axis_right_y = deadzone(((float) event.value) / ((float) SHRT_MIN));
+			js_state.axis_right_y =
+				deadzone(((float)event.value) / ((float)SHRT_MIN));
 		else if (event.number == 5)
-			js_state.axis_right_trigger = deadzone(((float) event.value) / ((float) SHRT_MIN));
+			js_state.axis_right_trigger =
+				deadzone(((float)event.value) / ((float)SHRT_MIN));
 		else if (event.number == 6)
-			js_state.axis_dpad_x = -((float) event.value) / ((float) SHRT_MIN);
+			js_state.axis_dpad_x = -((float)event.value) / ((float)SHRT_MIN);
 		else if (event.number == 7)
-			js_state.axis_dpad_y = ((float) event.value) / ((float) SHRT_MIN);
+			js_state.axis_dpad_y = ((float)event.value) / ((float)SHRT_MIN);
 		else {
 			slog(200, SLOG_ERROR, "Unknown js type 2 event %d", event.number);
 		}
@@ -93,14 +100,14 @@ void js_update(struct js_event event) {
 	pthread_mutex_unlock(&js_lock);
 }
 
-void * js_loop(void *p) {
-	struct thread_data* td = (struct thread_data*) p;
+void *js_loop(void *p) {
+	struct thread_data *td = (struct thread_data *)p;
 	int fd = open(td->path, O_RDONLY);
 	while (true) {
 		struct js_event event;
 		int ret = read(fd, &event, sizeof(event));
 		if (ret == 0) {
-			//Nothing
+			// Nothing
 		}
 		td->update(event);
 	}
@@ -113,10 +120,10 @@ void * js_loop(void *p) {
 bool js_connect(char *path) {
 	pthread_mutex_lock(&js_lock);
 
-	struct thread_data* td = malloc(sizeof(struct thread_data));
+	struct thread_data *td = malloc(sizeof(struct thread_data));
 	td->path = path;
 	td->update = js_update;
-	int stat = pthread_create(&jsthread, NULL, js_loop, (void*) td);
+	int stat = pthread_create(&jsthread, NULL, js_loop, (void *)td);
 	if (stat) {
 		slog(100, SLOG_FATAL, "Can't create js thread");
 		exit(EXIT_FAILURE);
@@ -125,4 +132,3 @@ bool js_connect(char *path) {
 	pthread_mutex_unlock(&js_lock);
 	return true;
 }
-

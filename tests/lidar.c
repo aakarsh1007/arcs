@@ -10,7 +10,7 @@
 #define START_CODE 0xfa
 
 struct __attribute__((__packed__)) lidar_data {
-	uint32_t value; //Placeholder, needs to be 4 bytes
+	uint32_t value; // Placeholder, needs to be 4 bytes
 };
 
 struct __attribute__((__packed__)) lidar_packet {
@@ -32,15 +32,16 @@ void each(struct lidar_packet p) {
 	rpm = rpm << 8;
 	rpm += p.speed_l;
 	rpm /= 64;
-	printf("Start: %d, Index: %d, RPM/64: %d\n", (int32_t) p.start, ((int32_t) p.index) - 0xa0, (int32_t) rpm);
+	printf("Start: %d, Index: %d, RPM/64: %d\n", (int32_t)p.start,
+		   ((int32_t)p.index) - 0xa0, (int32_t)rpm);
 }
 
-//Either compile on system with lidar or use saved file
+// Either compile on system with lidar or use saved file
 int main(int argc, char **argv) {
 
-	if(sizeof(struct lidar_packet) != 22)
+	if (sizeof(struct lidar_packet) != 22)
 		fprintf(stderr, "Invalid packet size");
-	if(argc != 2) {
+	if (argc != 2) {
 		fprintf(stderr, "Needs one argument!\n");
 		exit(EXIT_FAILURE);
 	}
@@ -49,25 +50,25 @@ int main(int argc, char **argv) {
 	int fd = open(argv[1], O_RDONLY);
 	int32_t readnum = 0;
 
-	while(1) {
-		if(readnum < 3) {
+	while (1) {
+		if (readnum < 3) {
 			uint8_t in;
-			if(read(fd, &in, sizeof(uint8_t)) == 0)
+			if (read(fd, &in, sizeof(uint8_t)) == 0)
 				break;
-//			printf("%o\n", in);
-			if(in == EOF)
+			//			printf("%o\n", in);
+			if (in == EOF)
 				break;
-			if(in == START_CODE) {
+			if (in == START_CODE) {
 				readnum++;
 				read(fd, &p, sizeof(struct lidar_packet) - sizeof(uint8_t));
 				continue;
 			}
 			readnum = 0;
 			read(fd, &p, sizeof(uint8_t));
-		}
-		else {
-			if(0 == read(fd, &p, sizeof(struct lidar_packet))) break;
-			if(p.start != START_CODE) {
+		} else {
+			if (0 == read(fd, &p, sizeof(struct lidar_packet)))
+				break;
+			if (p.start != START_CODE) {
 				readnum = 0;
 				continue;
 			}

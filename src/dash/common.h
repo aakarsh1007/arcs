@@ -5,7 +5,8 @@
 #ifndef COMMON_H
 #define COMMON_H
 /*
- * This sets how many messages should be logged and how many tests should be included.
+ * This sets how many messages should be logged and how many tests should be
+ * included.
  */
 #define DEBUG
 

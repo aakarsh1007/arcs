@@ -27,10 +27,10 @@ void screen_end_render();
  * Prints a string to screen at point x, y.
  * Automaticly shifts location so (0, 0) should be start.
  */
-void screen_print(int, int, char*);
+void screen_print(int, int, char *);
 
 /*
  * Prints string at location, with header format.
  */
-void screen_print_header(int, int, char*);
+void screen_print_header(int, int, char *);
 #endif

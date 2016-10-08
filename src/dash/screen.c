@@ -23,7 +23,8 @@ void screen_init() {
 	int stat = curs_set(0);
 #ifdef DEBUG
 	if (stat == ERR) {
-		slog(200, SLOG_ERROR, "This terminal does not appear to support ncurses control");
+		slog(200, SLOG_ERROR,
+			 "This terminal does not appear to support ncurses control");
 	}
 #endif
 	if (has_colors() == FALSE) {
@@ -44,7 +45,7 @@ void screen_close() {
 
 void screen_start_render() {
 #ifdef DEBUG
-	if(render_mode)
+	if (render_mode)
 		slog(300, SLOG_WARN, "Called %s dring render mode", __FUNCTION__);
 #endif
 	render_mode = true;
@@ -54,7 +55,7 @@ void screen_start_render() {
 
 void screen_end_render() {
 #ifdef DEBUG
-	if(!render_mode)
+	if (!render_mode)
 		slog(300, SLOG_WARN, "Call %s outside of render mode", __FUNCTION__);
 #endif
 	render_mode = false;
@@ -73,7 +74,7 @@ void draw_logo() {
 
 void screen_print(int x, int y, char *str) {
 #ifdef DEBUG
-	if(x < 0 || y < 0)
+	if (x < 0 || y < 0)
 		slog(300, SLOG_WARN, "Negative location passed to %s", __FUNCTION__);
 #endif
 	mvprintw(y + PROPS_Y, x + PROPS_X, str);
@@ -81,7 +82,7 @@ void screen_print(int x, int y, char *str) {
 
 void screen_print_header(int x, int y, char *str) {
 #ifdef DEBUG
-	if(x < 0 || y < 0)
+	if (x < 0 || y < 0)
 		slog(300, SLOG_WARN, "Negative location passed to %s", __FUNCTION__);
 #endif
 	attron(COLOR_PAIR(2) | A_BOLD);

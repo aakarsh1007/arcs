@@ -5,13 +5,13 @@
 #include "interface.h"
 #include <string.h>
 
-#define STR_BUF_SIZE 48 //Needs to be enough for js path
+#define STR_BUF_SIZE 48 // Needs to be enough for js path
 
 void write_interface(struct iface_args *);
-void add_prop(int, int, char*, char*);
-char * bstr(char *, bool);
-char * fstr(char *, float);
-char * modestr(comm_mode_t mode);
+void add_prop(int, int, char *, char *);
+char *bstr(char *, bool);
+char *fstr(char *, float);
+char *modestr(comm_mode_t mode);
 
 void redraw(struct iface_args *props) {
 	screen_start_render();
@@ -30,7 +30,8 @@ void write_js(struct iface_args *props) {
 	add_prop(0, 5, "X Button", bstr(val, props->jsstat.btn_x));
 	add_prop(0, 6, "Y Button", bstr(val, props->jsstat.btn_y));
 	add_prop(0, 7, "Left Shoulder", bstr(val, props->jsstat.btn_left_shoulder));
-	add_prop(0, 8, "Right Shoulder", bstr(val, props->jsstat.btn_right_shoulder));
+	add_prop(0, 8, "Right Shoulder",
+			 bstr(val, props->jsstat.btn_right_shoulder));
 	add_prop(0, 9, "Back Button", bstr(val, props->jsstat.btn_back));
 	add_prop(0, 10, "Start Button", bstr(val, props->jsstat.btn_start));
 	add_prop(0, 11, "Guide Button", bstr(val, props->jsstat.btn_guide));
@@ -42,7 +43,8 @@ void write_js(struct iface_args *props) {
 	add_prop(0, 16, "Left Trigger", fstr(val, props->jsstat.axis_left_trigger));
 	add_prop(0, 17, "Right X Axis", fstr(val, props->jsstat.axis_right_x));
 	add_prop(0, 18, "Right Y Axis", fstr(val, props->jsstat.axis_right_y));
-	add_prop(0, 19, "Right Trigger", fstr(val, props->jsstat.axis_right_trigger));
+	add_prop(0, 19, "Right Trigger",
+			 fstr(val, props->jsstat.axis_right_trigger));
 	add_prop(0, 20, "D-Pad X Axis", fstr(val, props->jsstat.axis_dpad_x));
 	add_prop(0, 21, "D-Pad Y Axis", fstr(val, props->jsstat.axis_dpad_y));
 
@@ -53,8 +55,8 @@ void write_js(struct iface_args *props) {
 	add_prop(0, 27, "Run Mode", modestr(props->mode));
 }
 
-char * modestr(comm_mode_t mode) {
-	switch(mode) {
+char *modestr(comm_mode_t mode) {
+	switch (mode) {
 	case MODE_DISABLED:
 		return MODE_DISABLED_STR;
 	case MODE_TELEOP:
@@ -66,18 +68,16 @@ char * modestr(comm_mode_t mode) {
 	}
 }
 
-void write_interface(struct iface_args *props) {
-	write_js(props);
-}
+void write_interface(struct iface_args *props) { write_js(props); }
 
 void add_prop(int x, int y, char *name, char *value) {
 	char total[STR_BUF_SIZE];
 
 #ifdef DEBUG
-	if(strlen(name) > 16) {
+	if (strlen(name) > 16) {
 		slog(300, SLOG_WARN, "Name larger than buffer");
 	}
-	if(strlen(value) > 16) {
+	if (strlen(value) > 16) {
 		slog(300, SLOG_WARN, "Value larger than buffer");
 	}
 #endif
@@ -85,12 +85,12 @@ void add_prop(int x, int y, char *name, char *value) {
 	screen_print(x, y, total);
 }
 
-char * bstr(char *str, bool val) {
+char *bstr(char *str, bool val) {
 	strcpy(str, val ? "true" : "false");
 	return str;
 }
 
-char * fstr(char *str, float val) {
+char *fstr(char *str, float val) {
 	snprintf(str, STR_BUF_SIZE, "%.3f", val);
 	return str;
 }

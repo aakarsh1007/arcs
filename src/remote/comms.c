@@ -25,11 +25,11 @@ void *comm_loop(void *);
 
 void init_rtd() {
 	dash_pack_num == 0;
-	if((sockfd_dash = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1) {
+	if ((sockfd_dash = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1) {
 		slog(100, SLOG_FATAL, "Failed to create dashboard socket");
 		exit(EXIT_FAILURE);
 	}
-	memset((char *) &dash_sock, 0, sizeof(dash_sock));
+	memset((char *)&dash_sock, 0, sizeof(dash_sock));
 	dash_sock.sin_family = AF_INET;
 	dash_sock.sin_port = htons(RTD_PORT);
 
@@ -42,13 +42,14 @@ void init_dtr() {
 		exit(EXIT_FAILURE);
 	}
 
-	memset((char *) &serv_sock, 0, sizeof(struct sockaddr_in));
+	memset((char *)&serv_sock, 0, sizeof(struct sockaddr_in));
 	serv_sock.sin_family = AF_INET;
 	serv_sock.sin_port = htons(DTR_PORT);
 	serv_sock.sin_addr.s_addr = htonl(INADDR_ANY);
 
-	if(bind(sockfd, &serv_sock, sizeof(struct sockaddr_in)) == -1) {
-		slog(100, SLOG_FATAL, "Failed to bind server socket to port %d", DTR_PORT);
+	if (bind(sockfd, &serv_sock, sizeof(struct sockaddr_in)) == -1) {
+		slog(100, SLOG_FATAL, "Failed to bind server socket to port %d",
+			 DTR_PORT);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -59,9 +60,10 @@ void init_comms() {
 }
 
 void send_dash(struct pack_rtd pack) {
-	if(sendto(sockfd_dash, &pack, sizeof(struct pack_rtd), 0, &dash_sock, sizeof(dash_sock)) == -1)
+	if (sendto(sockfd_dash, &pack, sizeof(struct pack_rtd), 0, &dash_sock,
+			   sizeof(dash_sock)) == -1)
 		slog(300, SLOG_ERROR, "Failed to send packet");
-}	
+}
 
 void close_comms() {
 	close(sockfd);
@@ -71,11 +73,12 @@ void close_comms() {
 void update_comms() {
 	struct pack_dtr p;
 	struct sockaddr_in client;
-	if(recvfrom(sockfd, &p, sizeof(struct pack_dtr), 0, &client, sizeof(struct sockaddr_in)) == -1) {
-		//slog(300, SLOG_WARN, "recvfrom fail: %s", strerror(errno));
+	if (recvfrom(sockfd, &p, sizeof(struct pack_dtr), 0, &client,
+				 sizeof(struct sockaddr_in)) == -1) {
+		// slog(300, SLOG_WARN, "recvfrom fail: %s", strerror(errno));
 	}
 
-	if(p.pack_num <= last_pack.pack_num) {
+	if (p.pack_num <= last_pack.pack_num) {
 		return;
 	}
 
@@ -83,7 +86,7 @@ void update_comms() {
 }
 
 void *comm_loop(void *td) {
-	while(1) {
+	while (1) {
 		update_comms();
 	}
 }
@@ -93,7 +96,7 @@ void start_comms() {
 	pthread_mutex_lock(&comm_lock);
 
 	int stat = pthread_create(&commthread, NULL, comm_loop, NULL);
-	if(stat) {
+	if (stat) {
 		slog(100, SLOG_FATAL, "Can't create comm thread");
 	}
 

@@ -16,11 +16,11 @@ void sig_catch(int sig) {
 int main() {
 	slog_init("arcs", "slog.cfg", 400, 500, 1);
 	slog(400, SLOG_INFO, "Starting arcs-remote");
-	if(signal(SIGHUP, sig_catch) == SIG_ERR) {
+	if (signal(SIGHUP, sig_catch) == SIG_ERR) {
 		slog(100, SLOG_FATAL, "Can't catch SIGHUP");
 		exit(EXIT_FAILURE);
 	}
-	
+
 	wiringPiSetup();
 
 	drive_init();
@@ -29,12 +29,12 @@ int main() {
 
 	command_init();
 
-	while(1) {
+	while (1) {
 		command_update();
 		struct pack_rtd p;
 		p.pack_num = 1;
 		p.test = 5.0;
-		send_dash(p);	
+		send_dash(p);
 	}
 
 	slog(400, SLOG_INFO, "Exiting");

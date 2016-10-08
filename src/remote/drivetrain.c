@@ -6,14 +6,14 @@
 bool closed;
 
 inline float clamp(float f) {
-	if(f > 1.0) return 1.0;
-	if(f < -1.0) return -1.0;
+	if (f > 1.0)
+		return 1.0;
+	if (f < -1.0)
+		return -1.0;
 	return f;
 }
 
-inline int motor_val(float speed) {
-	return (int) (1024.0 * speed);
-}
+inline int motor_val(float speed) { return (int)(1024.0 * speed); }
 
 void drive_init() {
 	pinMode(RIGHT_MOTOR, PWM_OUTPUT);
@@ -29,7 +29,7 @@ void drive_init() {
 }
 
 void drive_update(float left, float right) {
-	if(closed)
+	if (closed)
 		return;
 
 	left = clamp(left);
@@ -37,13 +37,13 @@ void drive_update(float left, float right) {
 
 	bool ri = right < 0, li = left < 0;
 
-	if(RIGHT_INVERT)
+	if (RIGHT_INVERT)
 		ri = !ri;
-	
-	if(LEFT_INVERT)
+
+	if (LEFT_INVERT)
 		li = !li;
 
-//	slog(400, SLOG_INFO, "%f, %f", left, right);
+	//	slog(400, SLOG_INFO, "%f, %f", left, right);
 
 	digitalWrite(RIGHT_DIR, ri ? HIGH : LOW);
 	digitalWrite(LEFT_DIR, li ? HIGH : LOW);

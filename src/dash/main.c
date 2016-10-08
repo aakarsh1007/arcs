@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
 	parse_args(r_args, argc, argv);
 
 	mode = MODE_DISABLED;
-	
+
 	bool valid_remote = false;
 
 	screen_init();
@@ -39,19 +39,19 @@ int main(int argc, char **argv) {
 	props->js = (js == NULL) ? "Not found" : js;
 
 	while (1) {
-		if(props->jsstat.btn_guide) {
+		if (props->jsstat.btn_guide) {
 			slog(400, SLOG_INFO, "Quit due to guide button press");
 			break;
 		}
 		pthread_mutex_lock(&kb_lock);
-		if(get_kb_status()->close_request) {
+		if (get_kb_status()->close_request) {
 			slog(400, SLOG_INFO, "Quit due to keyboard press");
 			break;
 		}
-		if(get_kb_status()->refresh_net) {
+		if (get_kb_status()->refresh_net) {
 			kill_remote();
 			valid_remote = try_connect();
-			if(valid_remote)
+			if (valid_remote)
 				start_remote();
 			get_kb_status()->refresh_net = false;
 		}
@@ -63,7 +63,7 @@ int main(int argc, char **argv) {
 		props->mode = mode;
 		redraw(props);
 
-		if(valid_remote)
+		if (valid_remote)
 			update_comms(get_js_state(), mode);
 
 		pthread_mutex_unlock(&js_lock);

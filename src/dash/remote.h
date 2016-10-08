@@ -4,7 +4,7 @@
  * Tries to ssh into the remote.
  * Returns true if successful, false if not.
  */
- bool try_connect();
+bool try_connect();
 
 /*
  * Start the remote exec.

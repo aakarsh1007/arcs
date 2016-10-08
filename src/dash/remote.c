@@ -32,28 +32,27 @@ bool try_connect() {
 	int statval;
 
 	pid = fork();
-	if(pid == -1) {
+	if (pid == -1) {
 		fprintf(stderr, "Can't fork\n");
 		exit(EXIT_FAILURE);
 	}
 
-	if(pid == 0) {
+	if (pid == 0) {
 		char arg[ADDR_BUFSIZE];
 #ifdef DEBUG
-		if(strlen(addr) + strlen(user) + 2 > ADDR_BUFSIZE) {
+		if (strlen(addr) + strlen(user) + 2 > ADDR_BUFSIZE) {
 			slog(100, SLOG_FATAL, "Strings too large in %s", __FUNCTION__);
 			exit(EXIT_FAILURE);
 		}
 #endif
 		snprintf(arg, ADDR_BUFSIZE, "%s@%s", user, addr);
-		char *args[] = {"ssh", "-o", "ConnectTimeout=2", arg, "exit",  0};
+		char *args[] = {"ssh", "-o", "ConnectTimeout=2", arg, "exit", 0};
 		char *env[] = {0};
 		execve("/usr/bin/ssh", args, env);
-	}
-	else {
+	} else {
 		waitpid(pid, &statval, 0);
 		pid = 0;
-		if(WIFEXITED(statval))
+		if (WIFEXITED(statval))
 			return (WEXITSTATUS(statval) == 0);
 		else
 			return false;
@@ -68,28 +67,28 @@ void start_remote() {
 	char *exec = r_args->r_exec == NULL ? DEFAULT_EXE : r_args->r_exec;
 
 	pid = fork();
-	if(pid == -1) {
+	if (pid == -1) {
 		fprintf(stderr, "Can't fork\n");
 		exit(EXIT_FAILURE);
 	}
 
-	if(pid == 0) {
+	if (pid == 0) {
 		char arg[ADDR_BUFSIZE];
 #ifdef DEBUG
-		if(strlen(addr) + strlen(user) + 2 > ADDR_BUFSIZE) {
+		if (strlen(addr) + strlen(user) + 2 > ADDR_BUFSIZE) {
 			slog(100, SLOG_FATAL, "Strings too large in %s", __FUNCTION__);
 			exit(EXIT_FAILURE);
 		}
 #endif
 		snprintf(arg, ADDR_BUFSIZE, "%s@%s", user, addr);
-		char *args[] = {"ssh", "-t", arg, exec,  0};
+		char *args[] = {"ssh", "-t", arg, exec, 0};
 		char *env[] = {0};
 		execve("/usr/bin/ssh", args, env);
 	}
 }
 
 void kill_remote() {
-	if(pid != 0)
+	if (pid != 0)
 		kill(pid, SIGKILL);
 	pid = 0;
 }
