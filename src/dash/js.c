@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <limits.h>
 #include "screen.h"
+#include <math.h>
 
 pthread_t jsthread;
 pthread_mutex_t js_lock = PTHREAD_MUTEX_INITIALIZER;

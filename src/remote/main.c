@@ -31,6 +31,10 @@ int main() {
 
 	while(1) {
 		command_update();
+		struct pack_rtd p;
+		p.pack_num = 1;
+		p.test = 5.0;
+		send_dash(p);	
 	}
 
 	slog(400, SLOG_INFO, "Exiting");

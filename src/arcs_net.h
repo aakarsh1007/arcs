@@ -8,6 +8,7 @@
 
 // DTR is dash to remote
 #define DTR_PORT 30000
+#define RTD_PORT 30001
 
 #define MODE_DISABLED 0
 #define MODE_TELEOP 1
@@ -42,7 +43,7 @@ struct js_state {
 	float axis_dpad_y;
 };
 
-struct pack {
+struct pack_dtr {
 	/*
 	 * pac_num is the number of the packet.
 	 * If pack_num is not the largest recived packet it is droped.
@@ -51,6 +52,12 @@ struct pack {
 
 	comm_mode_t mode;
 	struct js_state js_state;
+};
+
+struct pack_rtd {
+	uint64_t pack_num;
+
+	float test;
 };
 
 #endif

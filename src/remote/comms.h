@@ -15,6 +15,8 @@ void close_comms();
  */
 void start_comms();
 
-extern struct pack last_pack;
+void send_dash(struct pack_rtd);
+
+extern struct pack_dtr last_pack;
 
 #endif
