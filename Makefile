@@ -69,4 +69,5 @@ tests-clean:
 .PHONY: format
 format:
 	find . -type f -name '*.h' -exec clang-format -i {} \;
+	find . -type f -name '*.cpp' -exec clang-format -i {} \;
 	find . -type f -name '*.c' -exec clang-format -i {} \;
