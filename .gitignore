@@ -6,6 +6,7 @@
 # Build
 *.o
 arcs-dash
+arcs-view
 *.out
 arcs
 

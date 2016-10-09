@@ -1,9 +1,12 @@
 SRCDIR = src
 DASHDIR = dash
 REMOTEDIR = remote
+VIEWERDIR = viewer
 CFLAGS =  -Wall --std=c11 -O3 -ftrapv
+CPP_FLAGS = -O3
 RM = rm -f
 OUT = arcs-dash
+VIEW_OUT = arcs-view
 CC = gcc
 TESTDIR = tests
 
@@ -14,7 +17,7 @@ REMOTE_CFLAGS = -Wall -std=c11 -O3 -ftrapv
 REMOTE_CC = gcc
 
 .PHONY: all
-all: dash-all remote-all
+all: dash-all viewer-all remote-all
 	@echo "Done all"
 
 .PHONY: clean
@@ -31,6 +34,16 @@ dash-clean:
 	$(MAKE) -C $(SRCDIR)/$(DASHDIR) clean
 	$(RM) $(OUT)
 	@echo "Done dash-clean"
+
+.PHONY: viewer-all
+viewer-all:
+	$(MAKE) -C $(SRCDIR)/$(VIEWERDIR) "CFLAGS=$(CPP_FLAGS)" "OUT=$(VIEW_OUT)"
+	@echo "Done viwer-all"
+
+.PHONY: viewer-clean
+viewer-clean:
+	$(MAKE) -C $(SRCDIR)/$(VIEWERDIR) clean
+	@echo "Done viewer-clean"
 
 .PHONY: remote-all
 remote-all:
