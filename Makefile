@@ -43,6 +43,7 @@ viewer-all:
 .PHONY: viewer-clean
 viewer-clean:
 	$(MAKE) -C $(SRCDIR)/$(VIEWERDIR) clean
+	$(RM) $(VIEW_OUT)
 	@echo "Done viewer-clean"
 
 .PHONY: remote-all
