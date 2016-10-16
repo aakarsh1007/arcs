@@ -5,6 +5,7 @@ struct runtime_args {
 	char *r_addr;
 	char *r_user;
 	char *r_exec;
+	char *r_viewer_ip;
 };
 
 /*

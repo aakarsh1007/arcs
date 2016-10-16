@@ -8,6 +8,8 @@ struct iface_args {
 	struct js_state jsstat;
 	char *remote;
 	comm_mode_t mode;
+	bool use_viewer;
+	char *viewer_ip;
 };
 
 /*

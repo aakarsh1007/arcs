@@ -9,7 +9,7 @@
 pthread_mutex_t kb_lock = PTHREAD_MUTEX_INITIALIZER;
 pthread_t kbthread;
 
-struct kb_status kb_stat = {false, false};
+struct kb_status kb_stat = {false, false, false};
 
 void *kb_loop(void *td) {
 	int c;
@@ -32,6 +32,8 @@ void *kb_loop(void *td) {
 		case 0x20:
 			// Space bar stop
 			mode = MODE_DISABLED;
+		case 'v':
+			kb_stat.use_viewer = !kb_stat.use_viewer;
 		default:
 			// ASCII numbers to mode
 			if (c >= 0x30 && c <= 0x39)

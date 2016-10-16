@@ -53,6 +53,10 @@ void write_js(struct iface_args *props) {
 
 	screen_print_header(0, 26, "Mode");
 	add_prop(0, 27, "Run Mode", modestr(props->mode));
+
+	screen_print_header(0, 29, "Viewer");
+	add_prop(0, 30, "Enabled", bstr(val, props->use_viewer));
+	add_prop(0, 31, "IP", props->viewer_ip);
 }
 
 char *modestr(comm_mode_t mode) {

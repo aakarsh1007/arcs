@@ -9,6 +9,7 @@
 #include <sys/types.h>
 #include "remote.h"
 #include <errno.h>
+#include <string.h>
 
 struct sockaddr_in remote_sock;
 int sockfd;
@@ -29,11 +30,15 @@ void connect_comms() {
 
 void disconnect_comms() { close(sockfd); }
 
-void update_comms(struct js_state js_state, comm_mode_t mode) {
+void update_comms(struct js_state js_state, comm_mode_t mode, bool use_viewer, char *viewer_ip) {
 	struct pack_dtr p;
 	p.pack_num = pack_num++;
 	p.js_state = js_state;
 	p.mode = mode;
+	p.use_viewer = use_viewer;
+	if(use_viewer) {
+		strcpy(p.viewer_ip, viewer_ip);
+	}
 	if (sendto(sockfd, &p, sizeof(struct pack_dtr), 0,
 			   (struct sockaddr *)&remote_sock, sizeof(remote_sock)) == -1) {
 		slog(300, SLOG_ERROR, "Failed to send packet %d to %s: %s", p.pack_num,

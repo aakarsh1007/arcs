@@ -19,6 +19,8 @@
 #define MODE_TELEOP_STR "TELEOP"
 #define MODE_TANK_STR "TANK"
 
+#define IP_ARRAY_LEN 18
+
 typedef uint8_t comm_mode_t;
 
 struct js_state {
@@ -53,6 +55,9 @@ struct pack_dtr {
 
 	comm_mode_t mode;
 	struct js_state js_state;
+
+	bool use_viewer;
+	char viewer_ip[IP_ARRAY_LEN];
 };
 
 struct pack_rtd {

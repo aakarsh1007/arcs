@@ -3,6 +3,7 @@
 struct kb_status {
 	bool close_request;
 	bool refresh_net;
+	bool use_viewer;
 };
 
 /*

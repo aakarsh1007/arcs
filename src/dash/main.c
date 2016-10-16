@@ -19,6 +19,7 @@ int main(int argc, char **argv) {
 
 	r_args = calloc(1, sizeof(struct runtime_args));
 	parse_args(r_args, argc, argv);
+	bool valid_viewer = r_args->r_viewer_ip != NULL;
 
 	mode = MODE_DISABLED;
 
@@ -38,7 +39,7 @@ int main(int argc, char **argv) {
 	struct iface_args *props = calloc(1, sizeof(struct iface_args));
 	props->js = (js == NULL) ? "Not found" : js;
 
-	while (1) {
+	while (true) {
 		if (props->jsstat.btn_guide) {
 			slog(400, SLOG_INFO, "Quit due to guide button press");
 			break;
@@ -61,10 +62,12 @@ int main(int argc, char **argv) {
 		props->jsstat = get_js_state();
 		props->remote = valid_remote ? addrstr() : "No Connection";
 		props->mode = mode;
+		props->use_viewer = valid_viewer && get_kb_status()->use_viewer;
+		props->viewer_ip = valid_viewer ? r_args->r_viewer_ip : "NULL";
 		redraw(props);
 
 		if (valid_remote)
-			update_comms(get_js_state(), mode);
+			update_comms(get_js_state(), mode, valid_viewer && get_kb_status()->use_viewer, r_args->r_viewer_ip);
 
 		pthread_mutex_unlock(&js_lock);
 	}
