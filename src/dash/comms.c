@@ -23,7 +23,7 @@ void connect_comms() {
 
 	memset((char *)&remote_sock, 0, sizeof(remote_sock));
 	remote_sock.sin_family = AF_INET;
-	remote_sock.sin_port = htons(DTR_PORT);
+	remote_sock.sin_port = htons(REMOTE_PORT);
 
 	remote_sock.sin_addr.s_addr = inet_addr(addrstr());
 }

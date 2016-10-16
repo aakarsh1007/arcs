@@ -15,7 +15,7 @@ void close_comms();
  */
 void start_comms();
 
-void send_dash(struct pack_rtd);
+void send_viewer(struct pack_viewer);
 
 extern struct pack_dtr last_pack;
 

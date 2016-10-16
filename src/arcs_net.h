@@ -8,8 +8,8 @@
 #define ARCS_NET_H
 
 // DTR is dash to remote
-#define DTR_PORT 30000
-#define RTD_PORT 30001
+#define REMOTE_PORT 30000
+#define VIEWER_PORT 30001
 
 #define MODE_DISABLED 0
 #define MODE_TELEOP 1
@@ -60,7 +60,7 @@ struct pack_dtr {
 	char viewer_ip[IP_ARRAY_LEN];
 };
 
-struct pack_rtd {
+struct pack_viewer {
 	uint64_t pack_num;
 
 	float test;

@@ -16,27 +16,29 @@ struct pack_dtr last_pack;
 pthread_mutex_t comm_lock = PTHREAD_MUTEX_INITIALIZER;
 pthread_t commthread;
 
-struct sockaddr_in dash_sock;
+struct sockaddr_in viewer_sock;
 int sockfd_dash;
 uint64_t dash_pack_num;
+
+bool viewer_ready = false;
 
 void init_comms();
 void *comm_loop(void *);
 
-void init_rtd() {
-	dash_pack_num == 0;
+void init_viewer_comms(char *ip) {
+	dash_pack_num = 0;
 	if ((sockfd_dash = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1) {
-		slog(100, SLOG_FATAL, "Failed to create dashboard socket");
+		slog(100, SLOG_FATAL, "Failed to create viewer socket");
 		exit(EXIT_FAILURE);
 	}
-	memset((char *)&dash_sock, 0, sizeof(dash_sock));
-	dash_sock.sin_family = AF_INET;
-	dash_sock.sin_port = htons(RTD_PORT);
+	memset((char *)&viewer_sock, 0, sizeof(viewer_sock));
+	viewer_sock.sin_family = AF_INET;
+	viewer_sock.sin_port = htons(VIEWER_PORT);
 
-	dash_sock.sin_addr.s_addr = inet_addr("192.168.1.100");
+	viewer_sock.sin_addr.s_addr = inet_addr(ip);
 }
 
-void init_dtr() {
+void init_local_comms() {
 	if ((sockfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1) {
 		slog(100, SLOG_FATAL, "Failed to create server socket");
 		exit(EXIT_FAILURE);
@@ -44,24 +46,33 @@ void init_dtr() {
 
 	memset((char *)&serv_sock, 0, sizeof(struct sockaddr_in));
 	serv_sock.sin_family = AF_INET;
-	serv_sock.sin_port = htons(DTR_PORT);
+	serv_sock.sin_port = htons(REMOTE_PORT);
 	serv_sock.sin_addr.s_addr = htonl(INADDR_ANY);
 
 	if (bind(sockfd, &serv_sock, sizeof(struct sockaddr_in)) == -1) {
 		slog(100, SLOG_FATAL, "Failed to bind server socket to port %d",
-			 DTR_PORT);
+			 REMOTE_PORT);
 		exit(EXIT_FAILURE);
 	}
 }
 
 void init_comms() {
-	init_rtd();
-	init_dtr();
+	init_local_comms();
 }
 
-void send_dash(struct pack_rtd pack) {
-	if (sendto(sockfd_dash, &pack, sizeof(struct pack_rtd), 0, &dash_sock,
-			   sizeof(dash_sock)) == -1)
+void send_viewer(struct pack_viewer pack) {
+	if(!last_pack.use_viewer)
+		return;
+
+	if(!viewer_ready) {
+		init_viewer_comms(&(last_pack.viewer_ip));
+		viewer_ready = true;
+	}
+
+	slog(400, SLOG_INFO, "Sending packet");
+
+	if (sendto(sockfd_dash, &pack, sizeof(struct pack_viewer), 0, &viewer_sock,
+			   sizeof(viewer_sock)) == -1)
 		slog(300, SLOG_ERROR, "Failed to send packet");
 }
 
@@ -75,7 +86,6 @@ void update_comms() {
 	struct sockaddr_in client;
 	if (recvfrom(sockfd, &p, sizeof(struct pack_dtr), 0, &client,
 				 sizeof(struct sockaddr_in)) == -1) {
-		// slog(300, SLOG_WARN, "recvfrom fail: %s", strerror(errno));
 	}
 
 	if (p.pack_num <= last_pack.pack_num) {
