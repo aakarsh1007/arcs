@@ -24,7 +24,11 @@ const GLuint WIDTH = 1280, HEIGHT = 720;
 GLuint vertex_shader, fragment_shader, shader_prog;
 GLuint VBO, VAO;
 GLFWwindow *window;
-GLfloat verts[9] = {-.5, -.5, 0.0, .5, -.5, 0.0, 0.0, .5, 0.0};
+
+// Triangle shape default
+#define MAX_VERTS 1024
+GLfloat verts[3 * MAX_VERTS] = {-.5, -.5, 0.0, .5, -.5, 0.0, 0.0, .5, 0.0};
+int verts_len = 3;
 
 const GLfloat bg_color[3] = {0.2, 0.3, 0.3};
 
@@ -50,7 +54,7 @@ void init_vao() {
 	glBindVertexArray(VAO);
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(verts), verts, GL_STREAM_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, verts_len, verts, GL_STREAM_DRAW);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat),
 							  (GLvoid *)0);
 		glEnableVertexAttribArray(0);
@@ -116,19 +120,38 @@ void clear_screen() {
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
+void add_vert(GLfloat x, GLfloat y) {
+	if (verts_len >= MAX_VERTS) {
+		std::cerr << "Exceded max verts" << std::endl;
+		exit(1);
+	}
+	verts[verts_len * 3] = x;
+	verts[verts_len * 3 + 1] = y;
+	verts[verts_len * 3 + 2] = 0.0; // 2d
+	verts_len++;
+}
+
+void update_verts() {
+	verts_len = 0;
+	add_vert(-.5, -.5);
+	add_vert(0, .5);
+	add_vert(.5, -.5);
+}
+
 void draw() {
+	update_verts();
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(verts), verts, GL_STREAM_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glUseProgram(shader_prog);
 	glBindVertexArray(VAO);
-	glDrawArrays(GL_LINE_LOOP, 0, 3);
+	glDrawArrays(GL_LINE_LOOP, 0, verts_len);
 	glBindVertexArray(0);
 }
 
 void loop() {
-	while(!glfwWindowShouldClose(window)) {
+	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 		clear_screen();
 		draw();
