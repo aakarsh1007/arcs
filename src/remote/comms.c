@@ -69,8 +69,6 @@ void send_viewer(struct pack_viewer pack) {
 		viewer_ready = true;
 	}
 
-	slog(400, SLOG_INFO, "Sending packet");
-
 	if (sendto(sockfd_dash, &pack, sizeof(struct pack_viewer), 0, &viewer_sock,
 			   sizeof(viewer_sock)) == -1)
 		slog(300, SLOG_ERROR, "Failed to send packet");
