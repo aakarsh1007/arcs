@@ -21,7 +21,7 @@ all: dash-all viewer-all remote-all
 	@echo "Done all"
 
 .PHONY: clean
-clean: dash-clean remote-clean
+clean: dash-clean remote-clean viewer-clean
 	@echo "Done clean"
 
 .PHONY: dash-all
