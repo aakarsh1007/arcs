@@ -1,5 +1,4 @@
-#ifndef REMOTE_H
-#define REMOTE_H
+#pragma once
 /*
  * Tries to ssh into the remote.
  * Returns true if successful, false if not.
@@ -24,5 +23,3 @@ struct rm_status {
 };
 
 extern pthread_mutex_t rm_lock;
-
-#endif

@@ -30,13 +30,14 @@ void connect_comms() {
 
 void disconnect_comms() { close(sockfd); }
 
-void update_comms(struct js_state js_state, comm_mode_t mode, bool use_viewer, char *viewer_ip) {
+void update_comms(struct js_state js_state, comm_mode_t mode, bool use_viewer,
+				  char *viewer_ip) {
 	struct pack_dtr p;
 	p.pack_num = pack_num++;
 	p.js_state = js_state;
 	p.mode = mode;
 	p.use_viewer = use_viewer;
-	if(use_viewer) {
+	if (use_viewer) {
 		strcpy(p.viewer_ip, viewer_ip);
 	}
 	if (sendto(sockfd, &p, sizeof(struct pack_dtr), 0,

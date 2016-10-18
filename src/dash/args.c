@@ -14,13 +14,14 @@ void parse_args(struct runtime_args *args, int argc, char **argv) {
 	// Note, this uses the GNU implementation of getopt
 	// Non-GNU librarys or headers will not compile/link
 	int c;
-	char *jsopt = 0, *r_addropt = 0, *r_useropt = 0, *r_execopt = 0, *r_viewer_ip = 0;
+	char *jsopt = 0, *r_addropt = 0, *r_useropt = 0, *r_execopt = 0,
+		 *r_viewer_ip = 0;
 
 	struct option long_options[] = {{"js-path", 1, 0, 'j'},
 									{"remote", 1, 0, 'r'},
 									{"user", 1, 0, 'u'},
 									{"exec", 1, 0, 'e'},
-									{"viewer",1,0,'v'}};
+									{"viewer", 1, 0, 'v'}};
 
 	int opt_index;
 	while ((c = getopt_long(argc, argv, "j:r:u:e:v:", long_options,

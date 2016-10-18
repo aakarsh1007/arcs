@@ -1,9 +1,7 @@
 /*
  * The command manager starts and updates commands.
  */
-
-#ifndef COMMAND_MANAGER_H
-#define COMMAND_MANAGER_H
+#pragma once
 
 /*
  * Initialize command manager.
@@ -16,5 +14,3 @@ void command_init();
  * Will init the command if it has not been started yet.
  */
 void command_update();
-
-#endif

@@ -2,9 +2,7 @@
  * Comms recives packets from the dashboard.
  * Runs in a seperate thread.
  */
-
-#ifndef COMMS_H
-#define COMMS_H
+#pragma once
 
 #include "arcs_net.h"
 
@@ -18,5 +16,3 @@ void start_comms();
 void send_viewer(struct pack_viewer);
 
 extern struct pack_dtr last_pack;
-
-#endif

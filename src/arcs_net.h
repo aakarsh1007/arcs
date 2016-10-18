@@ -4,8 +4,7 @@
  * All shared networking structures and constants should be defined here.
  */
 
-#ifndef ARCS_NET_H
-#define ARCS_NET_H
+#pragma once
 
 // DTR is dash to remote
 #define REMOTE_PORT 30000
@@ -65,5 +64,3 @@ struct pack_viewer {
 
 	float test;
 };
-
-#endif

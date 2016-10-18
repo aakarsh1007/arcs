@@ -1,6 +1,3 @@
-#ifndef TIMING_H
-#define TIMING_H
+#pragma once
 
 int64_t microtime();
-
-#endif

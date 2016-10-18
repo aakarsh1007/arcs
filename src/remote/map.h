@@ -1,9 +1,7 @@
 /*
  * Robot map for input and output devices.
  */
-
-#ifndef MAP_H
-#define MAP_H
+#pragma once
 
 // https://pinout.xyz/pinout/wiringpi
 #define RIGHT_MOTOR 1
@@ -14,5 +12,3 @@
 
 #define RIGHT_DIR 4
 #define LEFT_DIR 22
-
-#endif

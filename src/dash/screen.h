@@ -1,5 +1,5 @@
-#ifndef SCREEN_H
-#define SCREEN_H
+#pragma once
+
 /*
  * Captures the screen and setup ncurses settings.
  * Also configures ncurses for keyboard input.
@@ -33,4 +33,3 @@ void screen_print(int, int, char *);
  * Prints string at location, with header format.
  */
 void screen_print_header(int, int, char *);
-#endif

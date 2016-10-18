@@ -1,5 +1,4 @@
-#ifndef JS_H
-#define JS_H
+#pragma once
 struct js_event {
 	uint32_t time;
 	int16_t value;
@@ -21,4 +20,3 @@ extern pthread_mutex_t js_lock;
  * Returns a pointer to the js_state struct with all input data.
  */
 struct js_state get_js_state();
-#endif

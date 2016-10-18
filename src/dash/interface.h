@@ -1,6 +1,4 @@
-#ifndef INTERFACE_H
-#define INTERFACE_H
-
+#pragma once
 #include "arcs_net.h"
 
 struct iface_args {
@@ -16,5 +14,3 @@ struct iface_args {
  * Updates the interface based on the properties passed to it.
  */
 void redraw(struct iface_args *props);
-
-#endif

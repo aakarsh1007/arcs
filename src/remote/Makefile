@@ -1,5 +1,5 @@
 OBJS = main.o comms.o drivetrain.o teleop.o disabled.o command_manager.o tank.o timing.o
-LIBS = -lncurses -lpthread -lslog
+LIBS = -lpthread -lslog -lwiringPi
 
 %.o : %.c
 	@echo "[REMOTE] [CC] $@"

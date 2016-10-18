@@ -1,5 +1,4 @@
-#ifndef COMMON_H
-#define COMMON_H
+#pragma once
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -7,5 +6,3 @@
 #include <stdbool.h>
 #include <slog.h>
 #include "map.h"
-
-#endif

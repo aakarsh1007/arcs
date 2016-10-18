@@ -67,7 +67,9 @@ int main(int argc, char **argv) {
 		redraw(props);
 
 		if (valid_remote)
-			update_comms(get_js_state(), mode, valid_viewer && get_kb_status()->use_viewer, r_args->r_viewer_ip);
+			update_comms(get_js_state(), mode,
+						 valid_viewer && get_kb_status()->use_viewer,
+						 r_args->r_viewer_ip);
 
 		pthread_mutex_unlock(&js_lock);
 	}
