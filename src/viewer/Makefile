@@ -1,9 +1,19 @@
 OBJS = main.o
-CC=g++
+LIBS = -l glfw -l GLEW -l GL
+CC = g++
 
-all: $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -l glfw -l GLEW -l GL -o ../../$(OUT)
+%.o : %.cpp
+	@echo "[VIEWER] [CPP] $@"
+	@$(CC) $(CFLAGS) -c $< -o $@
 
-.PHONY: clean
+all: $(OBJS) $(OUT)
+
+$(OUT):
+	@echo "[VIEWER] [CPP] $(OUT)"
+	@$(CC) $(OBJS) $(LIBS) -o $(OUT) 
+
 clean:
-	$(RM) *.o
+	@echo "[VIEWER] [RM] *.o"
+	@rm -f *.o
+	@echo "[VIEWER] [RM] $(OUT)"
+	@rm -f $(OUT)

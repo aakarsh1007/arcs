@@ -1,74 +1,63 @@
-SRCDIR = src
-DASHDIR = dash
-REMOTEDIR = remote
-VIEWERDIR = viewer
-CFLAGS =  -Wall --std=c11 -O3 -ftrapv
-CPP_FLAGS = -O3
-RM = rm -f
-OUT = arcs-dash
-VIEW_OUT = arcs-view
-CC = gcc
-TESTDIR = tests
+SRC_DIR = src
 
+DASH_DIR = dash
+DASH_OUT = arcs-dash
+DASH_CFLAGS = -Wall --std=c11 -O3
+
+REMOTE_DIR = remote
+REMOTE_OUT = arcs
+REMOTE_CFLAGS = -Wall --std=c11 -O3
 REMOTE_USER = pi
 REMOTE_IP = 192.168.1.44
-REMOTE_DIR = /var/arcs
-REMOTE_CFLAGS = -Wall -std=c11 -O3 -ftrapv
-REMOTE_CC = gcc
+REMOTE_ARCS_DIR = /var/arcs
 
-.PHONY: all
-all: dash-all viewer-all remote-all
-	@echo "Done all"
+VIEWER_DIR = viewer
+VIEWER_OUT = arcs-view
+VIEWER_CFLAGS = -O3
 
-.PHONY: clean
-clean: dash-clean remote-clean viewer-clean
-	@echo "Done clean"
+all: dash viewer remote
 
-.PHONY: dash-all
-dash-all:
-	$(MAKE) -C $(SRCDIR)/$(DASHDIR) "CFLAGS=$(CFLAGS)" "RM=$(RM)" "OUT=$(OUT)" "CC=$(CC)" 
-	@echo "Done dash-all"
+clean: dash-clean viewer-clean remote-clean
 
-.PHONY: clean
+dash:
+	@echo "[MAKE] dash"
+	@$(MAKE) --no-print-directory -C $(SRC_DIR)/$(DASH_DIR) "CFLAGS=$(DASH_CFLAGS)" "OUT=$(DASH_OUT)"
+	@echo "[DASH] [LN] $(DASH_OUT)"
+	@ln -s $(SRC_DIR)/$(DASH_DIR)/$(DASH_OUT) $(DASH_OUT)
+
+viewer:
+	@echo "[MAKE] viewer"
+	@$(MAKE) --no-print-directory -C $(SRC_DIR)/$(VIEWER_DIR) "CFLAGS=$(VIEWER_CFLAGS)" "OUT=$(VIEWER_OUT)"
+	@echo "[DASH] [LN] $(VIEWER_OUT)"
+	@ln -s $(SRC_DIR)/$(VIEWER_DIR)/$(VIEWER_OUT) $(VIEWER_OUT)
+
+remote:
+	@echo "[MAKE] remote"
+	@echo "[REMOTE] [SCP] $(SRC_DIR)/$(REMOTE_DIR)/*"
+	@scp -r $(SRC_DIR)/$(REMOTE_DIR)/* $(REMOTE_USER)@$(REMOTE_IP):$(REMOTE_ARCS_DIR)/
+	@echo "[REMOTE] [MAKE] remote"
+	@ssh $(REMOTE_USER)@$(REMOTE_IP) "$(MAKE) --no-print-directory -C $(REMOTE_ARCS_DIR) \"CFLAGS=$(REMOTE_CFLAGS)\" \"OUT=$(REMOTE_OUT)\""
+
 dash-clean:
-	$(MAKE) -C $(SRCDIR)/$(DASHDIR) clean
-	$(RM) $(OUT)
-	@echo "Done dash-clean"
+	@echo "[MAKE] dash-clean"
+	@$(MAKE) --no-print-directory -C $(SRC_DIR)/$(DASH_DIR) clean "OUT=$(DASH_OUT)"
+	@echo "[DASH] [RM] $(DASH_OUT)"
+	@rm -f $(DASH_OUT)
 
-.PHONY: viewer-all
-viewer-all:
-	$(MAKE) -C $(SRCDIR)/$(VIEWERDIR) "CFLAGS=$(CPP_FLAGS)" "OUT=$(VIEW_OUT)"
-	@echo "Done viwer-all"
-
-.PHONY: viewer-clean
 viewer-clean:
-	$(MAKE) -C $(SRCDIR)/$(VIEWERDIR) clean
-	$(RM) $(VIEW_OUT)
-	@echo "Done viewer-clean"
+	@echo "[MAKE] viewer-clean"
+	@$(MAKE) --no-print-directory -C $(SRC_DIR)/$(VIEWER_DIR) clean "OUT=$(VIEWER_OUT)"
+	@echo "[VIEWER] [RM] $(VIEWER_OUT)"
+	@rm -f $(VIEWER_OUT)
 
-.PHONY: remote-all
-remote-all:
-	$(MAKE) remote-clean
-	scp -r $(SRCDIR)/$(REMOTEDIR)/* $(REMOTE_USER)@$(REMOTE_IP):$(REMOTE_DIR)/
-	ssh $(REMOTE_USER)@$(REMOTE_IP) "$(MAKE) -C $(REMOTE_DIR) \"CFLAGS=$(REMOTE_CFLAGS)\" \"CC=$(REMOTE_CC)\"; exit"
-	@echo "Done remote-all"
-
-.PHONY: remote-clean
 remote-clean:
-	ssh $(REMOTE_USER)@$(REMOTE_IP) "rm -rf $(REMOTE_DIR)/*; exit"
-	@echo "Done remote-clean"
+	@echo "[SSH] $(REMOTE_USER)@$(REMOTE_IP)"
+	@ssh $(REMOTE_USER)@$(REMOTE_IP) "rm -rf $(REMOTE_ARCS_DIR)/*; exit"
 
-
-.PHONY: tests
-tests:
-	$(MAKE) -C $(TESTDIR)
-
-.PHONY: tests-clean
-tests-clean:
-	$(MAKE) -C $(TESTDIR) clean
-
-.PHONY: format
 format:
-	find . -type f -name '*.h' -exec clang-format -i {} \;
-	find . -type f -name '*.cpp' -exec clang-format -i {} \;
-	find . -type f -name '*.c' -exec clang-format -i {} \;
+	@echo "[FORMAT] *.h"
+	@find . -type f -name '*.h' -exec clang-format -i {} \;
+	@echo "[FORMAT] *.c"
+	@find . -type f -name '*.c' -exec clang-format -i {} \;
+	@echo "[FORMAT] *.cpp"
+	@find . -type f -name '*.cpp' -exec clang-format -i {} \;

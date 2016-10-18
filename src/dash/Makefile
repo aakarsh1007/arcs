@@ -1,11 +1,18 @@
 OBJS = main.o screen.o io.o interface.o js.o args.o keyboard.o remote.o comms.o
+LIBS = -lncurses -lpthread -lslog
 
-all: common.h $(OBJS)
-	gcc $(CFLAGS) $(OBJS) -lncurses -lpthread -lslog -o ../../$(OUT)
+%.o : %.c
+	@echo "[DASH] [CC] $@"
+	@$(CC) $(CFLAGS) -c $< -o $@
 
-main.o: main.c screen.h
-screen.o: screen.c screen.h
+all: $(OBJS) $(OUT)
 
-.PHONY: clean
+$(OUT):
+	@echo "[DASH] [CC] $(OUT)"
+	@$(CC) $(OBJS) $(LIBS) -o $(OUT) 
+
 clean:
-	$(RM) *.o
+	@echo "[DASH] [RM] *.o"
+	@rm -f *.o
+	@echo "[DASH] [RM] $(OUT)"
+	@rm -f $(OUT)
