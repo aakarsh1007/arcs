@@ -1,4 +1,5 @@
 #pragma once
+
 struct runtime_args {
 	char *js_path;
 	char *r_addr;
@@ -7,11 +8,6 @@ struct runtime_args {
 	char *r_viewer_ip;
 };
 
-/*
- * Uses GNU getopt to parse arguments.
- * Takes the arguments passed to the program and the runtime_args
- * struct to put the data in to.
- */
 void parse_args(struct runtime_args *, int argc, char **argv);
 
 /*

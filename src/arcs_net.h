@@ -1,5 +1,6 @@
 /*
- * This is a file that is refferenced by both dash and remote by a relative
+ * This is a shared header that is referenced by all parts of the project by a
+ * relative
  * symbolic link.
  * All shared networking structures and constants should be defined here.
  */
@@ -18,10 +19,16 @@
 #define MODE_TELEOP_STR "TELEOP"
 #define MODE_TANK_STR "TANK"
 
+/*
+ * Size of string containing IPv4 address.
+ */
 #define IP_ARRAY_LEN 18
 
 typedef uint8_t comm_mode_t;
 
+/*
+ * Current state of a joystick input.
+ */
 struct js_state {
 	bool btn_a;
 	bool btn_b;
@@ -45,6 +52,9 @@ struct js_state {
 	float axis_dpad_y;
 };
 
+/*
+ * Packet content for dash to control remote.
+ */
 struct pack_dtr {
 	/*
 	 * pac_num is the number of the packet.
@@ -59,6 +69,9 @@ struct pack_dtr {
 	char viewer_ip[IP_ARRAY_LEN];
 };
 
+/**
+ * Packet content from remote to viewer.
+ */
 struct pack_viewer {
 	uint64_t pack_num;
 

@@ -13,6 +13,9 @@ void close_comms();
  */
 void start_comms();
 
+/*
+ * Sends a pack_viewer struct to the viewer.
+ */
 void send_viewer(struct pack_viewer);
 
 extern struct pack_dtr last_pack;

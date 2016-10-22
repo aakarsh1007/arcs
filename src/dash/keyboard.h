@@ -1,4 +1,5 @@
 #pragma once
+
 struct kb_status {
 	bool close_request;
 	bool refresh_net;

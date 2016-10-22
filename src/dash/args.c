@@ -4,6 +4,9 @@
 
 void log_args(struct runtime_args *args);
 
+/*
+ * Duplicates a string and returns a newly allocated pointer.
+ */
 char *scp(char *s) {
 	char *out = calloc(1, 1 + strlen(s));
 	strcpy(out, s);
@@ -12,7 +15,7 @@ char *scp(char *s) {
 
 void parse_args(struct runtime_args *args, int argc, char **argv) {
 	// Note, this uses the GNU implementation of getopt
-	// Non-GNU librarys or headers will not compile/link
+	// Non-GNU libraries or headers will not compile/link
 	int c;
 	char *jsopt = 0, *r_addropt = 0, *r_useropt = 0, *r_execopt = 0,
 		 *r_viewer_ip = 0;
