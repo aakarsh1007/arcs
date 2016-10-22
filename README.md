@@ -14,6 +14,8 @@ The makefile uses scp and gcc on the remote machine.
 
 Linux is required on both the dashboard and the remote.
 
+[xv11lidar](https://github.com/bmegli/xv11lidar) is used for the LIDAR interface.
+
 ## Build
 
 1.  Set remote IP in Makefile, setup root ssh cert
