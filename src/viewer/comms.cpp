@@ -48,8 +48,8 @@ void *comms_loop(void *td) {
 			sum += p.lidar_data.dist[i];
 		}
 
-		std::cout << "Received packet " << p.pack_num << " with sum " << sum
-				  << std::endl;
+//		std::cout << "Received packet " << p.pack_num << " with sum " << sum
+//				  << std::endl;
 
 		lidar_data = p.lidar_data;
 	}

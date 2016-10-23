@@ -145,8 +145,8 @@ void update_verts() {
 		float f_dist = (float)dist;
 		f_dist /= 1000.0; // to meters
 		f_dist /= 5.0;	// scale size
-		float x = f_dist * cos(((float)i) * (M_PI / 180.0));
-		float y = f_dist * sin(((float)i) * (M_PI / 180.0));
+		float x = f_dist * cos(((float)i + 90) * (M_PI / 180.0));
+		float y = f_dist * sin(((float)i + 90) * (M_PI / 180.0));
 		add_vert(x, y);
 	}
 }
@@ -159,7 +159,8 @@ void draw() {
 
 	glUseProgram(shader_prog);
 	glBindVertexArray(VAO);
-	glDrawArrays(GL_LINE_LOOP, 0, verts_len);
+	glPointSize(3);
+	glDrawArrays(GL_POINTS, 0, verts_len);
 	glBindVertexArray(0);
 }
 

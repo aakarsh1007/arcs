@@ -36,7 +36,7 @@ int main() {
 	command_init();
 
 	while (1) {
-		usleep(1000);
+		usleep(10000);
 
 		command_update();
 
