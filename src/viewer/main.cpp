@@ -163,13 +163,17 @@ void draw() {
 	glBindVertexArray(0);
 }
 
+void update_title() {
+	std::string title = NAME;
+	title += " | RPM: ";
+	title += to_string(lidar_data.speed / 64);
+	glfwSetWindowTitle(window, title.c_str());
+}
+
 void loop() {
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
-		//		std::string title = NAME;
-		//		title += " | ";
-		//		title += lidar_data.speed / 64;
-		//		glfwSetWindowTitle(window, title.c_str());
+		update_title();
 		clear_screen();
 		draw();
 		glfwSwapBuffers(window);
