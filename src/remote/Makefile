@@ -1,4 +1,4 @@
-OBJS = main.o comms.o drivetrain.o teleop.o disabled.o command_manager.o tank.o timing.o xv11lidar.o
+OBJS = main.o comms.o drivetrain.o teleop.o disabled.o command_manager.o tank.o timing.o xv11lidar.o lidar.o
 LIBS = -lpthread -lslog -lwiringPi
 
 %.o : %.c

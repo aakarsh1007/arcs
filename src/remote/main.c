@@ -3,8 +3,12 @@
 #include <wiringPi.h>
 #include "drivetrain.h"
 #include "command_manager.h"
+#include "lidar.h"
+#include <string.h>
 #include <signal.h>
 #include <unistd.h>
+
+int viewer_pack_num = 1;
 
 void close_arcs();
 
@@ -25,15 +29,18 @@ int main() {
 
 	drive_init();
 
+	init_lidar();
+
 	start_comms();
 
 	command_init();
 
 	while (1) {
 		command_update();
+
 		struct pack_viewer p;
-		p.pack_num = 1;
-		p.test = 5.0;
+		memcpy(&p.lidar_data, &lidar_data, sizeof(lidar_data));
+		p.pack_num = viewer_pack_num++;
 		send_viewer(p);
 	}
 
@@ -45,5 +52,6 @@ int main() {
 void close_arcs() {
 	drive_close();
 	close_comms();
+	close_lidar();
 	exit(EXIT_SUCCESS);
 }

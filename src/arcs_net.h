@@ -69,11 +69,23 @@ struct pack_dtr {
 	char viewer_ip[IP_ARRAY_LEN];
 };
 
+struct lidar_data {
+	/*
+	 * Distance in millimeters
+	 */
+	int32_t dist[360];
+
+	/*
+	 * RPM = speed / 64
+	 */
+	int32_t speed;
+};
+
 /**
  * Packet content from remote to viewer.
  */
 struct pack_viewer {
 	uint64_t pack_num;
 
-	float test;
+	struct lidar_data lidar_data;
 };
