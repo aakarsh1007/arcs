@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <stdint.h>
+
 // DTR is dash to remote
 #define REMOTE_PORT 30000
 #define VIEWER_PORT 30001

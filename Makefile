@@ -61,3 +61,5 @@ format:
 	@find . -type f -name '*.c' -exec clang-format -i {} \;
 	@echo "[FORMAT] *.cpp"
 	@find . -type f -name '*.cpp' -exec clang-format -i {} \;
+	@echo "[FORMAT] *.hpp"
+	@find . -type f -name '*.hpp' -exec clang-format -i {} \;

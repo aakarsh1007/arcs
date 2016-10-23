@@ -1,5 +1,5 @@
-OBJS = main.o
-LIBS = -l glfw -l GLEW -l GL
+OBJS = main.o comms.o
+LIBS = -l glfw -l GLEW -l GL -lpthread
 CC = g++
 
 %.o : %.cpp

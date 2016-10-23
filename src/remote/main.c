@@ -36,6 +36,8 @@ int main() {
 	command_init();
 
 	while (1) {
+		usleep(1000);
+
 		command_update();
 
 		struct pack_viewer p;

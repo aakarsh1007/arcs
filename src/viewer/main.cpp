@@ -1,4 +1,9 @@
 #include <iostream>
+#include "comms.hpp"
+#include <cmath>
+#include <pthread.h>
+
+using namespace std;
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -110,6 +115,7 @@ void init_window() {
 }
 
 void init() {
+	init_comms();
 	init_window();
 	init_shaders();
 	init_vao();
@@ -133,9 +139,16 @@ void add_vert(GLfloat x, GLfloat y) {
 
 void update_verts() {
 	verts_len = 0;
-	add_vert(-.5, -.5);
-	add_vert(0, .5);
-	add_vert(.5, -.5);
+
+	for (int i = 0; i < 360; i++) {
+		int32_t dist = lidar_data.dist[i];
+		float f_dist = (float)dist;
+		f_dist /= 1000.0; // to meters
+		f_dist /= 5.0;	// scale size
+		float x = f_dist * cos(((float)i) * (M_PI / 180.0));
+		float y = f_dist * sin(((float)i) * (M_PI / 180.0));
+		add_vert(x, y);
+	}
 }
 
 void draw() {
@@ -153,6 +166,10 @@ void draw() {
 void loop() {
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
+		//		std::string title = NAME;
+		//		title += " | ";
+		//		title += lidar_data.speed / 64;
+		//		glfwSetWindowTitle(window, title.c_str());
 		clear_screen();
 		draw();
 		glfwSwapBuffers(window);
@@ -163,6 +180,7 @@ void close() {
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glfwTerminate();
+	close_comms();
 	exit(0);
 }
 
