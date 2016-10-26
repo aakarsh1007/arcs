@@ -13,7 +13,7 @@ REMOTE_ARCS_DIR = /var/arcs
 
 VIEWER_DIR = viewer
 VIEWER_OUT = arcs-view
-VIEWER_CFLAGS = -O3
+VIEWER_CFLAGS = -O3 -std=gnu++0x
 
 all: dash viewer remote
 

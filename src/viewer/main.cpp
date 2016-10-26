@@ -1,6 +1,7 @@
 #include <iostream>
 #include "comms.hpp"
 #include <cmath>
+#include <cstdlib>
 #include <pthread.h>
 
 using namespace std;
