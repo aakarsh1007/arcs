@@ -23,17 +23,13 @@ void *kb_loop(void *td) {
 			kb_stat.close_request = true;
 			pthread_mutex_unlock(&kb_lock);
 			break;
-		case 'r':
-			slog(400, SLOG_INFO, "Restarting networking");
-			pthread_mutex_lock(&kb_lock);
-			kb_stat.refresh_net = true;
-			pthread_mutex_unlock(&kb_lock);
-			break;
 		case 0x20:
 			// Space bar stop
 			mode = MODE_DISABLED;
+			break;
 		case 'v':
 			kb_stat.use_viewer = !kb_stat.use_viewer;
+			break;
 		default:
 			// ASCII numbers to mode
 			if (c >= 0x30 && c <= 0x39)

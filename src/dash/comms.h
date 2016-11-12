@@ -18,4 +18,9 @@ void disconnect_comms();
 void update_comms(struct js_state, comm_mode_t, bool use_viewer,
 				  char *viewer_ip);
 
+/*
+ * Returns string with remote IP address.
+ */
+char *addrstr();
+
 extern comm_mode_t mode;

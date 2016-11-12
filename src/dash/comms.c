@@ -7,13 +7,18 @@
 #include <arpa/inet.h>
 #include <string.h>
 #include <sys/types.h>
-#include "remote.h"
 #include <errno.h>
 #include <string.h>
+
+#define DEFAULT_ADDR "192.168.1.44"
 
 struct sockaddr_in remote_sock;
 int sockfd;
 int pack_num = 0;
+
+char *addrstr() {
+	return r_args->r_addr == NULL ? DEFAULT_ADDR : r_args->r_addr;
+}
 
 void connect_comms() {
 	if ((sockfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1) {

@@ -37,6 +37,8 @@ remote:
 	@scp -r $(SRC_DIR)/$(REMOTE_DIR)/* $(REMOTE_USER)@$(REMOTE_IP):$(REMOTE_ARCS_DIR)/
 	@echo "[REMOTE] [MAKE] remote"
 	@ssh $(REMOTE_USER)@$(REMOTE_IP) "$(MAKE) --no-print-directory -C $(REMOTE_ARCS_DIR) \"CFLAGS=$(REMOTE_CFLAGS)\" \"OUT=$(REMOTE_OUT)\""
+	@echo "[REMOTE] Restart Daemon"
+	@ssh root@$(REMOTE_IP) "systemctl restart arcs"
 
 dash-clean:
 	@echo "[MAKE] dash-clean"

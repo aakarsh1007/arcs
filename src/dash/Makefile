@@ -1,4 +1,4 @@
-OBJS = main.o screen.o io.o interface.o js.o args.o keyboard.o remote.o comms.o
+OBJS = main.o screen.o io.o interface.o js.o args.o keyboard.o comms.o
 LIBS = -lncurses -lpthread -lslog
 
 %.o : %.c

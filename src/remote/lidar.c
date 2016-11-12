@@ -36,6 +36,9 @@ void *lidar_loop(void *td) {
 	while (true) {
 		stat = ReadLaser(&xv11_data, frames);
 
+		if (stat)
+			continue;
+
 		for (int i = 0; i < capture_frames; i++) {
 			process_frame(frames[i]);
 		}
