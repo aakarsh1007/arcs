@@ -1,0 +1,11 @@
+[Unit]
+Description=ARCS Remote
+After=syslog.target network.target
+
+[Service]
+Type=oneshot
+ExecStart=/var/arcs/arcs
+WorkingDirectory=/var/arcs
+
+[Install]
+WantedBy=multi-user.target
