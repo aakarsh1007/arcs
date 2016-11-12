@@ -21,11 +21,15 @@ void process_frame(struct laser_frame frame) {
 	pthread_mutex_lock(&lidar_lock);
 	lidar_data.speed = frame.speed;
 	uint16_t index = frame.index - 0xA0;
+	if(!(index >= 0 && index < 360)) {
+		slog(300, SLOG_WARN, "Bad lidar index %d", index);
+
+	}else {
 	for (int i = 0; i < READS_PER_FRAME; i++) {
 		if (frame.readings[i].distance > 10)
 			lidar_data.dist[index * READS_PER_FRAME + i] =
 				frame.readings[i].distance;
-	}
+	}}
 	pthread_mutex_unlock(&lidar_lock);
 }
 
