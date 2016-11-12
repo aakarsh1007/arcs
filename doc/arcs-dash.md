@@ -12,9 +12,7 @@ See the format in the optarg documentation.
 Short | Long | Description
 --- | --- | ---
 `-j` | `--js-path` | Takes the next argument as the path to the joystick file
-`-r` | `--remote` | Takes the next argument as the remote IP/hostname
 `-u` | `--user` | Takes the next argument as the remote user
-`-e` | `--exec` | Takes the next argument as the remote file to run
 `-v` | `--viewer` | Takes the next argument as the viewer IP
 
 ## Controls
@@ -23,6 +21,6 @@ Key | Description
 --- | ---
 `q` | Exits the dashboard
 `r` | Reset networking
-0-9 | Set operation mode
-space | Set to disabled (0)
-'v' | Toggle viewer if IP is set
+`0-9` | Set operation mode
+`space` | Set to disabled (0)
+`v` | Toggle viewer if IP is set

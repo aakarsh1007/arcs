@@ -23,11 +23,10 @@ void parse_args(struct runtime_args *args, int argc, char **argv) {
 	struct option long_options[] = {{"js-path", 1, 0, 'j'},
 									{"remote", 1, 0, 'r'},
 									{"user", 1, 0, 'u'},
-									{"exec", 1, 0, 'e'},
 									{"viewer", 1, 0, 'v'}};
 
 	int opt_index;
-	while ((c = getopt_long(argc, argv, "j:r:u:e:v:", long_options,
+	while ((c = getopt_long(argc, argv, "j:r:u:v:", long_options,
 							&opt_index)) != -1) {
 
 		switch (c) {
@@ -39,9 +38,6 @@ void parse_args(struct runtime_args *args, int argc, char **argv) {
 			break;
 		case 'u':
 			r_useropt = scp(optarg);
-			break;
-		case 'e':
-			r_execopt = scp(optarg);
 			break;
 		case 'v':
 			r_viewer_ip = scp(optarg);
@@ -56,7 +52,6 @@ void parse_args(struct runtime_args *args, int argc, char **argv) {
 	args->js_path = jsopt;
 	args->r_addr = r_addropt;
 	args->r_user = r_useropt;
-	args->r_exec = r_execopt;
 	args->r_viewer_ip = r_viewer_ip;
 
 	if (optind < argc) {
@@ -75,8 +70,6 @@ void free_args(struct runtime_args *args) {
 		free(args->r_addr);
 	if (args->r_user != NULL)
 		free(args->r_user);
-	if (args->r_exec != NULL)
-		free(args->r_exec);
 	if (args->r_viewer_ip != NULL)
 		free(args->r_viewer_ip);
 }
@@ -94,9 +87,6 @@ void log_args(struct runtime_args *args) {
 	}
 	if (args->r_user != NULL) {
 		logarg("r_user", args->r_user);
-	}
-	if (args->r_exec != NULL) {
-		logarg("r_exec", args->r_exec);
 	}
 	if (args->r_viewer_ip != NULL) {
 		logarg("r_viewer_ip", args->r_viewer_ip);
