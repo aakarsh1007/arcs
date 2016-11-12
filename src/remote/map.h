@@ -12,3 +12,6 @@
 
 #define RIGHT_DIR 4
 #define LEFT_DIR 22
+
+#define STATUS_LED_PIN 25
+#define COMMS_LED_PIN 27

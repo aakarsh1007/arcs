@@ -19,3 +19,8 @@ void start_comms();
 void send_viewer(struct pack_viewer);
 
 extern struct pack_dtr last_pack;
+
+/*
+ * Returns microseconds since last_pack was recived.
+ */
+int64_t last_pack_time();

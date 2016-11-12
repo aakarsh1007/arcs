@@ -7,6 +7,7 @@
 #include <string.h>
 #include <signal.h>
 #include <unistd.h>
+#include "leds.h"
 
 int viewer_pack_num = 1;
 
@@ -17,7 +18,7 @@ void sig_catch(int sig) {
 	close_arcs();
 }
 
-int main() {
+void init() {
 	slog_init("arcs", "slog.cfg", 400, 500, 1);
 	slog(400, SLOG_INFO, "Starting arcs-remote");
 	if (signal(SIGHUP, sig_catch) == SIG_ERR) {
@@ -26,19 +27,21 @@ int main() {
 	}
 
 	wiringPiSetup();
-
+	init_leds();
 	drive_init();
-
 	init_lidar();
-
 	start_comms();
-
 	command_init();
+}
+
+int main() {
+	init();
 
 	while (1) {
 		usleep(10000);
 
 		command_update();
+		update_comms_led();
 
 		struct pack_viewer p;
 		memcpy(&p.lidar_data, &lidar_data, sizeof(lidar_data));
@@ -55,5 +58,6 @@ void close_arcs() {
 	drive_close();
 	close_comms();
 	close_lidar();
+	close_leds();
 	exit(EXIT_SUCCESS);
 }

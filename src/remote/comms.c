@@ -9,10 +9,12 @@
 #include <errno.h>
 #include <pthread.h>
 #include "arcs_net.h"
+#include "timing.h"
 
 int sockfd;
 struct sockaddr_in serv_sock;
 struct pack_dtr last_pack;
+int64_t last_pack_t = 0;
 pthread_mutex_t comm_lock = PTHREAD_MUTEX_INITIALIZER;
 pthread_t commthread;
 
@@ -91,6 +93,7 @@ void update_comms() {
 	}
 
 	last_pack = p;
+	last_pack_t = microtime();
 }
 
 void *comm_loop(void *td) {
@@ -110,3 +113,5 @@ void start_comms() {
 
 	pthread_mutex_unlock(&comm_lock);
 }
+
+int64_t last_pack_time() { return last_pack_t; }

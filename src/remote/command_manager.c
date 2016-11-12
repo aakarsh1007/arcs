@@ -3,6 +3,7 @@
 #include "teleop.h"
 #include "disabled.h"
 #include "tank.h"
+#include "leds.h"
 
 uint32_t started_flags;
 
@@ -30,10 +31,16 @@ void command_update() {
 		}
 	}
 
-	if (mode == MODE_DISABLED)
+	if (mode == MODE_DISABLED) {
+		status_led_disabled();
 		disabled_update();
-	if (mode == MODE_TELEOP)
+	}
+	if (mode == MODE_TELEOP) {
+		status_led_teleop();
 		teleop_update();
-	if (mode == MODE_TANK)
+	}
+	if (mode == MODE_TANK) {
+		status_led_teleop();
 		tank_update();
+	}
 }
