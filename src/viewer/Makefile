@@ -1,4 +1,4 @@
-OBJS = main.o comms.o LidarPoints.o
+OBJS = main.o comms.o LidarPoints.o gl_common.o
 LIBS = -l glfw -l GLEW -l GL -lpthread
 CC = g++
 

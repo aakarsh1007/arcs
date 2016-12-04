@@ -3,6 +3,7 @@
 #include <string.h>
 #include <iostream>
 #include <cmath>
+#include "gl_common.h"
 
 const GLchar *vertex_shader_src =
 	"#version 330 core\n"
@@ -16,17 +17,6 @@ const GLchar *fragment_shader_src = "#version 330 core\n"
 									"void main() {\n"
 									"\tcolor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
 									"}\n\0";
-
-void verify_shader(GLuint shader, std::string str) {
-	GLint ret;
-	GLchar msg[512];
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &ret);
-	if (!ret) {
-		glGetShaderInfoLog(shader, 512, NULL, msg);
-		std::cerr << str << " comilation error: " << msg << std::endl;
-		exit(ret);
-	}
-}
 
 void LidarPoints::update_verts() {
 	verts_len = 0;
