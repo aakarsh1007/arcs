@@ -4,20 +4,17 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#define MAX_LIDAR_VERTS 1024
+#define MAX_RANSAC_VERTS 2
 
-class LidarPoints {
+class RANSAC {
   public:
-	LidarPoints();
-	virtual ~LidarPoints();
+	RANSAC();
+	virtual ~RANSAC();
 	void draw();
 
   private:
-	GLfloat verts[3 * MAX_LIDAR_VERTS];
-	int verts_len;
+	GLfloat verts[3 * MAX_RANSAC_VERTS];
 	GLuint VBO, VAO;
 	GLuint vertex_shader, fragment_shader, shader_prog;
 	void init_shaders();
-	void update_verts();
-	void add_vert(GLfloat x, GLfloat y);
 };

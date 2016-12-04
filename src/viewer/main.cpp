@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <pthread.h>
 #include "LidarPoints.h"
+#include "RANSAC.h"
 
 using namespace std;
 
@@ -19,6 +20,7 @@ GLFWwindow *window;
 const GLfloat bg_color[3] = {0.2, 0.3, 0.3};
 
 LidarPoints *lidar_points;
+RANSAC *ransac;
 
 void key_callback(GLFWwindow *w, int key, int scancode, int action, int mode) {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -48,6 +50,7 @@ void init() {
 	init_comms();
 	init_window();
 	lidar_points = new LidarPoints();
+	ransac = new RANSAC();
 }
 
 void clear_screen() {
@@ -55,7 +58,10 @@ void clear_screen() {
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void draw() { lidar_points->draw(); }
+void draw() {
+	lidar_points->draw();
+	ransac->draw();
+}
 
 void update_title() {
 	std::string title = NAME;

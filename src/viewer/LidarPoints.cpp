@@ -5,18 +5,19 @@
 #include <cmath>
 #include "gl_common.h"
 
-const GLchar *vertex_shader_src =
+const GLchar *lidar_vertex_shader_src =
 	"#version 330 core\n"
 	"layout (location = 0) in vec3 position;\n"
 	"void main() {\n"
 	"\tgl_Position = vec4(position.x, position.y, position.z, 1.0);\n"
 	"}\n\0";
 
-const GLchar *fragment_shader_src = "#version 330 core\n"
-									"out vec4 color;\n"
-									"void main() {\n"
-									"\tcolor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-									"}\n\0";
+const GLchar *lidar_fragment_shader_src =
+	"#version 330 core\n"
+	"out vec4 color;\n"
+	"void main() {\n"
+	"\tcolor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+	"}\n\0";
 
 void LidarPoints::update_verts() {
 	verts_len = 0;
@@ -33,7 +34,7 @@ void LidarPoints::update_verts() {
 }
 
 void LidarPoints::add_vert(GLfloat x, GLfloat y) {
-	if (verts_len >= MAX_VERTS) {
+	if (verts_len >= MAX_LIDAR_VERTS) {
 		std::cerr << "Exceded max verts" << std::endl;
 		exit(1);
 	}
@@ -45,12 +46,12 @@ void LidarPoints::add_vert(GLfloat x, GLfloat y) {
 
 void LidarPoints::init_shaders() {
 	vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertex_shader, 1, &vertex_shader_src, NULL);
+	glShaderSource(vertex_shader, 1, &lidar_vertex_shader_src, NULL);
 	glCompileShader(vertex_shader);
 	verify_shader(vertex_shader, "Vertex shader");
 
 	fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragment_shader, 1, &fragment_shader_src, NULL);
+	glShaderSource(fragment_shader, 1, &lidar_fragment_shader_src, NULL);
 	glCompileShader(fragment_shader);
 	verify_shader(fragment_shader, "Fragment shader");
 
