@@ -109,10 +109,7 @@ RANSACLine *RANSAC::run_ransac(std::vector<RANSACPoint> &points) {
 
 		RANSACLine *model = new RANSACLine(p1, p2);
 		std::vector<RANSACPoint> in_model;
-		for (RANSACPoint p : others) {
-			if (model->distance(p) < model_fit_error_max)
-				in_model.push_back(p);
-		}
+		model->points_within(others, model_fit_error_max, in_model);
 
 		if (in_model.size() >= model_fit_points_min) {
 			double current_error = 0;

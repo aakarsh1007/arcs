@@ -30,6 +30,46 @@ double RANSACLine::distance(double x, double y) {
 	return numerator / denominator;
 }
 
+int RANSACLine::points_within(const std::vector<RANSACPoint> &points,
+							  double distance) {
+	int out = 0;
+	for (RANSACPoint p : points)
+		if (this->distance(p) <= distance)
+			out++;
+	return out;
+}
+int RANSACLine::points_within(const std::vector<RANSACPoint> &points,
+							  double distance,
+							  std::vector<RANSACPoint> &within) {
+	int out = 0;
+	for (RANSACPoint p : points)
+		if (this->distance(p) <= distance) {
+			out++;
+			within.push_back(p);
+		}
+	return out;
+}
+
+int RANSACLine::points_not_within(const std::vector<RANSACPoint> &points,
+								  double distance) {
+	int out = 0;
+	for (RANSACPoint p : points)
+		if (this->distance(p) > distance)
+			out++;
+	return out;
+}
+int RANSACLine::points_not_within(const std::vector<RANSACPoint> &points,
+								  double distance,
+								  std::vector<RANSACPoint> &within) {
+	int out = 0;
+	for (RANSACPoint p : points)
+		if (this->distance(p) > distance) {
+			out++;
+			within.push_back(p);
+		}
+	return out;
+}
+
 void RANSACLine::scale(double scalar) {
 	RANSACPoint midpoint = RANSACPoint((x1 + x2) / 2.0, (y1 + y2) / 2.0);
 	x1 -= midpoint.x;

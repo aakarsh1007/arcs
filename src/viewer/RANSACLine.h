@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "RANSACPoint.h"
 
 class RANSACLine {
@@ -11,4 +12,12 @@ class RANSACLine {
 	double distance(RANSACPoint p);
 	void scale(double scalar);
 	void draw();
+
+	int points_within(const std::vector<RANSACPoint> &points, double distance);
+	int points_within(const std::vector<RANSACPoint> &points, double distance,
+					  std::vector<RANSACPoint> &within);
+	int points_not_within(const std::vector<RANSACPoint> &points,
+						  double distance);
+	int points_not_within(const std::vector<RANSACPoint> &points,
+						  double distance, std::vector<RANSACPoint> &within);
 };
