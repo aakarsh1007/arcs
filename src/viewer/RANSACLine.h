@@ -9,5 +9,6 @@ class RANSACLine {
 	double x1, y1, x2, y2;
 	double distance(double x, double y);
 	double distance(RANSACPoint p);
+	void scale(double scalar);
 	void draw();
 };

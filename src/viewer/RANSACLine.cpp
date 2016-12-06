@@ -30,4 +30,22 @@ double RANSACLine::distance(double x, double y) {
 	return numerator / denominator;
 }
 
+void RANSACLine::scale(double scalar) {
+	RANSACPoint midpoint = RANSACPoint((x1 + x2) / 2.0, (y1 + y2) / 2.0);
+	x1 -= midpoint.x;
+	y1 -= midpoint.y;
+	x2 -= midpoint.x;
+	y2 -= midpoint.y;
+
+	x1 *= scalar;
+	y1 *= scalar;
+	x2 *= scalar;
+	y2 *= scalar;
+
+	x1 += midpoint.x;
+	y1 += midpoint.y;
+	x2 += midpoint.x;
+	y2 += midpoint.y;
+}
+
 RANSACLine::~RANSACLine() {}

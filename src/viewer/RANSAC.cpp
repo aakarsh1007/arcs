@@ -143,6 +143,7 @@ RANSACLine *RANSAC::run_ransac(std::vector<RANSACPoint> &points) {
 }
 
 void RANSAC::draw_line(RANSACLine *line) {
+	line->scale(50);
 	verts[0] = line->x1;
 	verts[1] = line->y1;
 	verts[3] = line->x2;
