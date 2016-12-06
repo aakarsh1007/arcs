@@ -3,8 +3,10 @@
 #include <cmath>
 #include <cstdlib>
 #include <pthread.h>
+#include <vector>
 #include "LidarPoints.h"
 #include "RANSAC.h"
+#include "RANSACPoint.h"
 
 using namespace std;
 
@@ -50,7 +52,7 @@ void init() {
 	init_comms();
 	init_window();
 	lidar_points = new LidarPoints();
-	ransac = new RANSAC();
+	ransac = new RANSAC(1000, .1 / 5.0, 10);
 }
 
 void clear_screen() {
@@ -59,8 +61,9 @@ void clear_screen() {
 }
 
 void draw() {
-	lidar_points->draw();
-	ransac->draw();
+	std::vector<RANSACPoint> points;
+	lidar_points->draw(points);
+	ransac->draw(points);
 }
 
 void update_title() {

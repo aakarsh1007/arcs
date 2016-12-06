@@ -19,17 +19,20 @@ const GLchar *lidar_fragment_shader_src =
 	"\tcolor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
 	"}\n\0";
 
-void LidarPoints::update_verts() {
+void LidarPoints::update_verts(std::vector<RANSACPoint> &points) {
 	verts_len = 0;
 
 	for (int i = 0; i < 360; i++) {
 		int32_t dist = lidar_data.dist[i];
+		if (dist < 100)
+			continue;
 		float f_dist = (float)dist;
 		f_dist /= 1000.0; // to meters
 		f_dist /= 5.0;	// scale size
 		float x = f_dist * cos(((float)i + 90) * (M_PI / 180.0));
 		float y = f_dist * sin(((float)i + 90) * (M_PI / 180.0));
 		add_vert(x, y);
+		points.push_back(RANSACPoint(x, y));
 	}
 }
 
@@ -98,8 +101,8 @@ LidarPoints::~LidarPoints() {
 	glDeleteBuffers(1, &VBO);
 }
 
-void LidarPoints::draw() {
-	update_verts();
+void LidarPoints::draw(std::vector<RANSACPoint> &points) {
+	update_verts(points);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(verts), verts, GL_STREAM_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
