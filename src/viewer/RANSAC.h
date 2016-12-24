@@ -23,7 +23,8 @@ class RANSAC {
 	GLuint vertex_shader, fragment_shader, shader_prog;
 	void init_shaders();
 
-	RANSACLine *run_ransac(std::vector<RANSACPoint> &points);
+	RANSACLine *run_ransac_normal(std::vector<RANSACPoint> &points);
+	RANSACLine *run_ransac_segment(std::vector<RANSACPoint> &points);
 	void draw_line(RANSACLine *line);
 
 	int max_itterations;

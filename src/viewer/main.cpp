@@ -52,7 +52,7 @@ void init() {
 	init_comms();
 	init_window();
 	lidar_points = new LidarPoints();
-	ransac = new RANSAC(1000, .05 / 5.0, 25);
+	ransac = new RANSAC(1000, .03 / 5.0, 8);
 }
 
 void clear_screen() {

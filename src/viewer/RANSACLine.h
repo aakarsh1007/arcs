@@ -16,8 +16,15 @@ class RANSACLine {
 	int points_within(const std::vector<RANSACPoint> &points, double distance);
 	int points_within(const std::vector<RANSACPoint> &points, double distance,
 					  std::vector<RANSACPoint> &within);
+	int points_within_limited(const std::vector<RANSACPoint> &points,
+							  double distance);
+	int points_within_limited(const std::vector<RANSACPoint> &points,
+							  double distance,
+							  std::vector<RANSACPoint> &within);
 	int points_not_within(const std::vector<RANSACPoint> &points,
 						  double distance);
 	int points_not_within(const std::vector<RANSACPoint> &points,
 						  double distance, std::vector<RANSACPoint> &within);
+	double distance_from_midpoint(const RANSACPoint &point);
+	double length();
 };

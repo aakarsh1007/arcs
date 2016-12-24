@@ -81,7 +81,7 @@ void RANSAC::init_shaders() {
 	glDeleteShader(fragment_shader);
 }
 
-RANSACLine *RANSAC::run_ransac(std::vector<RANSACPoint> &points) {
+RANSACLine *RANSAC::run_ransac_normal(std::vector<RANSACPoint> &points) {
 	if (points.size() < 4) {
 		std::cout << "Skipping RANSAC due to insufficient data: "
 				  << points.size() << " points" << std::endl;
@@ -139,8 +139,65 @@ RANSACLine *RANSAC::run_ransac(std::vector<RANSACPoint> &points) {
 	return bestfit;
 }
 
+RANSACLine *RANSAC::run_ransac_segment(std::vector<RANSACPoint> &points) {
+	if (points.size() < 4) {
+		std::cout << "Skipping RANSAC due to insufficient data: "
+				  << points.size() << " points" << std::endl;
+		return nullptr;
+	}
+
+	int iterations = 0;
+	RANSACLine *bestfit = nullptr;
+	double best_error = DBL_MAX; // Something really large
+	int points_size = points.size();
+	while (iterations < max_itterations) {
+		// Guess
+		int index1 = random_index(points_size - 1);
+		int index2 = index1;
+		while (index1 == index2)
+			index2 = random_index(points_size - 1);
+
+		RANSACPoint p1 = points[index1];
+		RANSACPoint p2 = points[index2];
+
+		std::vector<RANSACPoint> others(points);
+		// Delete chosen two two by index
+		others.erase(others.begin() + std::max(index1, index2));
+		others.erase(others.begin() + std::min(index1, index2));
+
+		RANSACLine *model = new RANSACLine(p1, p2);
+		std::vector<RANSACPoint> in_model;
+		model->points_within_limited(others, model_fit_error_max, in_model);
+
+		if (in_model.size() >= model_fit_points_min) {
+			double current_error = 0;
+
+			current_error =
+				(pow(model->length(), .7)) / (double)in_model.size();
+
+			if (best_error > current_error) {
+				best_error = current_error;
+				bestfit = model;
+			} else {
+				delete model;
+			}
+		} else {
+			delete model;
+		}
+
+		iterations++;
+	}
+
+	if (1 / best_error < 20) {
+		delete bestfit;
+		return nullptr;
+	}
+	std::cout << "Best error: " << best_error << std::endl;
+	return bestfit;
+}
+
 void RANSAC::draw_line(RANSACLine *line) {
-	line->scale(50);
+	// line->scale(50);
 	verts[0] = line->x1;
 	verts[1] = line->y1;
 	verts[3] = line->x2;
@@ -160,7 +217,7 @@ void RANSAC::draw_line(RANSACLine *line) {
 void RANSAC::draw(std::vector<RANSACPoint> &points) {
 	std::vector<RANSACPoint> valid_points(points);
 	while (1) {
-		RANSACLine *best_guess = run_ransac(valid_points);
+		RANSACLine *best_guess = run_ransac_segment(valid_points);
 
 		if (best_guess == nullptr)
 			return;
