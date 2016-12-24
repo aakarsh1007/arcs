@@ -7,21 +7,23 @@
 #include "RANSACLine.h"
 #include "RANSACPoint.h"
 
-const GLchar *ransac_vertex_shader_src = "#version 330 core\n"
-		"layout (location = 0) in vec3 position;\n"
-		"void main() {\n"
-		"\tgl_Position = vec4(position.x, position.y, position.z, 1.0);\n"
-		"}\n\0";
+const GLchar *ransac_vertex_shader_src =
+	"#version 330 core\n"
+	"layout (location = 0) in vec3 position;\n"
+	"void main() {\n"
+	"\tgl_Position = vec4(position.x, position.y, position.z, 1.0);\n"
+	"}\n\0";
 
-const GLchar *ransac_fragment_shader_src = "#version 330 core\n"
-		"out vec4 color;\n"
-		"void main() {\n"
-		"\tcolor = vec4(0.11f, 0.74f, 0.95f, 1.0f);\n"
-		"}\n\0";
+const GLchar *ransac_fragment_shader_src =
+	"#version 330 core\n"
+	"out vec4 color;\n"
+	"void main() {\n"
+	"\tcolor = vec4(0.11f, 0.74f, 0.95f, 1.0f);\n"
+	"}\n\0";
 
 int random_index(int max) {
-	static std::default_random_engine rng { };
-	static std::uniform_int_distribution<int> dist { 0, max };
+	static std::default_random_engine rng{};
+	static std::uniform_int_distribution<int> dist{0, max};
 	return dist(rng);
 }
 
@@ -33,7 +35,7 @@ void init_ransac_vao(GLuint *VAO, GLuint *VBO, GLfloat verts[]) {
 		glBindBuffer(GL_ARRAY_BUFFER, *VBO);
 		glBufferData(GL_ARRAY_BUFFER, MAX_RANSAC_VERTS, verts, GL_STREAM_DRAW);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat),
-				(GLvoid *) 0);
+							  (GLvoid *)0);
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
@@ -41,7 +43,7 @@ void init_ransac_vao(GLuint *VAO, GLuint *VBO, GLfloat verts[]) {
 }
 
 RANSAC::RANSAC(int max_itterations, double model_fit_error_max,
-		int model_fit_points_min) {
+			   int model_fit_points_min) {
 	memchr(&verts, 0, sizeof(verts));
 	verts[0] = verts[1] = 0;
 	verts[3] = verts[4] = .5;
@@ -82,7 +84,7 @@ void RANSAC::init_shaders() {
 RANSACLine *RANSAC::run_ransac(std::vector<RANSACPoint> &points) {
 	if (points.size() < 4) {
 		std::cout << "Skipping RANSAC due to insufficient data: "
-				<< points.size() << " points" << std::endl;
+				  << points.size() << " points" << std::endl;
 		return nullptr;
 	}
 
@@ -118,7 +120,7 @@ RANSACLine *RANSAC::run_ransac(std::vector<RANSACPoint> &points) {
 			//				current_error += tmp;
 			//			}
 
-			current_error = 1.0 / (double) in_model.size();
+			current_error = 1.0 / (double)in_model.size();
 
 			if (best_error > current_error) {
 				best_error = current_error;
@@ -166,11 +168,11 @@ void RANSAC::draw(std::vector<RANSACPoint> &points) {
 		draw_line(best_guess);
 
 		std::vector<RANSACPoint> next_points;
-		best_guess->points_not_within(valid_points, model_fit_error_max, next_points);
+		best_guess->points_not_within(valid_points, model_fit_error_max,
+									  next_points);
 		valid_points = next_points;
 
 		delete best_guess;
-
 	}
 }
 
